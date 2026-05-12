@@ -11,5 +11,15 @@
 - Snyk TanStack/Mini Shai-Hulud update: https://snyk.io/jp/blog/tanstack-npm-packages-compromised/
 - Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
 
+## Out-of-Scope Related Public Intel
+
+- Dark Web Informer X post amplifying the Nightmare-Eclipse disclosures: https://x.com/DarkWebInformer/status/2054264278044000262
+- Chaotic Eclipse PGP-signed disclosure naming `YellowKey` and `GreenPlasma`: https://deadeclipse666.blogspot.com/2026/05/two-more-public-disclosures-it-will.html
+- Nightmare-Eclipse `YellowKey` repository: https://github.com/Nightmare-Eclipse/YellowKey
+- Nightmare-Eclipse `GreenPlasma` repository: https://github.com/Nightmare-Eclipse/GreenPlasma
+
+These Windows disclosure links are retained only for manual context. They are
+not Mini Shai-Hulud scanner indicators.
+
 This project intentionally avoids publishing exploit reproduction steps or
 malware execution guidance.

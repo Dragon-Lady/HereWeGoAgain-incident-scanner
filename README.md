@@ -29,6 +29,15 @@ package/version indicators currently represented in `data/affected-packages.json
 Broader namespaces remain lower-severity review prompts unless an exact
 package/version indicator is present.
 
+## Out-of-Scope Windows Disclosures
+
+On May 12, 2026, Dark Web Informer amplified separate Nightmare-Eclipse /
+Chaotic Eclipse disclosures for `YellowKey` and `GreenPlasma`. These are not
+Mini Shai-Hulud package indicators and this scanner does not test or reproduce
+them. For manual defensive triage only, public screenshots and writeups mention
+`Nightmare-Eclipse`, `YellowKey`, `GreenPlasma`, `CSRSS_TEST_SECTION`, and
+WinRE / `wpeinit` context.
+
 ## Quick Start
 
 ```powershell

@@ -21,6 +21,15 @@ CAP packages, Intercom, and PyPI `lightning`. This project does not claim
 coverage for additional package artifacts unless exact package/version
 indicators have been added to `data/affected-packages.json`.
 
+Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
+for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
+tracked here only as related public situational awareness because readers may see
+the same reporting stream. Do not add those repositories or screenshots to
+scanner detection data unless a confirmed Mini Shai-Hulud package, payload, or
+campaign artifact overlaps. Manual triage strings from the public reporting
+include `Nightmare-Eclipse`, `YellowKey`, `GreenPlasma`, `CSRSS_TEST_SECTION`,
+and WinRE / `wpeinit` context.
+
 The key local indicators used by this project are:
 
 - `@tanstack/setup`
