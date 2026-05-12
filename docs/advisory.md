@@ -1,0 +1,79 @@
+# Advisory Summary
+
+On May 12, 2026, JFrog Security Research reported `Shai-Hulud: Here We Go
+Again`, an active worm-like npm/PyPI supply-chain compromise affecting more
+than 170 npm packages and 2 PyPI packages. The npm variant uses malicious
+install-time JavaScript payloads to steal credentials, write GitHub dead drops,
+and republish infected packages. The PyPI variant uses import-time loader code
+that downloads `/tmp/transformers.pyz` from `83.142.209.194`.
+
+On May 11, 2026, TanStack reported a related supply-chain compromise affecting 84
+malicious versions across 42 `@tanstack/*` npm packages, published between
+19:20 and 19:26 UTC. TanStack attributes the attack chain to a
+`pull_request_target` workflow issue, GitHub Actions cache poisoning across a
+fork-to-base trust boundary, and runtime extraction of an OIDC token from the
+GitHub Actions runner process.
+
+Socket's live campaign page reports 416 affected package artifacts across npm,
+PyPI, and Composer as of May 12, 2026, including the TanStack wave, Mistral SDK
+packages, UiPath packages, Squawk packages, OpenSearch, Guardrails AI, older SAP
+CAP packages, Intercom, and PyPI `lightning`. This project does not claim
+coverage for additional package artifacts unless exact package/version
+indicators have been added to `data/affected-packages.json`.
+
+The key local indicators used by this project are:
+
+- `@tanstack/setup`
+- `github:tanstack/router#79ac49eedf774dd4b0cfa308722bc463cfe5885c`
+- `router_init.js`
+- `tanstack_runner.js`
+- `router_runtime.js`
+- `/tmp/transformers.pyz`
+- `gh-token-monitor.service`, `gh-token-monitor.sh`, and
+  `com.user.gh-token-monitor.plist`
+- known malicious payload SHA-256 values:
+  `ab4fcadaec49c03278063dd269ea5eef82d24f2124a8e15d7b90f2fa8601266c`
+  and `2ec78d556d696e208927cc503d48e4b5eb56b31abc2870c2ed2e98d6be27fc96`
+- known affected `@tanstack/*` package/version pairs in
+  `data/affected-packages.json`
+- known affected `@mistralai/mistralai`, `@mistralai/mistralai-azure`, and
+  `@mistralai/mistralai-gcp` package/version pairs from Aikido's May 12 update
+  in `data/affected-packages.json`
+- known affected UiPath, TallyUI, DraftAuth, DraftLab, BeProduct, ML Toolkit,
+  TaskFlow, Supersurkhet, Tolka, OpenSearch, Dirigible AI, Mesadev, and selected
+  unscoped npm package/version pairs from Aikido's May 12 update in
+  `data/affected-packages.json`
+- known affected Squawk, SAP CAP, Intercom, and additional Socket-tracked npm
+  package/version pairs from Socket's live campaign table
+- lower-severity namespace warnings for namespaces reported in the active
+  campaign when exact package/version coverage may still be incomplete
+- known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
+  OX Security's May 12 update in `data/affected-packages.json`
+- known affected PyPI `lightning` and Composer `intercom/intercom-php`
+  package/version pairs from Socket's live campaign table
+- Claude Code `.claude/settings*.json` and VS Code `.vscode/tasks.json`
+  references to known payload, network, token-description, and campaign strings
+
+Additional TanStack-postmortem IOCs retained for investigation context include
+the cache key
+`Linux-pnpm-store-6f9233a50def742c09fde54f56553d6b449a535adf87d4083690539f49ae4da11`,
+the second-stage URLs `litter.catbox.moe/h8nc9u.js` and
+`litter.catbox.moe/7rrc6l.mjs`, the Session/Oxen seed domains
+`seed1.getsession.org`, `seed2.getsession.org`, `seed3.getsession.org`, and the
+forged commit identity `claude <claude@users.noreply.github.com>`. The scanner
+also searches manifests and lockfiles for selected network, workflow,
+token-description, and campaign marker strings stored in the advisory data.
+
+Additional JFrog IOCs retained for investigation context include
+`filev2.getsession.org`, `seed1.getsession.org`, `seed2.getsession.org`,
+`seed3.getsession.org`, `git-tanstack.com`, `api.masscan.cloud`,
+`83.142.209.194`, the repository description
+`Shai-Hulud: Here We Go Again`, the author marker
+`claude@users.noreply.github.com`, the branch
+`dependabot/github_actions/format/setup-formatter`, and the workflow path
+`.github/workflows/codeql_analysis.yml`.
+
+If one of these indicators is found, treat the environment as potentially
+exposed until reviewed. If payload execution or credential access is confirmed,
+remove dead-man switch persistence before token revocation, then rotate secrets
+from a clean device and rebuild the affected host.

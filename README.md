@@ -1,0 +1,98 @@
+# Here We Go Again Incident Scanner
+
+Read-only exposure scanner and recovery guidance for the May 2026
+`Shai-Hulud: Here We Go Again` npm/PyPI supply-chain incident and related
+Mini Shai-Hulud npm/PyPI/Composer indicators.
+
+This tool helps identify known indicators. It does not remove malware, revoke
+credentials, execute package scripts, or prove that a host is clean.
+
+## Safety
+
+The scanner is read-only and dependency-free. It walks local files, parses
+package manifests and lockfiles, and hashes known payload filenames. It does
+not run `npm install`, execute lifecycle scripts, import project code, contact
+package registries, or transmit scan results.
+
+## Scope
+
+This scanner detects exact npm, PyPI, and Composer package/version indicators in
+`data/affected-packages.json` plus shared payload, tool-persistence, and campaign
+indicators.
+JFrog reports more than 170 npm packages and 2 PyPI packages affected by
+`Shai-Hulud: Here We Go Again` as of May 12, 2026. TanStack's official
+postmortem confirms 84 malicious versions across 42 `@tanstack/*` packages,
+published on May 11, 2026 between 19:20 and 19:26 UTC.
+Socket's live campaign page reports 416 affected package artifacts across npm,
+PyPI, and Composer as of May 12, 2026. This scanner includes the exact
+package/version indicators currently represented in `data/affected-packages.json`.
+Broader namespaces remain lower-severity review prompts unless an exact
+package/version indicator is present.
+
+## Quick Start
+
+```powershell
+node .\bin\herewegoagain-incident-scanner.js C:\path\to\project --report report.json
+```
+
+```bash
+node ./bin/herewegoagain-incident-scanner.js /path/to/project --report report.json
+```
+
+Use `--json` to print a machine-readable report to stdout.
+
+Exit code `2` means likely exposure indicators were found.
+
+Human-readable output starts with a plain-language `STOP`, `PAUSE`, or clean-scan
+summary for non-specialist users, followed by exact technical findings for
+developers, security teams, and CI logs.
+
+## What It Checks
+
+- Known compromised `@tanstack/*` package versions
+- Known compromised `@squawk/*` package versions from Socket's campaign table
+- Known compromised `@mistralai/*` package versions from Aikido's May 12 update
+- Known compromised UiPath, TallyUI, DraftAuth, DraftLab, BeProduct,
+  ML Toolkit, TaskFlow, Supersurkhet, Tolka, OpenSearch, Dirigible AI, Mesadev,
+  and selected unscoped package versions from Aikido's May 12 update
+- Known compromised SAP CAP, Intercom, and older Mini Shai-Hulud npm artifacts
+  from Socket's campaign table
+- Known compromised PyPI `mistralai`, `guardrails-ai`, and `lightning` versions
+- Known compromised Composer `intercom/intercom-php` version
+- Lower-severity namespace warnings for namespaces reported in the active
+  campaign when exact package/version coverage may still be incomplete
+- `@tanstack/setup`
+- `github:tanstack/router#79ac49eedf774dd4b0cfa308722bc463cfe5885c`
+- `router_init.js`, `tanstack_runner.js`, `router_runtime.js`,
+  `/tmp/transformers.pyz`, and `gh-token-monitor` persistence artifacts
+- Known malicious payload SHA-256 hashes when a payload file is present
+- Selected network, workflow, token-description, and campaign marker strings
+- Claude Code `.claude/settings*.json` and VS Code `.vscode/tasks.json` config
+  references to known payload and campaign indicators
+- Install lifecycle scripts: `preinstall`, `install`, `postinstall`, `prepare`
+- GitHub-resolved dependencies in manifests
+
+## If Indicators Are Found
+
+Do not start by revoking tokens from the suspected infected host. First stop
+builds and package installs, isolate the host if execution is possible, then use
+a clean machine to rotate credentials and audit accounts.
+
+See [docs/recovery-playbook.md](docs/recovery-playbook.md).
+
+## Sources
+
+- JFrog Security Research: https://research.jfrog.com/post/shai-hulud-here-we-go-again/
+- TanStack official postmortem: https://tanstack.com/blog/npm-supply-chain-compromise-postmortem
+- GitHub Security Advisory: https://github.com/advisories/GHSA-g7cv-rxg3-hmpx
+- TanStack issue: https://github.com/TanStack/router/issues/7383
+- StepSecurity writeup: https://www.stepsecurity.io/blog/mini-shai-hulud-is-back-a-self-spreading-supply-chain-attack-hits-the-npm-ecosystem
+- Socket writeup: https://socket.dev/blog/tanstack-npm-packages-compromised-mini-shai-hulud-supply-chain-attack
+- Aikido broader campaign update: https://www.aikido.dev/blog/mini-shai-hulud-is-back-tanstack-compromised
+- OX Security broader npm/PyPI campaign update: https://www.ox.security/blog/shai-hulud-here-we-go-again-170-packages-hit-across-npm-pypi/
+- Snyk TanStack/Mini Shai-Hulud update: https://snyk.io/jp/blog/tanstack-npm-packages-compromised/
+- Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
+
+## License
+
+MIT
