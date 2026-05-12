@@ -73,7 +73,8 @@ developers, security teams, and CI logs.
 - `@tanstack/setup`
 - `github:tanstack/router#79ac49eedf774dd4b0cfa308722bc463cfe5885c`
 - `router_init.js`, `tanstack_runner.js`, `router_runtime.js`,
-  `/tmp/transformers.pyz`, and `gh-token-monitor` persistence artifacts
+  `/tmp/transformers.pyz`, `pgmonitor.py`, `pgsql-monitor.service`, and
+  `gh-token-monitor` persistence artifacts
 - Known malicious payload SHA-256 hashes when a payload file is present
 - Selected network, workflow, token-description, and campaign marker strings
 - Claude Code `.claude/settings*.json` and VS Code `.vscode/tasks.json` config
@@ -86,6 +87,13 @@ developers, security teams, and CI logs.
 Do not start by revoking tokens from the suspected infected host. First stop
 builds and package installs, isolate the host if execution is possible, then use
 a clean machine to rotate credentials and audit accounts.
+
+JFrog's May 12 update reports that the PyPI second-stage payload changed from an
+attribution response into a Linux credential stealer with cloud, Kubernetes,
+Vault, password-manager, developer-tooling, persistence, and possible
+destructive behavior. Treat `mistralai==2.4.6`, `/tmp/transformers.pyz`,
+`pgsql-monitor.service`, or `pgmonitor.py` findings as host-compromise signals
+until proven otherwise.
 
 See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 

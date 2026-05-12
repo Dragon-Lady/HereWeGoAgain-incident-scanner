@@ -26,6 +26,8 @@
       "tanstack_runner.js",
       "router_runtime.js",
       "transformers.pyz",
+      "pgmonitor.py",
+      "pgsql-monitor.service",
       "gh-token-monitor.sh",
       "gh-token-monitor.service",
       "com.user.gh-token-monitor.plist"
@@ -43,7 +45,8 @@
       ],
       "transformers.pyz": [
         "29c729852fce5a53e30a1541d9fec79c915b2e13f1eda94a5978cf0aae0d88d9",
-        "d4a2086ea18f5e39cd867b8b06918a524eabb21d45ea98aad07357b98173458a"
+        "d4a2086ea18f5e39cd867b8b06918a524eabb21d45ea98aad07357b98173458a",
+        "5245eb032e336b85cff0dbb3450d591826bf2ef214fd30d7eba1a763664e151b"
       ]
     },
     "networkIndicators": [
@@ -55,6 +58,10 @@
       "git-tanstack.com",
       "83.142.209.194",
       "83.142.209.194/transformers.pyz",
+      "83.142.209.194/v1/models",
+      "83.142.209.194/v1/weights",
+      "83.142.209.194/audio.mp3",
+      "api.github.com/search/commits?q=FIRESCALE",
       "litter.catbox.moe/h8nc9u.js",
       "litter.catbox.moe/7rrc6l.mjs"
     ],
@@ -65,12 +72,17 @@
       "dependabot/github_actions/format/setup-formatter",
       ".github/workflows/codeql_analysis.yml",
       "gh-token-monitor.service",
+      "pgsql-monitor.service",
+      "pgmonitor.py",
+      "MISTRAL_INIT",
       "zblgg",
       "voicproducoes"
     ],
     "campaignIndicators": [
       "A Mini Shai-Hulud has Appeared",
-      "Shai-Hulud: Here We Go Again"
+      "Shai-Hulud: Here We Go Again",
+      "PUSH UR T3MPRR",
+      "FIRESCALE"
     ],
     "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
     "activeNamespaces": [

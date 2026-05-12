@@ -57,6 +57,23 @@ try {
   fs.rmSync(tmpPyRoot, { recursive: true, force: true });
 }
 
+const tmpUpdatedPyRoot = fs.mkdtempSync(path.join(__dirname, "tmp-pypi-updated-"));
+try {
+  fs.writeFileSync(path.join(tmpUpdatedPyRoot, "pgsql-monitor.service"), "[Service]\nExecStart=pgmonitor.py\n");
+  fs.writeFileSync(
+    path.join(tmpUpdatedPyRoot, "requirements.txt"),
+    "mistralai==2.4.6\n# 83.142.209.194/v1/weights\n# PUSH UR T3MPRR\n"
+  );
+  const updatedPyCompromised = scanTarget(tmpUpdatedPyRoot);
+  assert.strictEqual(updatedPyCompromised.risk, "likely-exposed");
+  assert(updatedPyCompromised.findings.some((finding) => finding.type === "payload-file"));
+  assert(updatedPyCompromised.findings.some((finding) => finding.type === "known-bad-pypi-version"));
+  assert(updatedPyCompromised.findings.some((finding) => finding.type === "network-indicator"));
+  assert(updatedPyCompromised.findings.some((finding) => finding.type === "campaign-indicator"));
+} finally {
+  fs.rmSync(tmpUpdatedPyRoot, { recursive: true, force: true });
+}
+
 const tmpComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-composer-"));
 try {
   fs.writeFileSync(

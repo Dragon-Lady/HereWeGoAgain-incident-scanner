@@ -6,6 +6,10 @@ than 170 npm packages and 2 PyPI packages. The npm variant uses malicious
 install-time JavaScript payloads to steal credentials, write GitHub dead drops,
 and republish infected packages. The PyPI variant uses import-time loader code
 that downloads `/tmp/transformers.pyz` from `83.142.209.194`.
+JFrog later updated its analysis on May 12, 2026 to report that the remote PyPI
+second-stage payload had changed from an attribution response into a Linux
+credential stealer with persistence, exfiltration, and possible destructive
+behavior.
 
 On May 11, 2026, TanStack reported a related supply-chain compromise affecting 84
 malicious versions across 42 `@tanstack/*` npm packages, published between
@@ -38,11 +42,14 @@ The key local indicators used by this project are:
 - `tanstack_runner.js`
 - `router_runtime.js`
 - `/tmp/transformers.pyz`
+- `pgmonitor.py` and `pgsql-monitor.service`
 - `gh-token-monitor.service`, `gh-token-monitor.sh`, and
   `com.user.gh-token-monitor.plist`
 - known malicious payload SHA-256 values:
   `ab4fcadaec49c03278063dd269ea5eef82d24f2124a8e15d7b90f2fa8601266c`
   and `2ec78d556d696e208927cc503d48e4b5eb56b31abc2870c2ed2e98d6be27fc96`
+- updated PyPI `transformers.pyz` SHA-256:
+  `5245eb032e336b85cff0dbb3450d591826bf2ef214fd30d7eba1a763664e151b`
 - known affected `@tanstack/*` package/version pairs in
   `data/affected-packages.json`
 - known affected `@mistralai/mistralai`, `@mistralai/mistralai-azure`, and
@@ -81,6 +88,12 @@ Additional JFrog IOCs retained for investigation context include
 `claude@users.noreply.github.com`, the branch
 `dependabot/github_actions/format/setup-formatter`, and the workflow path
 `.github/workflows/codeql_analysis.yml`.
+
+Additional PyPI second-stage IOCs from JFrog's updated analysis include
+`83.142.209.194/v1/models`, `83.142.209.194/v1/weights`,
+`83.142.209.194/audio.mp3`, `api.github.com/search/commits?q=FIRESCALE`,
+`PUSH UR T3MPRR`, `FIRESCALE`, `MISTRAL_INIT`, `pgsql-monitor.service`, and
+`pgmonitor.py`.
 
 If one of these indicators is found, treat the environment as potentially
 exposed until reviewed. If payload execution or credential access is confirmed,
