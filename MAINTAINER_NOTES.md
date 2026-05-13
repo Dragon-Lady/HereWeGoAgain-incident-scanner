@@ -29,10 +29,10 @@ node bin\herewegoagain-incident-scanner.js C:\path\to\project --json
 - `router_runtime.js`
 - `/tmp/transformers.pyz`
 - `gh-token-monitor` persistence files
-- network/workflow/token/campaign marker strings in `data/affected-packages.json`
+- network/workflow/token/campaign marker strings in `data/indicators.json`
 - payload SHA-256 `ab4fcadaec49c03278063dd269ea5eef82d24f2124a8e15d7b90f2fa8601266c`
 - payload SHA-256 `2ec78d556d696e208927cc503d48e4b5eb56b31abc2870c2ed2e98d6be27fc96`
-- affected package/version pairs in `data/affected-packages.json`
+- affected package/version pairs in `data/packages/`
 
 ## Campaign Scope Note
 
@@ -82,7 +82,7 @@ package/version indicators should only be added after exact confirmation.
 
 ## Fast Update Flow
 
-1. Update `data/affected-packages.json` for new confirmed package/version indicators.
+1. Update the relevant file under `data/packages/` for new confirmed package/version indicators.
 2. Add a fixture or smoke assertion if the scanner behavior changes.
 3. Run `npm test`.
 4. Commit with a narrow message.

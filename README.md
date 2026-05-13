@@ -17,7 +17,7 @@ package registries, or transmit scan results.
 ## Scope
 
 This scanner detects exact npm, PyPI, and Composer package/version indicators in
-`data/affected-packages.json` plus shared payload, tool-persistence, and campaign
+`data/packages/` plus shared payload, tool-persistence, and campaign
 indicators.
 JFrog reports more than 170 npm packages and 2 PyPI packages affected by
 `Shai-Hulud: Here We Go Again` as of May 12, 2026. TanStack's official
@@ -25,7 +25,7 @@ postmortem confirms 84 malicious versions across 42 `@tanstack/*` packages,
 published on May 11, 2026 between 19:20 and 19:26 UTC.
 Socket's live campaign page reports 416 affected package artifacts across npm,
 PyPI, and Composer as of May 12, 2026. This scanner includes the exact
-package/version indicators currently represented in `data/affected-packages.json`.
+package/version indicators currently represented in `data/packages/`.
 Broader namespaces remain lower-severity review prompts unless an exact
 package/version indicator is present.
 
@@ -95,6 +95,11 @@ destructive behavior. Treat `mistralai==2.4.6`, `/tmp/transformers.pyz`,
 `pgsql-monitor.service`, or `pgmonitor.py` findings as host-compromise signals
 until proven otherwise.
 
+Additional May 12-13 public reporting describes country/language-gated
+destructive behavior in the Python payload, including Russian-language avoidance
+and a reported Israel/Iran location check with randomized file deletion. This is
+kept as triage context, not a standalone clean/compromised decision.
+
 See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 
 ## Sources
@@ -107,6 +112,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Socket writeup: https://socket.dev/blog/tanstack-npm-packages-compromised-mini-shai-hulud-supply-chain-attack
 - Aikido broader campaign update: https://www.aikido.dev/blog/mini-shai-hulud-is-back-tanstack-compromised
 - OX Security broader npm/PyPI campaign update: https://www.ox.security/blog/shai-hulud-here-we-go-again-170-packages-hit-across-npm-pypi/
+- Resultsense / Decrypt PyPI malware summary: https://www.resultsense.com/news/2026-05-13-mistral-ai-pypi-supply-chain-malware-shai-hulud/
 - Snyk TanStack/Mini Shai-Hulud update: https://snyk.io/jp/blog/tanstack-npm-packages-compromised/
 - Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
 

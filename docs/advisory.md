@@ -10,6 +10,12 @@ JFrog later updated its analysis on May 12, 2026 to report that the remote PyPI
 second-stage payload had changed from an attribution response into a Linux
 credential stealer with persistence, exfiltration, and possible destructive
 behavior.
+Additional May 12-13 public reporting describes country/language-gated
+destructive behavior in the Python payload, including Russian-language avoidance
+and a reported Israel/Iran location check that may randomly trigger audio
+playback and file deletion. Treat those details as destructive-payload triage
+context; this scanner only promotes exact package, payload, persistence, hash,
+network, and campaign indicators into automated findings.
 
 On May 11, 2026, TanStack reported a related supply-chain compromise affecting 84
 malicious versions across 42 `@tanstack/*` npm packages, published between
@@ -23,7 +29,7 @@ PyPI, and Composer as of May 12, 2026, including the TanStack wave, Mistral SDK
 packages, UiPath packages, Squawk packages, OpenSearch, Guardrails AI, older SAP
 CAP packages, Intercom, and PyPI `lightning`. This project does not claim
 coverage for additional package artifacts unless exact package/version
-indicators have been added to `data/affected-packages.json`.
+indicators have been added to the relevant file under `data/packages/`.
 
 Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
 for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
@@ -51,20 +57,20 @@ The key local indicators used by this project are:
 - updated PyPI `transformers.pyz` SHA-256:
   `5245eb032e336b85cff0dbb3450d591826bf2ef214fd30d7eba1a763664e151b`
 - known affected `@tanstack/*` package/version pairs in
-  `data/affected-packages.json`
+  `data/packages/npm.json`
 - known affected `@mistralai/mistralai`, `@mistralai/mistralai-azure`, and
   `@mistralai/mistralai-gcp` package/version pairs from Aikido's May 12 update
-  in `data/affected-packages.json`
+  in `data/packages/npm.json`
 - known affected UiPath, TallyUI, DraftAuth, DraftLab, BeProduct, ML Toolkit,
   TaskFlow, Supersurkhet, Tolka, OpenSearch, Dirigible AI, Mesadev, and selected
   unscoped npm package/version pairs from Aikido's May 12 update in
-  `data/affected-packages.json`
+  `data/packages/npm.json`
 - known affected Squawk, SAP CAP, Intercom, and additional Socket-tracked npm
   package/version pairs from Socket's live campaign table
 - lower-severity namespace warnings for namespaces reported in the active
   campaign when exact package/version coverage may still be incomplete
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
-  OX Security's May 12 update in `data/affected-packages.json`
+  OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and Composer `intercom/intercom-php`
   package/version pairs from Socket's live campaign table
 - Claude Code `.claude/settings*.json` and VS Code `.vscode/tasks.json`
@@ -94,6 +100,13 @@ Additional PyPI second-stage IOCs from JFrog's updated analysis include
 `83.142.209.194/audio.mp3`, `api.github.com/search/commits?q=FIRESCALE`,
 `PUSH UR T3MPRR`, `FIRESCALE`, `MISTRAL_INIT`, `pgsql-monitor.service`, and
 `pgmonitor.py`.
+
+Manual destructive-payload review strings reported in public analysis include
+timezone markers such as `Jerusalem`, `Tel_Aviv`, and `Tehran`, random
+one-in-six execution gates, audio playback from `audio.mp3`, and destructive
+Linux file-removal logic. Do not treat any one of these generic strings alone as
+proof of compromise; use them only when reviewing a confirmed payload or exposed
+host.
 
 If one of these indicators is found, treat the environment as potentially
 exposed until reviewed. If payload execution or credential access is confirmed,
