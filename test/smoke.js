@@ -62,7 +62,7 @@ try {
   fs.writeFileSync(path.join(tmpUpdatedPyRoot, "pgsql-monitor.service"), "[Service]\nExecStart=pgmonitor.py\n");
   fs.writeFileSync(
     path.join(tmpUpdatedPyRoot, "requirements.txt"),
-    "mistralai==2.4.6\n# 83.142.209.194/v1/weights\n# PUSH UR T3MPRR\n"
+    "mistralai==2.4.6\n# 83.142.209.194/v1/weights\n# api.github.com/search/commits?q=FIRESCALE\n# PUSH UR T3MPRR\n"
   );
   const updatedPyCompromised = scanTarget(tmpUpdatedPyRoot);
   assert.strictEqual(updatedPyCompromised.risk, "likely-exposed");
