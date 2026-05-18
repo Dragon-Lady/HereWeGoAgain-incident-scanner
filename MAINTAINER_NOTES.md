@@ -14,7 +14,7 @@ Initial release state:
 ## Core Commands
 
 ```powershell
-cd C:\Users\tanya\HereWeGoAgain-incident-scanner
+cd C:\path\to\HereWeGoAgain-incident-scanner
 npm test
 node bin\herewegoagain-incident-scanner.js C:\path\to\project --report report.json
 node bin\herewegoagain-incident-scanner.js C:\path\to\project --json
