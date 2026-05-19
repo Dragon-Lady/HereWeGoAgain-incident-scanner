@@ -38,6 +38,12 @@ Mini Shai-Hulud and the npm maintainer account `atool`. Socket names the
 still developing. This scanner treats these as lower-confidence package or
 namespace review prompts until exact malicious versions are added under
 `data/packages/npm.json`.
+Socket's technical analysis of the same wave describes a root-level `index.js`
+payload launched by `preinstall: bun run index.js`, a direct C2 endpoint at
+`t.m-kosche.com`, GitHub fallback exfiltration using `results/results-*.json`
+paths and reversed Shai-Hulud repository markers, and npm propagation logic that
+validates stolen npm tokens, enumerates maintainable packages, injects payloads,
+bumps versions, and republishes under the compromised maintainer identity.
 
 Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
 for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
@@ -80,6 +86,10 @@ The key local indicators used by this project are:
   be incomplete
 - developing @antv / atool indicators from Socket's May 19 report: `@antv/*`,
   `echarts-for-react`, `timeago.js`, `size-sensor`, and `canvas-nest.js`
+- @antv payload indicators from Socket's technical analysis: `@antv/setup`,
+  `github:antvis/G2#1916faa365f2788b6e193514872d51a242876569`,
+  `t.m-kosche.com`, `niagA oG eW ereH :duluH-iahS`,
+  `niaga og ew ereh :duluh-iahs`, `results/results-`, and `fc2edea72`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and Composer `intercom/intercom-php`

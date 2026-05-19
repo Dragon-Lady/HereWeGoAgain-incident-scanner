@@ -13,6 +13,7 @@ const PYTHON_DEPENDENCY_FILES = new Set(["requirements.txt", "pyproject.toml", "
 const COMPOSER_DEPENDENCY_FILES = new Set(["composer.json", "composer.lock"]);
 const PACKAGE_MANIFEST = "package.json";
 const TOOL_CONFIG_FILES = new Set(["settings.json", "settings.local.json", "tasks.json"]);
+const JAVASCRIPT_SOURCE_EXTENSIONS = new Set([".js", ".cjs", ".mjs"]);
 const LIFECYCLE_SCRIPTS = ["preinstall", "install", "postinstall", "prepare"];
 const SKIP_DIRS = new Set([".git", ".hg", ".svn", ".next", "dist", "build", "coverage"]);
 
@@ -111,6 +112,11 @@ function scanTarget(targetPath, options = {}) {
 
     if (isToolConfigFile(filePath, base)) {
       scanToolConfigFile(filePath, advisory, findings);
+      return;
+    }
+
+    if (isJavaScriptSourceFile(filePath)) {
+      scanJavaScriptSourceFile(filePath, advisory, findings);
     }
   });
 
@@ -289,8 +295,20 @@ function inspectDependencySpec(filePath, section, name, spec, advisory, findings
     findings.push(finding("critical", "malicious-dependency-name", filePath, `${section} contains ${name}.`));
   }
 
+  for (const dependency of indicators.maliciousOptionalDependencies || []) {
+    if (dependency && name === dependency.name) {
+      findings.push(finding("critical", "malicious-dependency-name", filePath, `${section} contains ${name}.`));
+    }
+  }
+
   if (spec.includes(indicators.maliciousOptionalDependencySpec)) {
     findings.push(finding("critical", "malicious-dependency-spec", filePath, `${section}.${name} points to the known malicious GitHub commit.`));
+  }
+
+  for (const dependency of indicators.maliciousOptionalDependencies || []) {
+    if (dependency?.spec && spec.includes(dependency.spec)) {
+      findings.push(finding("critical", "malicious-dependency-spec", filePath, `${section}.${name} points to a known malicious GitHub commit.`));
+    }
   }
 
   if (/^github:/i.test(spec) || /github\.com[:/]/i.test(spec)) {
@@ -346,6 +364,15 @@ function scanTextFile(filePath, advisory, findings) {
 
   if (text.includes(indicators.maliciousOptionalDependencySpec)) {
     findings.push(finding("critical", "malicious-dependency-spec", filePath, "Lockfile references the known malicious GitHub commit."));
+  }
+
+  for (const dependency of indicators.maliciousOptionalDependencies || []) {
+    if (dependency?.name && text.includes(dependency.name)) {
+      findings.push(finding("critical", "malicious-dependency-name", filePath, `Lockfile references ${dependency.name}.`));
+    }
+    if (dependency?.spec && text.includes(dependency.spec)) {
+      findings.push(finding("critical", "malicious-dependency-spec", filePath, "Lockfile references a known malicious GitHub commit."));
+    }
   }
 
   for (const [pkg, versions] of Object.entries(advisory.packages)) {
@@ -428,6 +455,18 @@ function scanToolConfigFile(filePath, advisory, findings) {
   scanIndicatorStrings(filePath, text, advisory, findings, "Tool config");
 }
 
+function scanJavaScriptSourceFile(filePath, advisory, findings) {
+  let text;
+  try {
+    text = fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    findings.push(finding("low", "read-error", filePath, `Could not read JavaScript source file: ${error.message}`));
+    return;
+  }
+
+  scanIndicatorStrings(filePath, text, advisory, findings, "JavaScript source file");
+}
+
 function scanIndicatorStrings(filePath, text, advisory, findings, sourceLabel) {
   const indicators = advisory.indicators || {};
   const stringGroups = [
@@ -487,6 +526,10 @@ function isToolConfigFile(filePath, base) {
   if (!TOOL_CONFIG_FILES.has(base)) return false;
   const normalized = filePath.replace(/\\/g, "/");
   return normalized.includes("/.claude/") || normalized.includes("/.vscode/");
+}
+
+function isJavaScriptSourceFile(filePath) {
+  return JAVASCRIPT_SOURCE_EXTENSIONS.has(path.extname(filePath));
 }
 
 function normalizePythonPackageName(name) {
