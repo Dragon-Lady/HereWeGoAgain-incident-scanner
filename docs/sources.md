@@ -11,6 +11,7 @@
 - Resultsense / Decrypt PyPI malware summary: https://www.resultsense.com/news/2026-05-13-mistral-ai-pypi-supply-chain-malware-shai-hulud/
 - Snyk TanStack/Mini Shai-Hulud update: https://snyk.io/jp/blog/tanstack-npm-packages-compromised/
 - Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
+- Socket @antv active publish-wave writeup: https://socket.dev/blog/antv-packages-compromised
 
 ## Out-of-Scope Related Public Intel
 

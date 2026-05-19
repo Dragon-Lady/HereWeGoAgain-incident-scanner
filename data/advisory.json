@@ -1,10 +1,10 @@
 {
   "incident": "Shai-Hulud: Here We Go Again npm/PyPI supply-chain compromise",
-  "lastUpdated": "2026-05-13",
+  "lastUpdated": "2026-05-19",
   "scope": {
     "scannerPackageSet": "JFrog Here We Go Again package/version indicators plus selected confirmed broader Mini Shai-Hulud npm, PyPI, and Composer package/version indicators",
     "officialTanStackScope": "42 packages, 84 malicious versions, published on 2026-05-11 between 19:20 and 19:26 UTC",
-    "campaignContext": "JFrog reports more than 170 npm packages and 2 PyPI packages affected as of 2026-05-12. Socket reports 416 affected package artifacts for the broader Mini Shai-Hulud campaign as of 2026-05-12, spanning npm, PyPI, and one Composer artifact. Exact scanner detections are stored in this file; namespace warnings remain lower-confidence review prompts."
+    "campaignContext": "JFrog reports more than 170 npm packages and 2 PyPI packages affected as of 2026-05-12. Socket reports 416 affected package artifacts for the broader Mini Shai-Hulud campaign as of 2026-05-12, spanning npm, PyPI, and one Composer artifact. Socket reports an active May 19 @antv npm publish wave tied to Mini Shai-Hulud and the npm maintainer account atool. Exact scanner detections are stored in this file; namespace and package-name warnings remain lower-confidence review prompts until exact malicious versions are confirmed."
   },
   "sources": [
     "https://research.jfrog.com/post/shai-hulud-here-we-go-again/",
@@ -17,6 +17,7 @@
     "https://www.ox.security/blog/shai-hulud-here-we-go-again-170-packages-hit-across-npm-pypi/",
     "https://www.resultsense.com/news/2026-05-13-mistral-ai-pypi-supply-chain-malware-shai-hulud/",
     "https://snyk.io/jp/blog/tanstack-npm-packages-compromised/",
-    "https://socket.dev/supply-chain-attacks/mini-shai-hulud"
+    "https://socket.dev/supply-chain-attacks/mini-shai-hulud",
+    "https://socket.dev/blog/antv-packages-compromised"
   ]
 }

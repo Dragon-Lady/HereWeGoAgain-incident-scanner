@@ -31,6 +31,14 @@ CAP packages, Intercom, and PyPI `lightning`. This project does not claim
 coverage for additional package artifacts unless exact package/version
 indicators have been added to the relevant file under `data/packages/`.
 
+Socket's May 19, 2026 @antv report describes an active npm publish wave tied to
+Mini Shai-Hulud and the npm maintainer account `atool`. Socket names the
+`@antv` ecosystem, `echarts-for-react`, `timeago.js`, `size-sensor`, and
+`canvas-nest.js` as packages to review while the full affected-version list is
+still developing. This scanner treats these as lower-confidence package or
+namespace review prompts until exact malicious versions are added under
+`data/packages/npm.json`.
+
 Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
 for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
 tracked here only as related public situational awareness because readers may see
@@ -67,8 +75,11 @@ The key local indicators used by this project are:
   `data/packages/npm.json`
 - known affected Squawk, SAP CAP, Intercom, and additional Socket-tracked npm
   package/version pairs from Socket's live campaign table
-- lower-severity namespace warnings for namespaces reported in the active
-  campaign when exact package/version coverage may still be incomplete
+- lower-severity namespace and package-name warnings for namespaces and packages
+  reported in the active campaign when exact package/version coverage may still
+  be incomplete
+- developing @antv / atool indicators from Socket's May 19 report: `@antv/*`,
+  `echarts-for-react`, `timeago.js`, `size-sensor`, and `canvas-nest.js`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and Composer `intercom/intercom-php`

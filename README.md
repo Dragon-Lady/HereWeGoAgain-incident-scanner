@@ -39,6 +39,10 @@ PyPI, and Composer as of May 12, 2026. This scanner includes the exact
 package/version indicators currently represented in `data/packages/`.
 Broader namespaces remain lower-severity review prompts unless an exact
 package/version indicator is present.
+Socket's May 19, 2026 @antv report describes an active npm publish wave tied to
+Mini Shai-Hulud and the npm maintainer account `atool`. This scanner warns on
+`@antv/*` packages and selected related packages by name while the exact
+affected-version list is still developing.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -77,6 +81,9 @@ developers, security teams, and CI logs.
   and selected unscoped package versions from Aikido's May 12 update
 - Known compromised SAP CAP, Intercom, and older Mini Shai-Hulud npm artifacts
   from Socket's campaign table
+- Developing @antv / atool npm publish-wave package indicators from Socket's
+  May 19 report, including `@antv/*`, `echarts-for-react`, `timeago.js`,
+  `size-sensor`, and `canvas-nest.js`
 - Known compromised PyPI `mistralai`, `guardrails-ai`, and `lightning` versions
 - Known compromised Composer `intercom/intercom-php` version
 - Lower-severity namespace warnings for namespaces reported in the active
@@ -126,6 +133,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Resultsense / Decrypt PyPI malware summary: https://www.resultsense.com/news/2026-05-13-mistral-ai-pypi-supply-chain-malware-shai-hulud/
 - Snyk TanStack/Mini Shai-Hulud update: https://snyk.io/jp/blog/tanstack-npm-packages-compromised/
 - Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
+- Socket @antv active publish-wave writeup: https://socket.dev/blog/antv-packages-compromised
 
 ## License
 

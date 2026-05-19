@@ -67,6 +67,7 @@
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [
+    "@antv/",
     "@beproduct/",
     "@cap-js/",
     "@dirigible-ai/",
@@ -83,5 +84,11 @@
     "@taskflow-corp/",
     "@tolka/",
     "@uipath/"
+  ],
+  "activePackages": [
+    "canvas-nest.js",
+    "echarts-for-react",
+    "size-sensor",
+    "timeago.js"
   ]
 }
