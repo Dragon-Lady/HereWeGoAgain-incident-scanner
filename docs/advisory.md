@@ -92,7 +92,8 @@ The key local indicators used by this project are:
   `niaga og ew ereh :duluh-iahs`, `results/results-`, and `fc2edea72`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
-- known affected PyPI `lightning` and Composer `intercom/intercom-php`
+- known affected PyPI `lightning` and `durabletask`, plus Composer
+  `intercom/intercom-php`
   package/version pairs from Socket's live campaign table
 - Claude Code `.claude/settings*.json` and VS Code `.vscode/tasks.json`
   references to known payload, network, token-description, and campaign strings

@@ -93,7 +93,8 @@ developers, security teams, and CI logs.
   `t.m-kosche.com`, reversed Shai-Hulud GitHub repository markers,
   `results/results-`, and the `fc2edea72` decoder marker
 - JavaScript source files for exact incident network and campaign strings
-- Known compromised PyPI `mistralai`, `guardrails-ai`, and `lightning` versions
+- Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
+  `durabletask` versions
 - Known compromised Composer `intercom/intercom-php` version
 - Lower-severity namespace warnings for namespaces reported in the active
   campaign when exact package/version coverage may still be incomplete
@@ -143,6 +144,9 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Snyk TanStack/Mini Shai-Hulud update: https://snyk.io/jp/blog/tanstack-npm-packages-compromised/
 - Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
 - Socket @antv active publish-wave writeup: https://socket.dev/blog/antv-packages-compromised
+- Endor Labs durabletask PyPI compromise writeup: https://www.endorlabs.com/learn/trojanized-microsoft-sdk-durabletask-1-4-1-through-1-4-3-deliver-credential-stealing-malware
+- Wiz durabletask / TeamPCP writeup: https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
+- StepSecurity durabletask supply-chain writeup: https://www.stepsecurity.io/blog/microsofts-durabletask-pypi-package-compromised-in-supply-chain-attack
 
 ## License
 
