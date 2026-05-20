@@ -204,7 +204,7 @@ function scanPackageJson(filePath, advisory, findings) {
 
   scanManifestText(filePath, rawText, advisory, findings);
 
-  if (manifest.name && manifest.version && advisory.packages[manifest.name]?.includes(manifest.version)) {
+  if (manifest.name && manifest.version && versionIsListed(advisory.packages[manifest.name], manifest.version)) {
     findings.push(finding("critical", "known-bad-version", filePath, `${manifest.name}@${manifest.version} is listed as compromised.`));
   }
 
@@ -221,8 +221,9 @@ function scanPackageJson(filePath, advisory, findings) {
   const scripts = manifest.scripts || {};
   for (const scriptName of LIFECYCLE_SCRIPTS) {
     if (typeof scripts[scriptName] === "string") {
-      const severity = scriptName === "prepare" && /bun\s+run|router_|tanstack_/i.test(scripts[scriptName]) ? "high" : "medium";
-      findings.push(finding(severity, "lifecycle-script", filePath, `Lifecycle script "${scriptName}" is present: ${scripts[scriptName]}`));
+      const scriptBody = scripts[scriptName];
+      const severity = scriptName === "prepare" && /bun\s+run|router_|tanstack_/i.test(scriptBody) ? "high" : "medium";
+      findings.push(finding(severity, "lifecycle-script", filePath, `Lifecycle script "${scriptName}" is present: ${scriptBody}`));
     }
   }
 }
@@ -324,7 +325,7 @@ function inspectDependencySpec(filePath, section, name, spec, advisory, findings
     findings.push(finding("medium", "active-campaign-package", filePath, `${section}.${name} is a package reported in the active campaign; verify the exact version.`));
   }
 
-  if (advisory.packages[name]?.includes(spec)) {
+  if (versionIsListed(advisory.packages[name], spec)) {
     findings.push(finding("critical", "known-bad-requested-version", filePath, `${section}.${name} requests compromised version ${spec}.`));
   }
 }
@@ -376,7 +377,12 @@ function scanTextFile(filePath, advisory, findings) {
   }
 
   for (const [pkg, versions] of Object.entries(advisory.packages)) {
+    if (packageIsListedAllVersions(versions) && text.includes(pkg)) {
+      findings.push(finding("critical", "known-bad-lockfile-package", filePath, `Lockfile references ${pkg}, which is listed as compromised for all observed versions.`));
+      continue;
+    }
     for (const version of versions) {
+      if (version === "*") continue;
       if (lockfileMentionsPackageVersion(text, pkg, version)) {
         findings.push(finding("critical", "known-bad-lockfile-version", filePath, `Lockfile references ${pkg}@${version}.`));
       }
@@ -546,6 +552,15 @@ function matchesActivePackage(packageName, advisory) {
   const packages = advisory.indicators?.activePackages;
   if (!Array.isArray(packages)) return false;
   return packages.some((name) => name === packageName);
+}
+
+function versionIsListed(versions, version) {
+  if (!Array.isArray(versions)) return false;
+  return versions.includes("*") || versions.includes(version);
+}
+
+function packageIsListedAllVersions(versions) {
+  return Array.isArray(versions) && versions.includes("*");
 }
 
 function finding(severity, type, filePath, message) {
