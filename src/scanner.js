@@ -115,6 +115,11 @@ function scanTarget(targetPath, options = {}) {
       return;
     }
 
+    if (isWorkflowFile(filePath, base)) {
+      scanWorkflowFile(filePath, advisory, findings);
+      return;
+    }
+
     if (isJavaScriptSourceFile(filePath)) {
       scanJavaScriptSourceFile(filePath, advisory, findings);
     }
@@ -472,6 +477,26 @@ function scanToolConfigFile(filePath, advisory, findings) {
   scanIndicatorStrings(filePath, text, advisory, findings, "Tool config");
 }
 
+function scanWorkflowFile(filePath, advisory, findings) {
+  let text;
+  try {
+    text = fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    findings.push(finding("low", "read-error", filePath, `Could not read workflow file: ${error.message}`));
+    return;
+  }
+
+  scanIndicatorStrings(filePath, text, advisory, findings, "GitHub Actions workflow");
+
+  if (/\bbase64\b/i.test(text) && /\b(curl|wget|bash|sh|python|node)\b/i.test(text)) {
+    findings.push(finding("high", "workflow-encoded-exec", filePath, "GitHub Actions workflow combines base64 with shell/network execution; review for CI secret exfiltration."));
+  }
+
+  if (/\b(ACTIONS_ID_TOKEN_REQUEST_TOKEN|ACTIONS_ID_TOKEN_REQUEST_URL|GITHUB_TOKEN)\b/.test(text)) {
+    findings.push(finding("medium", "workflow-token-surface", filePath, "GitHub Actions workflow references CI token/OIDC variables; verify it is expected and not exfiltrated."));
+  }
+}
+
 function scanJavaScriptSourceFile(filePath, advisory, findings) {
   let text;
   try {
@@ -543,6 +568,11 @@ function isToolConfigFile(filePath, base) {
   if (!TOOL_CONFIG_FILES.has(base)) return false;
   const normalized = filePath.replace(/\\/g, "/");
   return normalized.includes("/.claude/") || normalized.includes("/.vscode/");
+}
+
+function isWorkflowFile(filePath, base) {
+  if (!/\.ya?ml$/i.test(base)) return false;
+  return filePath.replace(/\\/g, "/").includes("/.github/workflows/");
 }
 
 function isJavaScriptSourceFile(filePath) {

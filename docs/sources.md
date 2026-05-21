@@ -14,6 +14,8 @@
 - Socket @antv active publish-wave writeup: https://socket.dev/blog/antv-packages-compromised
 - Fuma Nama May 21, 2026 update on `fuma-content` repository impact and pnpm v9/v11 postinstall context: https://x.com/fuma_nama
 - SafeDep `art-template` / Coruna npm supply-chain compromise report: https://safedep.io/art-template-npm-supply-chain-compromise/
+- OX Security Megalodon CI/CD malware report: https://www.ox.security/blog/megalodon-cicd-malware-github/
+- SafeDep Megalodon CI workflow backdooring report: https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows/
 - Endor Labs durabletask PyPI compromise writeup: https://www.endorlabs.com/learn/trojanized-microsoft-sdk-durabletask-1-4-1-through-1-4-3-deliver-credential-stealing-malware
 - Wiz durabletask / TeamPCP writeup: https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
 - StepSecurity durabletask supply-chain writeup: https://www.stepsecurity.io/blog/microsofts-durabletask-pypi-package-compromised-in-supply-chain-attack

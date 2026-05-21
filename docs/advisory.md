@@ -64,6 +64,15 @@ Operators should verify installed versions, install/update timing, and any
 lifecycle-script execution against SafeDep's latest advisory before running
 builds.
 
+On May 21, 2026, OX/SafeDep-linked reporting described Megalodon, a mass GitHub
+CI/CD workflow backdooring campaign using throwaway accounts, fake CI bot
+identities, optimization-themed commit messages, base64/shell workflow payloads,
+and CI secret exfiltration. Public summaries report the C2 indicator
+`216.126.225.129:8443`. Operator-provided screenshots of a port 8080 listener
+showed an ingest service with `/root/cicd/loot`, `POST /any ?h=&l=&id=&t=`,
+`GET /health`, and `LISTENER_LOG=1` markers. This scanner treats those as
+GitHub Actions workflow and network indicators.
+
 Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
 for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
 tracked here only as related public situational awareness because readers may see
@@ -112,6 +121,12 @@ The key local indicators used by this project are:
 - Fuma repository-context review prompts: `fuma-content`, `fumadb`,
   `fumadocs`, `fumadocs-core`, `fumadocs-mdx`, and `fumadocs-ui`
 - SafeDep `art-template` / Coruna repository-context review prompt
+- Megalodon CI/CD workflow indicators: `216.126.225.129`,
+  `216.126.225.129:8443`, `/root/cicd/loot`, `ingest listener OK`,
+  `POST /any ?h=&l=&id=&t=`, `GET /health`, `LISTENER_LOG=1`, fake CI bot
+  strings such as `build-bot`, `auto-ci`, `ci-bot`, and `pipeline-bot`, and
+  optimization-themed commit messages such as `ci: add build optimization step`
+  and `chore: optimize pipeline runtime`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer

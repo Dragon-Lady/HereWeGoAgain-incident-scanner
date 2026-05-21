@@ -57,6 +57,13 @@ SafeDep's May 21 report on the legitimate `art-template` package describes a
 separate npm supply-chain compromise tied to Coruna / iOS browser exploit-kit
 activity. The scanner warns on `art-template` as a review prompt until exact
 affected versions are encoded.
+SafeDep/OX-linked May 21 reporting on Megalodon describes mass GitHub CI/CD
+workflow backdooring with fake CI bot identities, boring optimization-themed
+commit messages, base64/shell payloads, and secret exfiltration to attacker
+infrastructure. Operator-provided screenshots of a port 8080 listener showed an
+ingest endpoint storing raw POST bodies under `/root/cicd/loot`. The scanner now
+checks GitHub Actions workflows for those workflow/C2 markers and generic
+base64-plus-shell/network execution patterns.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -105,6 +112,10 @@ developers, security teams, and CI logs.
 - Fuma repository-context package review prompts: `fuma-content`, `fumadb`,
   `fumadocs`, `fumadocs-core`, `fumadocs-mdx`, and `fumadocs-ui`
 - SafeDep `art-template` / Coruna package review prompt
+- Megalodon CI/CD workflow indicators, including `216.126.225.129:8443`,
+  `/root/cicd/loot`, `ingest listener OK`, `POST /any ?h=&l=&id=&t=`,
+  `GET /health`, fake CI bot author/message strings, and suspicious
+  base64-plus-shell/network execution in `.github/workflows/*.yml`
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions
@@ -160,6 +171,8 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Endor Labs durabletask PyPI compromise writeup: https://www.endorlabs.com/learn/trojanized-microsoft-sdk-durabletask-1-4-1-through-1-4-3-deliver-credential-stealing-malware
 - Wiz durabletask / TeamPCP writeup: https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
 - StepSecurity durabletask supply-chain writeup: https://www.stepsecurity.io/blog/microsofts-durabletask-pypi-package-compromised-in-supply-chain-attack
+- OX Security Megalodon CI/CD malware report: https://www.ox.security/blog/megalodon-cicd-malware-github/
+- SafeDep Megalodon CI workflow backdooring report: https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows/
 
 ## License
 

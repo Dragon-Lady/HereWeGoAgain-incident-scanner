@@ -53,7 +53,9 @@
     "check.git-service.com/rope.pyz",
     "api.github.com/search/commits?q=FIRESCALE",
     "litter.catbox.moe/h8nc9u.js",
-    "litter.catbox.moe/7rrc6l.mjs"
+    "litter.catbox.moe/7rrc6l.mjs",
+    "216.126.225.129",
+    "216.126.225.129:8443"
   ],
   "workflowIndicators": [
     "Linux-pnpm-store-6f9233a50def742c09fde54f56553d6b449a535adf87d4083690539f49ae4da11",
@@ -68,7 +70,18 @@
     ".cache/.sys-update-check",
     "AWS-RunShellScript",
     "zblgg",
-    "voicproducoes"
+    "voicproducoes",
+    "ingest listener OK",
+    "/root/cicd/loot",
+    "POST /any ?h=&l=&id=&t=",
+    "GET /health",
+    "LISTENER_LOG=1",
+    "build-bot",
+    "auto-ci",
+    "ci-bot",
+    "pipeline-bot",
+    "ci: add build optimization step",
+    "chore: optimize pipeline runtime"
   ],
   "campaignIndicators": [
     "A Mini Shai-Hulud has Appeared",
@@ -81,7 +94,8 @@
     "rope.pyz",
     "FIRESCALE",
     "FIRESCALE\\s+([A-Za-z0-9+/=]+)\\.([A-Za-z0-9+/=]+)",
-    "Coruna"
+    "Coruna",
+    "Megalodon"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [

