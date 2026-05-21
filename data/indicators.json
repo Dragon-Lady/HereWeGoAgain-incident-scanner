@@ -80,7 +80,8 @@
     "PUSH UR T3MPRR",
     "rope.pyz",
     "FIRESCALE",
-    "FIRESCALE\\s+([A-Za-z0-9+/=]+)\\.([A-Za-z0-9+/=]+)"
+    "FIRESCALE\\s+([A-Za-z0-9+/=]+)\\.([A-Za-z0-9+/=]+)",
+    "Coruna"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [
@@ -108,8 +109,24 @@
     "byte-parser",
     "canvas-nest.js",
     "echarts-for-react",
+    "art-template",
+    "fuma-content",
+    "fumadb",
+    "fumadocs",
+    "fumadocs-core",
+    "fumadocs-mdx",
+    "fumadocs-ui",
     "openclaw-cn",
     "size-sensor",
     "timeago.js"
-  ]
+  ],
+  "packageReviewPrompts": {
+    "art-template": "SafeDep repository-context review: SafeDep reported a compromise of the legitimate art-template npm package tied to Coruna/iOS browser exploit-kit activity. Exact affected versions are not encoded here yet; review installed version, install/update timing, lifecycle script execution, and SafeDep's latest advisory before running builds.",
+    "fuma-content": "Fuma repository-context review: maintainer reported the fuma-content repository was affected during the Shai-Hulud/TanStack wave; no affected published Fuma package versions were verified as of the public update. Review install timing, lockfile state, pnpm version, and whether dependency lifecycle scripts/postinstall could have run.",
+    "fumadb": "Fuma repository-context review: maintainer reported the fuma-content repository was affected during the Shai-Hulud/TanStack wave; no affected published fumadb versions were verified as of the public update. Review install timing, lockfile state, pnpm version, and whether dependency lifecycle scripts/postinstall could have run.",
+    "fumadocs": "Fuma repository-context review: maintainer reported the fuma-content repository was affected during the Shai-Hulud/TanStack wave; no affected published fumadocs versions were verified as of the public update. Review install timing, lockfile state, pnpm version, and whether dependency lifecycle scripts/postinstall could have run.",
+    "fumadocs-core": "Fuma repository-context review: maintainer reported the fuma-content repository was affected during the Shai-Hulud/TanStack wave; no affected published fumadocs versions were verified as of the public update. Review install timing, lockfile state, pnpm version, and whether dependency lifecycle scripts/postinstall could have run.",
+    "fumadocs-mdx": "Fuma repository-context review: maintainer reported the fuma-content repository was affected during the Shai-Hulud/TanStack wave; no affected published fumadocs versions were verified as of the public update. Review install timing, lockfile state, pnpm version, and whether dependency lifecycle scripts/postinstall could have run.",
+    "fumadocs-ui": "Fuma repository-context review: maintainer reported the fuma-content repository was affected during the Shai-Hulud/TanStack wave; no affected published fumadocs versions were verified as of the public update. Review install timing, lockfile state, pnpm version, and whether dependency lifecycle scripts/postinstall could have run."
+  }
 }

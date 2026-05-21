@@ -45,6 +45,25 @@ paths and reversed Shai-Hulud repository markers, and npm propagation logic that
 validates stolen npm tokens, enumerates maintainable packages, injects payloads,
 bumps versions, and republishes under the compromised maintainer identity.
 
+On May 21, 2026, Fuma Nama reported that the `fuma-content` repository was
+affected by Shai-Hulud during or around a transition to pnpm v11. The reported
+working theory is that affected TanStack Start package `postinstall` scripts ran
+while the environment was still on pnpm v9; pnpm v11 should disable dependency
+lifecycle scripts unless explicitly allowed. Fuma reported manually verifying no
+affected published versions of `fuma-content`, `fumadb`, or `fumadocs` as of
+that update, with the repository history retained for cause analysis, the
+machine factory reset, and secrets revoked. This scanner therefore treats Fuma
+package names as review prompts only, not as known compromised versions, unless
+exact malicious package/version indicators are later published.
+
+On May 21, 2026, SafeDep reported a compromise of the legitimate `art-template`
+npm package tied to Coruna / iOS browser exploit-kit activity. Until exact
+affected versions are added to `data/packages/npm.json`, this scanner treats
+`art-template` as a review prompt rather than a known-bad version finding.
+Operators should verify installed versions, install/update timing, and any
+lifecycle-script execution against SafeDep's latest advisory before running
+builds.
+
 Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
 for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
 tracked here only as related public situational awareness because readers may see
@@ -90,6 +109,9 @@ The key local indicators used by this project are:
   `github:antvis/G2#1916faa365f2788b6e193514872d51a242876569`,
   `t.m-kosche.com`, `niagA oG eW ereH :duluH-iahS`,
   `niaga og ew ereh :duluh-iahs`, `results/results-`, and `fc2edea72`
+- Fuma repository-context review prompts: `fuma-content`, `fumadb`,
+  `fumadocs`, `fumadocs-core`, `fumadocs-mdx`, and `fumadocs-ui`
+- SafeDep `art-template` / Coruna repository-context review prompt
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer

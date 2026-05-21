@@ -325,6 +325,11 @@ function inspectDependencySpec(filePath, section, name, spec, advisory, findings
     findings.push(finding("medium", "active-campaign-package", filePath, `${section}.${name} is a package reported in the active campaign; verify the exact version.`));
   }
 
+  const reviewPrompt = packageReviewPrompt(name, advisory);
+  if (reviewPrompt) {
+    findings.push(finding("medium", "package-review-prompt", filePath, `${section}.${name}: ${reviewPrompt}`));
+  }
+
   if (versionIsListed(advisory.packages[name], spec)) {
     findings.push(finding("critical", "known-bad-requested-version", filePath, `${section}.${name} requests compromised version ${spec}.`));
   }
@@ -398,6 +403,12 @@ function scanTextFile(filePath, advisory, findings) {
   for (const pkg of advisory.indicators.activePackages || []) {
     if (typeof pkg === "string" && pkg.length > 0 && text.includes(pkg)) {
       findings.push(finding("medium", "active-campaign-package", filePath, `Lockfile references package reported in the active campaign: ${pkg}`));
+    }
+  }
+
+  for (const [pkg, message] of Object.entries(advisory.indicators.packageReviewPrompts || {})) {
+    if (typeof pkg === "string" && pkg.length > 0 && text.includes(pkg)) {
+      findings.push(finding("medium", "package-review-prompt", filePath, `Lockfile references ${pkg}: ${message}`));
     }
   }
 }
@@ -552,6 +563,12 @@ function matchesActivePackage(packageName, advisory) {
   const packages = advisory.indicators?.activePackages;
   if (!Array.isArray(packages)) return false;
   return packages.some((name) => name === packageName);
+}
+
+function packageReviewPrompt(packageName, advisory) {
+  const prompts = advisory.indicators?.packageReviewPrompts;
+  if (!prompts || typeof prompts !== "object" || Array.isArray(prompts)) return "";
+  return typeof prompts[packageName] === "string" ? prompts[packageName] : "";
 }
 
 function versionIsListed(versions, version) {

@@ -130,6 +130,35 @@ try {
   fs.rmSync(tmpAntvRoot, { recursive: true, force: true });
 }
 
+const tmpFumaRoot = fs.mkdtempSync(path.join(__dirname, "tmp-fuma-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpFumaRoot, "package.json"),
+    JSON.stringify({ dependencies: { "fumadocs-core": "^15.0.0", "fumadocs-ui": "^15.0.0" } }, null, 2)
+  );
+  const fumaReview = scanTarget(tmpFumaRoot);
+  assert.strictEqual(fumaReview.risk, "review-needed");
+  assert(fumaReview.findings.some((finding) => finding.type === "active-campaign-package"));
+  assert(fumaReview.findings.some((finding) => finding.type === "package-review-prompt" && finding.message.includes("pnpm version")));
+  assert(!fumaReview.findings.some((finding) => finding.type === "known-bad-requested-version"));
+} finally {
+  fs.rmSync(tmpFumaRoot, { recursive: true, force: true });
+}
+
+const tmpArtTemplateRoot = fs.mkdtempSync(path.join(__dirname, "tmp-art-template-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpArtTemplateRoot, "package.json"),
+    JSON.stringify({ dependencies: { "art-template": "^4.13.4" } }, null, 2)
+  );
+  const artTemplateReview = scanTarget(tmpArtTemplateRoot);
+  assert.strictEqual(artTemplateReview.risk, "review-needed");
+  assert(artTemplateReview.findings.some((finding) => finding.type === "package-review-prompt" && finding.message.includes("SafeDep")));
+  assert(!artTemplateReview.findings.some((finding) => finding.type === "known-bad-requested-version"));
+} finally {
+  fs.rmSync(tmpArtTemplateRoot, { recursive: true, force: true });
+}
+
 const tmpAntvPayloadRoot = fs.mkdtempSync(path.join(__dirname, "tmp-antv-payload-"));
 try {
   fs.writeFileSync(

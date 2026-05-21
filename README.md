@@ -47,6 +47,16 @@ Socket's technical update for the same wave describes an install-time
 `index.js` payload with direct C2, GitHub fallback exfiltration, and worm-like
 npm propagation using stolen npm tokens. The scanner now checks JavaScript files
 for the exact high-signal C2 and GitHub exfil markers from that analysis.
+Fuma Nama's May 21 update reported the `fuma-content` repository was affected
+while moving toward pnpm v11, likely because affected TanStack Start
+`postinstall` scripts ran while pnpm v9 was still in use. Fuma reported no
+verified affected published versions of `fuma-content`, `fumadb`, or
+`fumadocs` at that time. This scanner treats Fuma package names as
+lower-severity review prompts only.
+SafeDep's May 21 report on the legitimate `art-template` package describes a
+separate npm supply-chain compromise tied to Coruna / iOS browser exploit-kit
+activity. The scanner warns on `art-template` as a review prompt until exact
+affected versions are encoded.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -92,6 +102,9 @@ developers, security teams, and CI logs.
   `@antv/setup`, `github:antvis/G2#1916faa365f2788b6e193514872d51a242876569`,
   `t.m-kosche.com`, reversed Shai-Hulud GitHub repository markers,
   `results/results-`, and the `fc2edea72` decoder marker
+- Fuma repository-context package review prompts: `fuma-content`, `fumadb`,
+  `fumadocs`, `fumadocs-core`, `fumadocs-mdx`, and `fumadocs-ui`
+- SafeDep `art-template` / Coruna package review prompt
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions
