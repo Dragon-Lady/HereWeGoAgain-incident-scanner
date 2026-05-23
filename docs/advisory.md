@@ -73,6 +73,15 @@ showed an ingest service with `/root/cicd/loot`, `POST /any ?h=&l=&id=&t=`,
 `GET /health`, and `LISTENER_LOG=1` markers. This scanner treats those as
 GitHub Actions workflow and network indicators.
 
+On May 22, 2026, Aikido reported an ongoing Composer/Packagist supply-chain
+attack affecting multiple `laravel-lang/*` packages, with payload execution at
+autoload time. The public operator guidance was to pause updates, pin to a
+clean commit rather than trusting package versions alone, and rotate secrets if
+a compromised version may have executed. This scanner therefore treats
+`laravel-lang/lang`, `laravel-lang/http-statuses`, and
+`laravel-lang/attributes` as Composer review prompts until exact affected
+versions or clean commit boundaries are encoded.
+
 Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
 for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
 tracked here only as related public situational awareness because readers may see
@@ -127,6 +136,9 @@ The key local indicators used by this project are:
   strings such as `build-bot`, `auto-ci`, `ci-bot`, and `pipeline-bot`, and
   optimization-themed commit messages such as `ci: add build optimization step`
   and `chore: optimize pipeline runtime`
+- Composer review prompts for the active Aikido/Packagist `laravel-lang/*`
+  report: `laravel-lang/lang`, `laravel-lang/http-statuses`, and
+  `laravel-lang/attributes`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer

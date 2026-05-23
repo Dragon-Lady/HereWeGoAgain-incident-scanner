@@ -64,6 +64,12 @@ infrastructure. Operator-provided screenshots of a port 8080 listener showed an
 ingest endpoint storing raw POST bodies under `/root/cicd/loot`. The scanner now
 checks GitHub Actions workflows for those workflow/C2 markers and generic
 base64-plus-shell/network execution patterns.
+Aikido's May 22 reporting described an active Composer/Packagist compromise
+affecting `laravel-lang/*` package versions, including autoload-time payload
+execution. Because exact affected versions are not encoded here yet, this
+scanner treats `laravel-lang/lang`, `laravel-lang/http-statuses`, and
+`laravel-lang/attributes` as Composer review prompts, not known-bad version
+findings.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -116,6 +122,9 @@ developers, security teams, and CI logs.
   `/root/cicd/loot`, `ingest listener OK`, `POST /any ?h=&l=&id=&t=`,
   `GET /health`, fake CI bot author/message strings, and suspicious
   base64-plus-shell/network execution in `.github/workflows/*.yml`
+- Composer review prompts for the active Aikido/Packagist `laravel-lang/*`
+  report: `laravel-lang/lang`, `laravel-lang/http-statuses`, and
+  `laravel-lang/attributes`
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions
@@ -168,6 +177,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Snyk TanStack/Mini Shai-Hulud update: https://snyk.io/jp/blog/tanstack-npm-packages-compromised/
 - Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
 - Socket @antv active publish-wave writeup: https://socket.dev/blog/antv-packages-compromised
+- Aikido Security May 22, 2026 `laravel-lang/*` Composer/Packagist compromise report: https://x.com/AikidoSecurity
 - Endor Labs durabletask PyPI compromise writeup: https://www.endorlabs.com/learn/trojanized-microsoft-sdk-durabletask-1-4-1-through-1-4-3-deliver-credential-stealing-malware
 - Wiz durabletask / TeamPCP writeup: https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
 - StepSecurity durabletask supply-chain writeup: https://www.stepsecurity.io/blog/microsofts-durabletask-pypi-package-compromised-in-supply-chain-attack

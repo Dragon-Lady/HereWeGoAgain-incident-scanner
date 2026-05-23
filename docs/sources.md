@@ -16,6 +16,10 @@
 - SafeDep `art-template` / Coruna npm supply-chain compromise report: https://safedep.io/art-template-npm-supply-chain-compromise/
 - OX Security Megalodon CI/CD malware report: https://www.ox.security/blog/megalodon-cicd-malware-github/
 - SafeDep Megalodon CI workflow backdooring report: https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows/
+- Aikido Security May 22, 2026 `laravel-lang/*` Composer/Packagist compromise report: https://x.com/AikidoSecurity
+- Packagist `laravel-lang/lang`: https://packagist.org/packages/laravel-lang/lang
+- Packagist `laravel-lang/http-statuses`: https://packagist.org/packages/laravel-lang/http-statuses
+- Packagist `laravel-lang/attributes`: https://packagist.org/packages/laravel-lang/attributes
 - Endor Labs durabletask PyPI compromise writeup: https://www.endorlabs.com/learn/trojanized-microsoft-sdk-durabletask-1-4-1-through-1-4-3-deliver-credential-stealing-malware
 - Wiz durabletask / TeamPCP writeup: https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
 - StepSecurity durabletask supply-chain writeup: https://www.stepsecurity.io/blog/microsofts-durabletask-pypi-package-compromised-in-supply-chain-attack

@@ -456,6 +456,12 @@ function scanComposerDependencyFile(filePath, advisory, findings) {
       }
     }
   }
+
+  for (const [pkg, message] of Object.entries(advisory.indicators.composerReviewPrompts || {})) {
+    if (typeof pkg === "string" && pkg.length > 0 && text.toLowerCase().includes(pkg.toLowerCase())) {
+      findings.push(finding("medium", "composer-package-review-prompt", filePath, `Composer dependency file references ${pkg}: ${message}`));
+    }
+  }
 }
 
 function scanToolConfigFile(filePath, advisory, findings) {

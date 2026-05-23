@@ -89,6 +89,26 @@ try {
   fs.rmSync(tmpComposerRoot, { recursive: true, force: true });
 }
 
+const tmpLaravelLangRoot = fs.mkdtempSync(path.join(__dirname, "tmp-laravel-lang-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpLaravelLangRoot, "composer.lock"),
+    JSON.stringify({
+      packages: [
+        { name: "laravel-lang/lang", version: "15.12.0" },
+        { name: "laravel-lang/http-statuses", version: "3.5.2" },
+        { name: "laravel-lang/attributes", version: "2.15.6" }
+      ]
+    }, null, 2)
+  );
+  const laravelLangReview = scanTarget(tmpLaravelLangRoot);
+  assert.strictEqual(laravelLangReview.risk, "review-needed");
+  assert(laravelLangReview.findings.some((finding) => finding.type === "composer-package-review-prompt" && finding.message.includes("autoload-time")));
+  assert(!laravelLangReview.findings.some((finding) => finding.type === "known-bad-composer-version"));
+} finally {
+  fs.rmSync(tmpLaravelLangRoot, { recursive: true, force: true });
+}
+
 const tmpSquawkRoot = fs.mkdtempSync(path.join(__dirname, "tmp-squawk-"));
 try {
   fs.writeFileSync(
