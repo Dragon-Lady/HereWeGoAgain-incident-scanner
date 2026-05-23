@@ -104,6 +104,16 @@ PATH/tool-shadowing tradecraft and flags executable-like local files named after
 trusted tools when paired with shell shebangs, along with the specific fake
 banner and PATH-prepend strings.
 
+On May 22-23, 2026, public reporting and operator-provided VirusTotal context
+described a ClickFix social-engineering campaign using compromised legitimate
+websites as lure pages. The reported malicious page source loaded a remote
+script from `staticcloudflare[.]pro` and contained the reversed loader string
+`sj.ssc/ipa/orp.eralfduolccitats`. This scanner treats the domain, reported
+`/api/css.js` loader URL, reversed string, and `ClickFix` text as source and
+incident-note indicators. These strings identify copied page source or local
+notes about the campaign; they do not prove compromise of a host by themselves
+without execution or exposure context.
+
 Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
 for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
 tracked here only as related public situational awareness because readers may see
@@ -169,6 +179,9 @@ The key local indicators used by this project are:
   `GitHub does provide shell access`, `export PATH=$(realpath`,
   `git@github.com ~`, and repo-local executable-like files named after trusted
   tools such as `ssh`, `git`, `npm`, `node`, `gh`, `claude`, or `codex`
+- ClickFix/staticcloudflare indicators: `staticcloudflare.pro`,
+  `staticcloudflare[.]pro`, `https://staticcloudflare.pro/api/css.js`,
+  `sj.ssc/ipa/orp.eralfduolccitats`, and `ClickFix`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer

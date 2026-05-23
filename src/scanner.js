@@ -14,6 +14,7 @@ const COMPOSER_DEPENDENCY_FILES = new Set(["composer.json", "composer.lock"]);
 const PACKAGE_MANIFEST = "package.json";
 const TOOL_CONFIG_FILES = new Set(["settings.json", "settings.local.json", "tasks.json"]);
 const JAVASCRIPT_SOURCE_EXTENSIONS = new Set([".js", ".cjs", ".mjs"]);
+const WEB_SOURCE_EXTENSIONS = new Set([".html", ".htm"]);
 const PHP_SOURCE_EXTENSIONS = new Set([".php"]);
 const SHELL_SOURCE_EXTENSIONS = new Set([".sh", ".bash", ".zsh"]);
 const SHADOWABLE_TOOL_NAMES = new Set(["ssh", "git", "npm", "node", "python", "powershell", "gh", "claude", "codex", "composer", "pnpm", "yarn"]);
@@ -130,6 +131,11 @@ function scanTarget(targetPath, options = {}) {
 
     if (isJavaScriptSourceFile(filePath)) {
       scanJavaScriptSourceFile(filePath, advisory, findings);
+      return;
+    }
+
+    if (isWebSourceFile(filePath)) {
+      scanWebSourceFile(filePath, advisory, findings);
       return;
     }
 
@@ -554,6 +560,18 @@ function scanJavaScriptSourceFile(filePath, advisory, findings) {
   scanIndicatorStrings(filePath, text, advisory, findings, "JavaScript source file");
 }
 
+function scanWebSourceFile(filePath, advisory, findings) {
+  let text;
+  try {
+    text = fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    findings.push(finding("low", "read-error", filePath, `Could not read web source file: ${error.message}`));
+    return;
+  }
+
+  scanIndicatorStrings(filePath, text, advisory, findings, "Web source file");
+}
+
 function scanPhpSourceFile(filePath, advisory, findings) {
   let text;
   try {
@@ -650,6 +668,10 @@ function isWorkflowFile(filePath, base) {
 
 function isJavaScriptSourceFile(filePath) {
   return JAVASCRIPT_SOURCE_EXTENSIONS.has(path.extname(filePath));
+}
+
+function isWebSourceFile(filePath) {
+  return WEB_SOURCE_EXTENSIONS.has(path.extname(filePath));
 }
 
 function isPhpSourceFile(filePath) {

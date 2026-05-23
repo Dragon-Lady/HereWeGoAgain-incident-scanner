@@ -88,6 +88,12 @@ a repo-local fake `ssh` script was placed ahead of the real SSH client in
 with a spoofed prompt. This scanner now flags repo-local executable-like files
 named after trusted tools, plus the specific fake GitHub banner and PATH-prepend
 strings from that demonstration.
+May 22-23 reporting and operator-provided VirusTotal context described a
+ClickFix campaign where compromised legitimate websites loaded a remote script
+from `staticcloudflare[.]pro`, including an obfuscated reversed loader string
+`sj.ssc/ipa/orp.eralfduolccitats`. This scanner flags the domain, reported
+`/api/css.js` loader URL, the reversed string, and `ClickFix` marker text when
+they appear in local source, copied pages, or incident notes.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -155,6 +161,9 @@ developers, security teams, and CI logs.
   named `ssh`, `git`, `npm`, `node`, `python`, `powershell`, `gh`, `claude`,
   `codex`, `composer`, `pnpm`, or `yarn`, plus fake GitHub shell-access banner
   strings and `export PATH=$(realpath ...):$PATH` style prepends
+- ClickFix/staticcloudflare indicators, including `staticcloudflare[.]pro`,
+  `https://staticcloudflare[.]pro/api/css.js`, the reversed loader string
+  `sj.ssc/ipa/orp.eralfduolccitats`, and `ClickFix`
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions
@@ -215,6 +224,8 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - StepSecurity durabletask supply-chain writeup: https://www.stepsecurity.io/blog/microsofts-durabletask-pypi-package-compromised-in-supply-chain-attack
 - OX Security Megalodon CI/CD malware report: https://www.ox.security/blog/megalodon-cicd-malware-github/
 - SafeDep Megalodon CI workflow backdooring report: https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows/
+- VirusTotal domain report for `staticcloudflare[.]pro`: https://www.virustotal.com/gui/domain/staticcloudflare.pro/detection
+- Hybrid Analysis URL submission context for `staticcloudflare[.]pro`: https://hybrid-analysis.com/submissions/sandbox/urls
 
 ## License
 

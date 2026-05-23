@@ -63,6 +63,10 @@
     "flipboxstudio[.]info",
     "https://flipboxstudio.info/payload",
     "https://flipboxstudio[.]info/payload",
+    "staticcloudflare.pro",
+    "staticcloudflare[.]pro",
+    "https://staticcloudflare.pro/",
+    "https://staticcloudflare.pro/api/css.js",
     "169.254.169.254"
   ],
   "workflowIndicators": [
@@ -117,7 +121,9 @@
     ".laravel_locale",
     "DebugChromium.exe",
     "/var/run/secrets/",
-    "/proc/[pid]/environ"
+    "/proc/[pid]/environ",
+    "sj.ssc/ipa/orp.eralfduolccitats",
+    "ClickFix"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [

