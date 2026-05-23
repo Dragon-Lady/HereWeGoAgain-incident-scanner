@@ -97,16 +97,62 @@ try {
       packages: [
         { name: "laravel-lang/lang", version: "15.12.0" },
         { name: "laravel-lang/http-statuses", version: "3.5.2" },
-        { name: "laravel-lang/attributes", version: "2.15.6" }
+        { name: "laravel-lang/attributes", version: "2.15.6" },
+        { name: "laravel-lang/actions", version: "1.5.0" }
       ]
     }, null, 2)
   );
   const laravelLangReview = scanTarget(tmpLaravelLangRoot);
   assert.strictEqual(laravelLangReview.risk, "review-needed");
-  assert(laravelLangReview.findings.some((finding) => finding.type === "composer-package-review-prompt" && finding.message.includes("autoload-time")));
+  assert(laravelLangReview.findings.some((finding) => finding.type === "composer-package-review-prompt" && finding.message.includes("RCE backdoor")));
   assert(!laravelLangReview.findings.some((finding) => finding.type === "known-bad-composer-version"));
 } finally {
   fs.rmSync(tmpLaravelLangRoot, { recursive: true, force: true });
+}
+
+const tmpLaravelLangBackdoorRoot = fs.mkdtempSync(path.join(__dirname, "tmp-laravel-lang-backdoor-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpLaravelLangBackdoorRoot, "composer.lock"),
+    JSON.stringify({
+      packages: [
+        {
+          name: "laravel-lang/lang",
+          version: "14.3.7",
+          autoload: { files: ["src/helpers.php"] }
+        }
+      ]
+    }, null, 2)
+  );
+  const laravelLangBackdoor = scanTarget(tmpLaravelLangBackdoorRoot);
+  assert.strictEqual(laravelLangBackdoor.risk, "likely-exposed");
+  assert(laravelLangBackdoor.findings.some((finding) => finding.type === "laravel-lang-autoload-backdoor"));
+} finally {
+  fs.rmSync(tmpLaravelLangBackdoorRoot, { recursive: true, force: true });
+}
+
+const tmpLaravelLangPayloadRoot = fs.mkdtempSync(path.join(__dirname, "tmp-laravel-lang-payload-"));
+try {
+  fs.mkdirSync(path.join(tmpLaravelLangPayloadRoot, "src"));
+  fs.writeFileSync(
+    path.join(tmpLaravelLangPayloadRoot, "src", "helpers.php"),
+    [
+      "<?php",
+      "$url = 'https://flipboxstudio.info/payload';",
+      "$dir = sys_get_temp_dir() . '/.laravel_locale/';",
+      "$metadata = '169.254.169.254';",
+      "$windows = 'DebugChromium.exe';",
+      "$secrets = '/var/run/secrets/ /proc/[pid]/environ';"
+    ].join("\n")
+  );
+  const laravelLangPayload = scanTarget(tmpLaravelLangPayloadRoot);
+  assert.strictEqual(laravelLangPayload.risk, "possible-exposure");
+  assert(laravelLangPayload.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("flipboxstudio.info")));
+  assert(laravelLangPayload.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("169.254.169.254")));
+  assert(laravelLangPayload.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes(".laravel_locale")));
+  assert(laravelLangPayload.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("DebugChromium.exe")));
+} finally {
+  fs.rmSync(tmpLaravelLangPayloadRoot, { recursive: true, force: true });
 }
 
 const tmpDevdojoComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-composer-"));

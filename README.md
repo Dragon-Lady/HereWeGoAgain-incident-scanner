@@ -64,12 +64,16 @@ infrastructure. Operator-provided screenshots of a port 8080 listener showed an
 ingest endpoint storing raw POST bodies under `/root/cicd/loot`. The scanner now
 checks GitHub Actions workflows for those workflow/C2 markers and generic
 base64-plus-shell/network execution patterns.
-Aikido's May 22 reporting described an active Composer/Packagist compromise
-affecting `laravel-lang/*` package versions, including autoload-time payload
-execution. Because exact affected versions are not encoded here yet, this
-scanner treats `laravel-lang/lang`, `laravel-lang/http-statuses`, and
-`laravel-lang/attributes` as Composer review prompts, not known-bad version
-findings.
+Aikido's May 22 reporting and Socket's May 23 technical writeup described an
+active Composer/Packagist compromise affecting Laravel-Lang packages across
+700+ versions, including RCE backdoor behavior through Composer
+`autoload.files -> src/helpers.php`, payload retrieval from
+`flipboxstudio[.]info/payload`, cloud metadata access, and local secret
+collection. Because exact affected versions are not encoded here yet, this
+scanner treats `laravel-lang/lang`, `laravel-lang/http-statuses`,
+`laravel-lang/attributes`, and `laravel-lang/actions` as Composer review
+prompts, while flagging the reported autoload/payload shape as higher
+confidence.
 International Cyber Digest's May 22 reporting described another Packagist /
 GitHub supply-chain wave affecting PHP and Node.js projects. Reported high-signal
 indicators include the GitHub account `parikhpreyash4`, repository
@@ -136,9 +140,13 @@ developers, security teams, and CI logs.
   `/root/cicd/loot`, `ingest listener OK`, `POST /any ?h=&l=&id=&t=`,
   `GET /health`, fake CI bot author/message strings, and suspicious
   base64-plus-shell/network execution in `.github/workflows/*.yml`
-- Composer review prompts for the active Aikido/Packagist `laravel-lang/*`
-  report: `laravel-lang/lang`, `laravel-lang/http-statuses`, and
-  `laravel-lang/attributes`
+- Composer review prompts for the active Aikido/Socket `laravel-lang/*`
+  reports: `laravel-lang/lang`, `laravel-lang/http-statuses`,
+  `laravel-lang/attributes`, and `laravel-lang/actions`
+- Socket Laravel-Lang backdoor indicators, including Composer
+  `autoload.files -> src/helpers.php`, `flipboxstudio[.]info/payload`,
+  `.laravel_locale`, `169.254.169.254`, `DebugChromium.exe`,
+  `/var/run/secrets/`, and `/proc/[pid]/environ`
 - Packagist/GitHub review prompts for reported `devdojo/wave` and
   `devdojo/genesis` exposure, plus `/tmp/.sshd`, `parikhpreyash4`,
   `systemd-network-helper-aa5c751f`, `curl -skL`, `chmod +x /tmp/.sshd`, and
@@ -199,6 +207,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Snyk TanStack/Mini Shai-Hulud update: https://snyk.io/jp/blog/tanstack-npm-packages-compromised/
 - Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
 - Socket @antv active publish-wave writeup: https://socket.dev/blog/antv-packages-compromised
+- Socket Laravel-Lang compromise writeup: https://socket.dev/blog/laravel-lang-compromise
 - Aikido Security May 22, 2026 `laravel-lang/*` Composer/Packagist compromise report: https://x.com/AikidoSecurity
 - International Cyber Digest May 22, 2026 Packagist/GitHub supply-chain report: https://x.com/IntCyberDigest
 - Endor Labs durabletask PyPI compromise writeup: https://www.endorlabs.com/learn/trojanized-microsoft-sdk-durabletask-1-4-1-through-1-4-3-deliver-credential-stealing-malware

@@ -14,6 +14,7 @@ const COMPOSER_DEPENDENCY_FILES = new Set(["composer.json", "composer.lock"]);
 const PACKAGE_MANIFEST = "package.json";
 const TOOL_CONFIG_FILES = new Set(["settings.json", "settings.local.json", "tasks.json"]);
 const JAVASCRIPT_SOURCE_EXTENSIONS = new Set([".js", ".cjs", ".mjs"]);
+const PHP_SOURCE_EXTENSIONS = new Set([".php"]);
 const SHELL_SOURCE_EXTENSIONS = new Set([".sh", ".bash", ".zsh"]);
 const SHADOWABLE_TOOL_NAMES = new Set(["ssh", "git", "npm", "node", "python", "powershell", "gh", "claude", "codex", "composer", "pnpm", "yarn"]);
 const LIFECYCLE_SCRIPTS = ["preinstall", "install", "postinstall", "prepare"];
@@ -129,6 +130,11 @@ function scanTarget(targetPath, options = {}) {
 
     if (isJavaScriptSourceFile(filePath)) {
       scanJavaScriptSourceFile(filePath, advisory, findings);
+      return;
+    }
+
+    if (isPhpSourceFile(filePath)) {
+      scanPhpSourceFile(filePath, advisory, findings);
     }
   });
 
@@ -455,6 +461,7 @@ function scanComposerDependencyFile(filePath, advisory, findings) {
   }
 
   scanIndicatorStrings(filePath, text, advisory, findings, "Composer dependency file");
+  scanLaravelLangAutoloadBackdoor(filePath, text, advisory, findings);
 
   for (const [pkg, versions] of Object.entries(advisory.composerPackages || {})) {
     for (const version of versions) {
@@ -469,6 +476,28 @@ function scanComposerDependencyFile(filePath, advisory, findings) {
       findings.push(finding("medium", "composer-package-review-prompt", filePath, `Composer dependency file references ${pkg}: ${message}`));
     }
   }
+}
+
+function scanLaravelLangAutoloadBackdoor(filePath, text, advisory, findings) {
+  const prompts = Object.keys(advisory.indicators.composerReviewPrompts || {});
+  const laravelLangPackages = prompts.filter((pkg) => pkg.startsWith("laravel-lang/"));
+  if (laravelLangPackages.length === 0) return;
+
+  const lowerText = text.toLowerCase();
+  const hasLaravelLangPackage = laravelLangPackages.some((pkg) => lowerText.includes(pkg.toLowerCase()));
+  if (!hasLaravelLangPackage) return;
+
+  const hasAutoloadFiles =
+    /"autoload"\s*:/i.test(text) &&
+    /"files"\s*:\s*\[[\s\S]{0,800}"src\/helpers\.php"/i.test(text);
+  if (!hasAutoloadFiles) return;
+
+  findings.push(finding(
+    "critical",
+    "laravel-lang-autoload-backdoor",
+    filePath,
+    "Composer dependency metadata for laravel-lang includes autoload.files -> src/helpers.php, matching Socket's reported RCE backdoor shape."
+  ));
 }
 
 function scanToolConfigFile(filePath, advisory, findings) {
@@ -523,6 +552,18 @@ function scanJavaScriptSourceFile(filePath, advisory, findings) {
   }
 
   scanIndicatorStrings(filePath, text, advisory, findings, "JavaScript source file");
+}
+
+function scanPhpSourceFile(filePath, advisory, findings) {
+  let text;
+  try {
+    text = fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    findings.push(finding("low", "read-error", filePath, `Could not read PHP source file: ${error.message}`));
+    return;
+  }
+
+  scanIndicatorStrings(filePath, text, advisory, findings, "PHP source file");
 }
 
 function scanShellSourceFile(filePath, base, advisory, findings) {
@@ -609,6 +650,10 @@ function isWorkflowFile(filePath, base) {
 
 function isJavaScriptSourceFile(filePath) {
   return JAVASCRIPT_SOURCE_EXTENSIONS.has(path.extname(filePath));
+}
+
+function isPhpSourceFile(filePath) {
+  return PHP_SOURCE_EXTENSIONS.has(path.extname(filePath));
 }
 
 function isShellSourceFile(filePath, base) {

@@ -58,7 +58,12 @@
     "216.126.225.129",
     "216.126.225.129:8443",
     "github.com/parikhpreyash4/systemd-network-helper-aa5c751f",
-    "parikhpreyash4/systemd-network-helper-aa5c751f"
+    "parikhpreyash4/systemd-network-helper-aa5c751f",
+    "flipboxstudio.info",
+    "flipboxstudio[.]info",
+    "https://flipboxstudio.info/payload",
+    "https://flipboxstudio[.]info/payload",
+    "169.254.169.254"
   ],
   "workflowIndicators": [
     "Linux-pnpm-store-6f9233a50def742c09fde54f56553d6b449a535adf87d4083690539f49ae4da11",
@@ -107,7 +112,12 @@
     "/tmp/.sshd",
     "GitHub does provide shell access",
     "export PATH=$(realpath",
-    "git@github.com ~"
+    "git@github.com ~",
+    "sys_get_temp_dir()/.laravel_locale/",
+    ".laravel_locale",
+    "DebugChromium.exe",
+    "/var/run/secrets/",
+    "/proc/[pid]/environ"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [
@@ -156,9 +166,10 @@
     "fumadocs-ui": "Fuma repository-context review: maintainer reported the fuma-content repository was affected during the Shai-Hulud/TanStack wave; no affected published fumadocs versions were verified as of the public update. Review install timing, lockfile state, pnpm version, and whether dependency lifecycle scripts/postinstall could have run."
   },
   "composerReviewPrompts": {
-    "laravel-lang/lang": "Aikido/Packagist Composer review: Aikido reported an active compromise of laravel-lang/* package versions with autoload-time payload execution. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets if a compromised version may have executed.",
-    "laravel-lang/http-statuses": "Aikido/Packagist Composer review: Aikido reported an active compromise of laravel-lang/* package versions with autoload-time payload execution. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets if a compromised version may have executed.",
-    "laravel-lang/attributes": "Aikido/Packagist Composer review: Aikido reported an active compromise of laravel-lang/* package versions with autoload-time payload execution. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets if a compromised version may have executed.",
+    "laravel-lang/lang": "Socket/Aikido Composer review: Socket reported a Laravel-Lang compromise affecting 700+ versions with RCE backdoor behavior through Composer autoload.files -> src/helpers.php and payload retrieval from flipboxstudio[.]info. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, treat execution as possible compromise, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets from a clean machine.",
+    "laravel-lang/http-statuses": "Socket/Aikido Composer review: Socket reported a Laravel-Lang compromise affecting 700+ versions with RCE backdoor behavior through Composer autoload.files -> src/helpers.php and payload retrieval from flipboxstudio[.]info. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, treat execution as possible compromise, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets from a clean machine.",
+    "laravel-lang/attributes": "Socket/Aikido Composer review: Socket reported a Laravel-Lang compromise affecting 700+ versions with RCE backdoor behavior through Composer autoload.files -> src/helpers.php and payload retrieval from flipboxstudio[.]info. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, treat execution as possible compromise, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets from a clean machine.",
+    "laravel-lang/actions": "Socket/Aikido Composer review: Socket reported a Laravel-Lang compromise affecting 700+ versions with RCE backdoor behavior through Composer autoload.files -> src/helpers.php and payload retrieval from flipboxstudio[.]info. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, treat execution as possible compromise, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets from a clean machine.",
     "devdojo/wave": "International Cyber Digest / Packagist review: reporting described infected PHP packages where the malicious installer was hidden in package.json rather than composer.json, with risk to devdojo/wave. Exact affected versions are not encoded here yet; review package.json, GitHub Actions, install timing, dev-main/dev-master/3.x-dev references, and rotate secrets if the /tmp/.sshd payload may have executed.",
     "devdojo/genesis": "International Cyber Digest / Packagist review: reporting described infected PHP packages where the malicious installer was hidden in package.json rather than composer.json, with risk to devdojo/genesis. Exact affected versions are not encoded here yet; review package.json, GitHub Actions, install timing, dev-main/dev-master/3.x-dev references, and rotate secrets if the /tmp/.sshd payload may have executed."
   }
