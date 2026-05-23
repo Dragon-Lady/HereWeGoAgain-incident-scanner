@@ -82,6 +82,19 @@ a compromised version may have executed. This scanner therefore treats
 `laravel-lang/attributes` as Composer review prompts until exact affected
 versions or clean commit boundaries are encoded.
 
+On May 22, 2026, International Cyber Digest reported a separate supply-chain
+wave affecting PHP and Node.js projects, with 700+ GitHub repositories flagged
+and eight Packagist packages reportedly infected. The described payload path
+hides a malicious script in `package.json` rather than `composer.json`, downloads
+a Linux binary from GitHub with TLS checks skipped, writes it to `/tmp/.sshd`,
+marks it executable, and runs it in the background. The same reporting names a
+GitHub Actions step `Dependency Cache Sync`, the GitHub account
+`parikhpreyash4`, repository `systemd-network-helper-aa5c751f`, and `devdojo/wave`
+and `devdojo/genesis` as high-risk Laravel template surfaces. Until exact
+affected versions are encoded, this scanner flags those package names as
+Composer review prompts and treats `/tmp/.sshd` install-script references as
+likely-exposed payload references.
+
 Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
 for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
 tracked here only as related public situational awareness because readers may see
@@ -139,6 +152,10 @@ The key local indicators used by this project are:
 - Composer review prompts for the active Aikido/Packagist `laravel-lang/*`
   report: `laravel-lang/lang`, `laravel-lang/http-statuses`, and
   `laravel-lang/attributes`
+- Packagist/GitHub supply-chain indicators from the International Cyber Digest
+  report: `devdojo/wave`, `devdojo/genesis`, `parikhpreyash4`,
+  `systemd-network-helper-aa5c751f`, `/tmp/.sshd`, `curl -skL`,
+  `chmod +x /tmp/.sshd`, and `Dependency Cache Sync`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer

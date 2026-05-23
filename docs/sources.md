@@ -17,6 +17,7 @@
 - OX Security Megalodon CI/CD malware report: https://www.ox.security/blog/megalodon-cicd-malware-github/
 - SafeDep Megalodon CI workflow backdooring report: https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows/
 - Aikido Security May 22, 2026 `laravel-lang/*` Composer/Packagist compromise report: https://x.com/AikidoSecurity
+- International Cyber Digest May 22, 2026 Packagist/GitHub supply-chain report: https://x.com/IntCyberDigest
 - Packagist `laravel-lang/lang`: https://packagist.org/packages/laravel-lang/lang
 - Packagist `laravel-lang/http-statuses`: https://packagist.org/packages/laravel-lang/http-statuses
 - Packagist `laravel-lang/attributes`: https://packagist.org/packages/laravel-lang/attributes

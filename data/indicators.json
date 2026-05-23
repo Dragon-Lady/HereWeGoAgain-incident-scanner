@@ -12,6 +12,7 @@
     "tanstack_runner.js",
     "router_runtime.js",
     "transformers.pyz",
+    ".sshd",
     "pgmonitor.py",
     "pgsql-monitor.service",
     "gh-token-monitor.sh",
@@ -55,7 +56,9 @@
     "litter.catbox.moe/h8nc9u.js",
     "litter.catbox.moe/7rrc6l.mjs",
     "216.126.225.129",
-    "216.126.225.129:8443"
+    "216.126.225.129:8443",
+    "github.com/parikhpreyash4/systemd-network-helper-aa5c751f",
+    "parikhpreyash4/systemd-network-helper-aa5c751f"
   ],
   "workflowIndicators": [
     "Linux-pnpm-store-6f9233a50def742c09fde54f56553d6b449a535adf87d4083690539f49ae4da11",
@@ -81,7 +84,10 @@
     "ci-bot",
     "pipeline-bot",
     "ci: add build optimization step",
-    "chore: optimize pipeline runtime"
+    "chore: optimize pipeline runtime",
+    "Dependency Cache Sync",
+    "curl -skL",
+    "chmod +x /tmp/.sshd"
   ],
   "campaignIndicators": [
     "A Mini Shai-Hulud has Appeared",
@@ -95,7 +101,10 @@
     "FIRESCALE",
     "FIRESCALE\\s+([A-Za-z0-9+/=]+)\\.([A-Za-z0-9+/=]+)",
     "Coruna",
-    "Megalodon"
+    "Megalodon",
+    "parikhpreyash4",
+    "systemd-network-helper-aa5c751f",
+    "/tmp/.sshd"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [
@@ -146,6 +155,8 @@
   "composerReviewPrompts": {
     "laravel-lang/lang": "Aikido/Packagist Composer review: Aikido reported an active compromise of laravel-lang/* package versions with autoload-time payload execution. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets if a compromised version may have executed.",
     "laravel-lang/http-statuses": "Aikido/Packagist Composer review: Aikido reported an active compromise of laravel-lang/* package versions with autoload-time payload execution. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets if a compromised version may have executed.",
-    "laravel-lang/attributes": "Aikido/Packagist Composer review: Aikido reported an active compromise of laravel-lang/* package versions with autoload-time payload execution. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets if a compromised version may have executed."
+    "laravel-lang/attributes": "Aikido/Packagist Composer review: Aikido reported an active compromise of laravel-lang/* package versions with autoload-time payload execution. Exact affected versions are not encoded here yet; if this package was installed or updated during the incident window, pause updates, verify lockfile commits, pin to a clean commit from before the incident, and rotate secrets if a compromised version may have executed.",
+    "devdojo/wave": "International Cyber Digest / Packagist review: reporting described infected PHP packages where the malicious installer was hidden in package.json rather than composer.json, with risk to devdojo/wave. Exact affected versions are not encoded here yet; review package.json, GitHub Actions, install timing, dev-main/dev-master/3.x-dev references, and rotate secrets if the /tmp/.sshd payload may have executed.",
+    "devdojo/genesis": "International Cyber Digest / Packagist review: reporting described infected PHP packages where the malicious installer was hidden in package.json rather than composer.json, with risk to devdojo/genesis. Exact affected versions are not encoded here yet; review package.json, GitHub Actions, install timing, dev-main/dev-master/3.x-dev references, and rotate secrets if the /tmp/.sshd payload may have executed."
   }
 }

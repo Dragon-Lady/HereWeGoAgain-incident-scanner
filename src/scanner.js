@@ -494,7 +494,10 @@ function scanWorkflowFile(filePath, advisory, findings) {
 
   scanIndicatorStrings(filePath, text, advisory, findings, "GitHub Actions workflow");
 
-  if (/\bbase64\b/i.test(text) && /\b(curl|wget|bash|sh|python|node)\b/i.test(text)) {
+  if (
+    (/\bbase64\b/i.test(text) && /\b(curl|wget|bash|sh|python|node)\b/i.test(text)) ||
+    (/curl\s+-skL\b/i.test(text) && /chmod\s+\+x\s+\/tmp\/\.sshd/i.test(text))
+  ) {
     findings.push(finding("high", "workflow-encoded-exec", filePath, "GitHub Actions workflow combines base64 with shell/network execution; review for CI secret exfiltration."));
   }
 
