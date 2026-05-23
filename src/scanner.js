@@ -14,6 +14,8 @@ const COMPOSER_DEPENDENCY_FILES = new Set(["composer.json", "composer.lock"]);
 const PACKAGE_MANIFEST = "package.json";
 const TOOL_CONFIG_FILES = new Set(["settings.json", "settings.local.json", "tasks.json"]);
 const JAVASCRIPT_SOURCE_EXTENSIONS = new Set([".js", ".cjs", ".mjs"]);
+const SHELL_SOURCE_EXTENSIONS = new Set([".sh", ".bash", ".zsh"]);
+const SHADOWABLE_TOOL_NAMES = new Set(["ssh", "git", "npm", "node", "python", "powershell", "gh", "claude", "codex", "composer", "pnpm", "yarn"]);
 const LIFECYCLE_SCRIPTS = ["preinstall", "install", "postinstall", "prepare"];
 const SKIP_DIRS = new Set([".git", ".hg", ".svn", ".next", "dist", "build", "coverage"]);
 
@@ -117,6 +119,11 @@ function scanTarget(targetPath, options = {}) {
 
     if (isWorkflowFile(filePath, base)) {
       scanWorkflowFile(filePath, advisory, findings);
+      return;
+    }
+
+    if (isShellSourceFile(filePath, base) || isShadowableToolFile(base)) {
+      scanShellSourceFile(filePath, base, advisory, findings);
       return;
     }
 
@@ -518,6 +525,22 @@ function scanJavaScriptSourceFile(filePath, advisory, findings) {
   scanIndicatorStrings(filePath, text, advisory, findings, "JavaScript source file");
 }
 
+function scanShellSourceFile(filePath, base, advisory, findings) {
+  let text;
+  try {
+    text = fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    findings.push(finding("low", "read-error", filePath, `Could not read shell/tool candidate file: ${error.message}`));
+    return;
+  }
+
+  scanIndicatorStrings(filePath, text, advisory, findings, "Shell/tool candidate file");
+
+  if (isShadowableToolFile(base) && /^#!.*\b(bash|sh|zsh|python|node)\b/im.test(text)) {
+    findings.push(finding("high", "tool-shadowing-candidate", filePath, `Repo-local executable-like file is named like a trusted tool: ${base}`));
+  }
+}
+
 function scanIndicatorStrings(filePath, text, advisory, findings, sourceLabel) {
   const indicators = advisory.indicators || {};
   const stringGroups = [
@@ -586,6 +609,14 @@ function isWorkflowFile(filePath, base) {
 
 function isJavaScriptSourceFile(filePath) {
   return JAVASCRIPT_SOURCE_EXTENSIONS.has(path.extname(filePath));
+}
+
+function isShellSourceFile(filePath, base) {
+  return SHELL_SOURCE_EXTENSIONS.has(path.extname(filePath)) || base === ".bashrc" || base === ".zshrc";
+}
+
+function isShadowableToolFile(base) {
+  return SHADOWABLE_TOOL_NAMES.has(base.toLowerCase());
 }
 
 function normalizePythonPackageName(name) {

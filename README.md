@@ -78,6 +78,12 @@ fragments `curl -skL` and `chmod +x /tmp/.sshd`, and a GitHub Actions step named
 `Dependency Cache Sync`. This scanner treats `devdojo/wave` and
 `devdojo/genesis` as Composer review prompts and flags the payload strings in
 `package.json`, JavaScript files, and GitHub Actions workflows.
+Operator-provided May 22 screenshots also showed a social-engineering demo where
+a repo-local fake `ssh` script was placed ahead of the real SSH client in
+`PATH`, printed a fake GitHub shell-access banner, and launched a local shell
+with a spoofed prompt. This scanner now flags repo-local executable-like files
+named after trusted tools, plus the specific fake GitHub banner and PATH-prepend
+strings from that demonstration.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -137,6 +143,10 @@ developers, security teams, and CI logs.
   `devdojo/genesis` exposure, plus `/tmp/.sshd`, `parikhpreyash4`,
   `systemd-network-helper-aa5c751f`, `curl -skL`, `chmod +x /tmp/.sshd`, and
   `Dependency Cache Sync` indicators
+- PATH/tool-shadowing indicators, including repo-local executable-like files
+  named `ssh`, `git`, `npm`, `node`, `python`, `powershell`, `gh`, `claude`,
+  `codex`, `composer`, `pnpm`, or `yarn`, plus fake GitHub shell-access banner
+  strings and `export PATH=$(realpath ...):$PATH` style prepends
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions

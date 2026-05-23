@@ -308,6 +308,34 @@ try {
   fs.rmSync(tmpDevdojoWorkflowRoot, { recursive: true, force: true });
 }
 
+const tmpToolShadowRoot = fs.mkdtempSync(path.join(__dirname, "tmp-tool-shadow-"));
+try {
+  fs.mkdirSync(path.join(tmpToolShadowRoot, "hacking"));
+  fs.writeFileSync(
+    path.join(tmpToolShadowRoot, "hacking", "ssh"),
+    [
+      "#!/usr/bin/env bash",
+      "cat <<_EOF",
+      "PTY allocation request failed on channel 0",
+      "Hi remix! You've successfully authenticated. GitHub does provide shell access",
+      "_EOF",
+      "export PS1='[git@github.com ~]$'",
+      "bash"
+    ].join("\n")
+  );
+  fs.writeFileSync(
+    path.join(tmpToolShadowRoot, "demo.sh"),
+    "export PATH=$(realpath hacking):$PATH\nssh git@github.com\n"
+  );
+  const toolShadow = scanTarget(tmpToolShadowRoot);
+  assert.strictEqual(toolShadow.risk, "possible-exposure");
+  assert(toolShadow.findings.some((finding) => finding.type === "tool-shadowing-candidate" && finding.message.includes("ssh")));
+  assert(toolShadow.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("GitHub does provide shell access")));
+  assert(toolShadow.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("export PATH=$(realpath")));
+} finally {
+  fs.rmSync(tmpToolShadowRoot, { recursive: true, force: true });
+}
+
 const payloadPath = path.join(__dirname, "fixtures", "compromised", "router_init.js");
 const payloadHash = crypto.createHash("sha256").update(fs.readFileSync(payloadPath)).digest("hex");
 const compromisedWithHash = scanTarget(path.join(__dirname, "fixtures", "compromised"), {

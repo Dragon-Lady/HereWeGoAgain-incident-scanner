@@ -104,7 +104,10 @@
     "Megalodon",
     "parikhpreyash4",
     "systemd-network-helper-aa5c751f",
-    "/tmp/.sshd"
+    "/tmp/.sshd",
+    "GitHub does provide shell access",
+    "export PATH=$(realpath",
+    "git@github.com ~"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [

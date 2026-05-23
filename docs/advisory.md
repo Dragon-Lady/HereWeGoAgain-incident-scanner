@@ -95,6 +95,15 @@ affected versions are encoded, this scanner flags those package names as
 Composer review prompts and treats `/tmp/.sshd` install-script references as
 likely-exposed payload references.
 
+Also on May 22, 2026, operator-provided screenshots showed a misleading GitHub
+SSH "shell access" demonstration. The underlying technique was not GitHub.com
+providing a real shell; it used a repo-local script named `ssh`, prepended that
+directory to `PATH`, printed a fake GitHub success banner, and launched a local
+shell with a spoofed `git@github.com` prompt. This scanner treats that as
+PATH/tool-shadowing tradecraft and flags executable-like local files named after
+trusted tools when paired with shell shebangs, along with the specific fake
+banner and PATH-prepend strings.
+
 Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
 for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
 tracked here only as related public situational awareness because readers may see
@@ -156,6 +165,10 @@ The key local indicators used by this project are:
   report: `devdojo/wave`, `devdojo/genesis`, `parikhpreyash4`,
   `systemd-network-helper-aa5c751f`, `/tmp/.sshd`, `curl -skL`,
   `chmod +x /tmp/.sshd`, and `Dependency Cache Sync`
+- PATH/tool-shadowing indicators from the fake GitHub SSH demo:
+  `GitHub does provide shell access`, `export PATH=$(realpath`,
+  `git@github.com ~`, and repo-local executable-like files named after trusted
+  tools such as `ssh`, `git`, `npm`, `node`, `gh`, `claude`, or `codex`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer
