@@ -26,6 +26,7 @@
 - StepSecurity durabletask supply-chain writeup: https://www.stepsecurity.io/blog/microsofts-durabletask-pypi-package-compromised-in-supply-chain-attack
 - VirusTotal domain report for `staticcloudflare[.]pro`: https://www.virustotal.com/gui/domain/staticcloudflare.pro/detection
 - Hybrid Analysis URL submission context for `staticcloudflare[.]pro`: https://hybrid-analysis.com/submissions/sandbox/urls
+- Socket Packagist/Intercom Composer plugin report: https://socket.dev/blog/famous-chollima-targets-php-developers-through-compromised-packagist-package
 
 ## Out-of-Scope Related Public Intel
 
@@ -36,9 +37,11 @@
 - Microsoft MSRC CVE-2026-41096 advisory: https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-41096
 - NVD CVE-2026-41096 record: https://nvd.nist.gov/vuln/detail/CVE-2026-41096
 - Zero Day Initiative May 2026 security update review: https://www.zerodayinitiative.com/blog/2026/5/12/the-may-2026-security-update-review
+- AlmaLinux Fragnesia / CVE-2026-46300 disclosure: https://almalinux.org/blog/2026-05-13-fragnesia-cve-2026-46300/
+- NVD CVE-2026-46300 record: https://nvd.nist.gov/vuln/detail/CVE-2026-46300
 
-These Windows disclosure links are retained only for manual context. They are
-not Mini Shai-Hulud scanner indicators.
+These Windows and Linux disclosure links are retained only for manual context.
+They are not Mini Shai-Hulud scanner indicators.
 
 This project intentionally avoids publishing exploit reproduction steps or
 malware execution guidance.

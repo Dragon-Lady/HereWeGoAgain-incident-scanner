@@ -80,11 +80,20 @@ const tmpComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-composer-"));
 try {
   fs.writeFileSync(
     path.join(tmpComposerRoot, "composer.lock"),
-    JSON.stringify({ packages: [{ name: "intercom/intercom-php", version: "5.0.2" }] }, null, 2)
+    JSON.stringify({
+      packages: [{
+        name: "intercom/intercom-php",
+        version: "5.0.2",
+        type: "composer-plugin",
+        require: { "composer-plugin-api": "^2.0" },
+        extra: { class: "Intercom\\ComposerPlugin" }
+      }]
+    }, null, 2)
   );
   const composerCompromised = scanTarget(tmpComposerRoot);
   assert.strictEqual(composerCompromised.risk, "likely-exposed");
   assert(composerCompromised.findings.some((finding) => finding.type === "known-bad-composer-version"));
+  assert(composerCompromised.findings.some((finding) => finding.type === "composer-plugin-capability"));
 } finally {
   fs.rmSync(tmpComposerRoot, { recursive: true, force: true });
 }
@@ -204,6 +213,24 @@ try {
   assert(squawkCompromised.findings.some((finding) => finding.type === "known-bad-requested-version"));
 } finally {
   fs.rmSync(tmpSquawkRoot, { recursive: true, force: true });
+}
+
+const tmpNodeIpcRoot = fs.mkdtempSync(path.join(__dirname, "tmp-node-ipc-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpNodeIpcRoot, "package.json"),
+    JSON.stringify({ dependencies: { "node-ipc": "12.0.1" } }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpNodeIpcRoot, "package-lock.json"),
+    JSON.stringify({ packages: { "node_modules/node-ipc": { version: "9.2.3" } } })
+  );
+  const nodeIpcCompromised = scanTarget(tmpNodeIpcRoot);
+  assert.strictEqual(nodeIpcCompromised.risk, "likely-exposed");
+  assert(nodeIpcCompromised.findings.some((finding) => finding.type === "known-bad-requested-version"));
+  assert(nodeIpcCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version"));
+} finally {
+  fs.rmSync(tmpNodeIpcRoot, { recursive: true, force: true });
 }
 
 const tmpUiPathRoot = fs.mkdtempSync(path.join(__dirname, "tmp-uipath-"));

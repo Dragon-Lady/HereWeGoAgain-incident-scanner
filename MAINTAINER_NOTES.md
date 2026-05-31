@@ -47,6 +47,13 @@ As of the May 12, 2026 update, Aikido and Socket reporting track broader Mini
 Shai-Hulud package artifacts across npm, PyPI, and Composer. Additional
 package/version indicators should only be added after exact confirmation.
 
+For Composer/Packagist incidents, keep exact known-bad package versions in
+`data/packages/composer.json`, but also retain behavioral coverage for
+unexpected Composer plugin capability. A legitimate package unexpectedly
+declaring `composer-plugin`, `composer-plugin-api`, or plugin entry classes can
+enable install/update-time execution and should be treated as a high-severity
+review prompt even when the exact package/version is not yet encoded.
+
 ## Public Response Rules
 
 - Do not ask users to paste secrets, `.env` files, private keys, tokens, or full logs.
@@ -79,6 +86,12 @@ package/version indicators should only be added after exact confirmation.
   Do not add scanner rules from this incident unless public reporting provides
   concrete developer-package, file/hash, network, or tool-persistence IOCs that
   overlap this scanner's local detection scope.
+- 2026-05-13: AlmaLinux disclosed Fragnesia / `CVE-2026-46300`, a Linux kernel
+  local-root issue in the same broad surface as Copy Fail and Dirty Frag. Treat
+  as adjacent Linux host-risk context for developer workstations, CI runners,
+  container build farms, and multi-tenant hosts only. Do not add scanner rules
+  unless a confirmed Here We Go Again/Mini Shai-Hulud payload starts using this
+  CVE or leaves concrete package, file/hash, network, or persistence IOCs.
 
 ## Fast Update Flow
 

@@ -123,6 +123,14 @@ campaign artifact overlaps. Manual triage strings from the public reporting
 include `Nightmare-Eclipse`, `YellowKey`, `GreenPlasma`, `CSRSS_TEST_SECTION`,
 and WinRE / `wpeinit` context.
 
+AlmaLinux's May 13, 2026 Fragnesia / `CVE-2026-46300` disclosure is also
+adjacent Linux host-risk context, not a Here We Go Again or Mini Shai-Hulud
+scanner indicator. It is a kernel local-root flaw affecting supported
+AlmaLinux releases through the `esp4`, `esp6`, and, on some AlmaLinux 9/10
+systems, `rxrpc` modules. Track it for Linux developer workstations, CI
+runners, container build farms, and multi-tenant hosts where a package payload
+or untrusted local user could chain local code execution into root.
+
 The key local indicators used by this project are:
 
 - `@tanstack/setup`
@@ -187,6 +195,11 @@ The key local indicators used by this project are:
 - known affected PyPI `lightning` and `durabletask`, plus Composer
   `intercom/intercom-php`
   package/version pairs from Socket's live campaign table
+- Composer package/plugin capability anomalies such as unexpected
+  `composer-plugin`, `composer-plugin-api`, or plugin entry declarations. These
+  are high-severity review prompts because Composer plugins can execute during
+  install/update; confirm they are expected and match upstream source before
+  continuing.
 - Claude Code `.claude/settings*.json` and VS Code `.vscode/tasks.json`
   references to known payload, network, token-description, and campaign strings
 

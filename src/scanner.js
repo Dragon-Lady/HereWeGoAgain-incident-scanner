@@ -468,6 +468,7 @@ function scanComposerDependencyFile(filePath, advisory, findings) {
 
   scanIndicatorStrings(filePath, text, advisory, findings, "Composer dependency file");
   scanLaravelLangAutoloadBackdoor(filePath, text, advisory, findings);
+  scanComposerPluginCapabilities(filePath, text, findings);
 
   for (const [pkg, versions] of Object.entries(advisory.composerPackages || {})) {
     for (const version of versions) {
@@ -504,6 +505,45 @@ function scanLaravelLangAutoloadBackdoor(filePath, text, advisory, findings) {
     filePath,
     "Composer dependency metadata for laravel-lang includes autoload.files -> src/helpers.php, matching Socket's reported RCE backdoor shape."
   ));
+}
+
+function scanComposerPluginCapabilities(filePath, text, findings) {
+  let manifest;
+  try {
+    manifest = JSON.parse(text);
+  } catch (error) {
+    return;
+  }
+
+  const packages = [];
+  if (Array.isArray(manifest.packages)) packages.push(...manifest.packages);
+  if (Array.isArray(manifest["packages-dev"])) packages.push(...manifest["packages-dev"]);
+  if (manifest && typeof manifest === "object" && !Array.isArray(manifest)) packages.push(manifest);
+
+  for (const pkg of packages) {
+    if (!pkg || typeof pkg !== "object") continue;
+    const name = typeof pkg.name === "string" ? pkg.name : "(root composer package)";
+    const version = typeof pkg.version === "string" ? `@${pkg.version}` : "";
+    const requireBlock = pkg.require && typeof pkg.require === "object" ? pkg.require : {};
+    const extra = pkg.extra && typeof pkg.extra === "object" ? pkg.extra : {};
+    const pluginClass = extra.class || extra["plugin-class"];
+    const hasPluginType = pkg.type === "composer-plugin";
+    const hasPluginApi = Object.prototype.hasOwnProperty.call(requireBlock, "composer-plugin-api");
+    const hasPluginEntry = typeof pluginClass === "string" || Array.isArray(pluginClass);
+
+    if (hasPluginType || hasPluginApi || hasPluginEntry) {
+      const capabilities = [];
+      if (hasPluginType) capabilities.push("type=composer-plugin");
+      if (hasPluginApi) capabilities.push("require=composer-plugin-api");
+      if (hasPluginEntry) capabilities.push("extra.class/plugin-class");
+      findings.push(finding(
+        "high",
+        "composer-plugin-capability",
+        filePath,
+        `Composer package ${name}${version} declares install/update-time plugin capability (${capabilities.join(", ")}); verify this is expected and matches upstream source.`
+      ));
+    }
+  }
 }
 
 function scanToolConfigFile(filePath, advisory, findings) {

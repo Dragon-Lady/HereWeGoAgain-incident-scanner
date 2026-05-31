@@ -16,10 +16,13 @@ package registries, or transmit scan results.
 
 ## Privacy
 
-This scanner does not save, collect, upload, or transmit user data. It has no
-telemetry and does not contact a server while scanning. Results are printed to
-the terminal or written only to the local path an operator explicitly provides
-with `--report`.
+This scanner does not provide a hosted service, send telemetry to the
+maintainers, or upload scan results. It does not contact a server while
+scanning. Results are printed to the terminal or written only to the local path
+an operator explicitly provides with `--report`.
+
+Any output files are created in the operator's local environment unless the
+operator separately chooses to share them.
 
 Do not paste secrets, tokens, private keys, `.env` files, or full private logs
 into issues or public reports. If a finding suggests credential exposure,
@@ -168,6 +171,9 @@ developers, security teams, and CI logs.
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions
 - Known compromised Composer `intercom/intercom-php` version
+- Composer package/plugin capability anomalies such as unexpected
+  `composer-plugin`, `composer-plugin-api`, or plugin entry declarations that
+  can enable install/update-time execution
 - Lower-severity namespace warnings for namespaces reported in the active
   campaign when exact package/version coverage may still be incomplete
 - `@tanstack/setup`
@@ -226,6 +232,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - SafeDep Megalodon CI workflow backdooring report: https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows/
 - VirusTotal domain report for `staticcloudflare[.]pro`: https://www.virustotal.com/gui/domain/staticcloudflare.pro/detection
 - Hybrid Analysis URL submission context for `staticcloudflare[.]pro`: https://hybrid-analysis.com/submissions/sandbox/urls
+- Socket Packagist/Intercom Composer plugin report: https://socket.dev/blog/famous-chollima-targets-php-developers-through-compromised-packagist-package
 
 ## License
 

@@ -63,6 +63,15 @@ Mini Shai-Hulud compromise and is not scanned by this tool. Windows developer
 workstations and CI runners should apply the May 2026 cumulative updates and
 restrict DNS to trusted resolvers where possible.
 
+Adjacent Linux local-root risk: AlmaLinux disclosed Fragnesia /
+`CVE-2026-46300` on May 13, 2026, affecting supported AlmaLinux releases
+through `esp4`, `esp6`, and in some AlmaLinux 9/10 cases `rxrpc`. This is not
+evidence of Here We Go Again / Mini Shai-Hulud compromise and is not scanned by
+this tool, but Linux developer workstations, CI runners, container build farms,
+and multi-tenant hosts should apply patched kernels or vendor-approved
+mitigations promptly because local package payload execution could become root
+on vulnerable hosts.
+
 ## 4. Recover Data Carefully
 
 Copy only needed documents and source files from a trusted recovery environment
