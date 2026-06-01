@@ -71,6 +71,10 @@
     "sentry.anyclaw[.]store",
     "sentry.anyclaw.store/startlog",
     "https://sentry.anyclaw.store/startlog",
+    "api.anthropic.com",
+    "raw.githubusercontent.com/letsgo0/sayyadina-phibian-159",
+    "raw[.]githubusercontent[.]com/letsgo0/sayyadina-phibian-159",
+    "letsgo0/sayyadina-phibian-159",
     "169.254.169.254"
   ],
   "workflowIndicators": [
@@ -133,6 +137,10 @@
     "sj.ssc/ipa/orp.eralfduolccitats",
     "ClickFix",
     "Miasma",
+    "Miasma: The Spreading Blight",
+    "IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner",
+    "firedalazer",
+    "sayyadina-phibian-159",
     "trusted publishing",
     ".codex/auth.json",
     "~/.codex/auth.json",

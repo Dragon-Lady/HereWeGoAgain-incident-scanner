@@ -102,6 +102,11 @@ npm packages spread through GitHub Actions OIDC / trusted publishing abuse, with
 a Mini Shai-Hulud variant calling itself `Miasma`. The scanner treats the exact
 reported package versions as critical indicators and warns on the broader
 `@redhat-cloud-services/` namespace while the campaign is active.
+OX's June 1 follow-up adds high-signal Miasma details including the
+`Miasma: The Spreading Blight` repository-description string, decoy
+`api.anthropic.com` traffic, token-invalidation threat text, the `firedalazer`
+commit search marker, and staged payload retrieval from
+`letsgo0/sayyadina-phibian-159`.
 Aikido's May 27 report, later covered by The Hacker News, describes
 `codexui-android` npm builds from `0.1.82` onward exfiltrating OpenAI Codex
 authentication data from `~/.codex/auth.json` or `$CODEX_HOME/auth.json` to
@@ -183,6 +188,10 @@ developers, security teams, and CI logs.
   compromised `@redhat-cloud-services/*` package versions, OIDC/trusted
   publishing workflow strings, and the active `@redhat-cloud-services/`
   namespace review warning
+- OX Red Hat / Miasma follow-up indicators, including
+  `Miasma: The Spreading Blight`, `api.anthropic.com`, `firedalazer`,
+  `IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner`, and
+  `letsgo0/sayyadina-phibian-159`
 - Codex UI token-theft indicators, including compromised `codexui-android`
   versions `0.1.82` through `0.1.125`, `sentry.anyclaw[.]store/startlog`,
   Codex `auth.json` path strings, `anyclaw2026`, `OpenClaw Codex Claude AI
@@ -257,6 +266,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Aikido Codex remote UI token-theft report: https://www.aikido.dev/blog/codex-remote-ui-steals-ai-tokens
 - The Hacker News Codex authentication token theft coverage: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
+- OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
 
 ## License
 

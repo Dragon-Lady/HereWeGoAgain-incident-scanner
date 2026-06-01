@@ -270,11 +270,23 @@ try {
       "          REPO_ID_SUFFIX: 'RedHatInsights/frontend-components'"
     ].join("\n")
   );
+  fs.writeFileSync(
+    path.join(tmpRedHatRoot, "miasma-note.js"),
+    [
+      "const desc = 'Miasma: The Spreading Blight';",
+      "const decoy = 'https://api.anthropic.com/v1/messages';",
+      "const threat = 'IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner';",
+      "const marker = 'firedalazer';",
+      "const stage = 'https://raw.githubusercontent.com/letsgo0/sayyadina-phibian-159/refs/heads/main/index.js';"
+    ].join("\n")
+  );
   const redHatCompromised = scanTarget(tmpRedHatRoot);
   assert.strictEqual(redHatCompromised.risk, "likely-exposed");
   assert(redHatCompromised.findings.some((finding) => finding.type === "known-bad-requested-version"));
   assert(redHatCompromised.findings.some((finding) => finding.type === "active-campaign-namespace"));
   assert(redHatCompromised.findings.some((finding) => finding.type === "workflow-indicator" && finding.message.includes("OIDC_PACKAGES")));
+  assert(redHatCompromised.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("api.anthropic.com")));
+  assert(redHatCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("firedalazer")));
   assert(redHatCompromised.findings.some((finding) => finding.type === "workflow-token-surface"));
 } finally {
   fs.rmSync(tmpRedHatRoot, { recursive: true, force: true });
