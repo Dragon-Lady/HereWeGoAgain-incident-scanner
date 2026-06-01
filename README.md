@@ -103,9 +103,10 @@ a Mini Shai-Hulud variant calling itself `Miasma`. The scanner treats the exact
 reported package versions as critical indicators and warns on the broader
 `@redhat-cloud-services/` namespace while the campaign is active.
 OX's June 1 follow-up adds high-signal Miasma details including the
-`Miasma: The Spreading Blight` repository-description string, decoy
-`api.anthropic.com` traffic, token-invalidation threat text, the `firedalazer`
-commit search marker, and staged payload retrieval from
+`Miasma: The Spreading Blight` repository-description string, the dropped
+sixth-stage payload's spaced-colon `Miasma : The Spreading Blight` variant,
+decoy `api.anthropic.com` traffic, token-invalidation threat text, the
+`firedalazer` commit search marker, and staged payload retrieval from
 `letsgo0/sayyadina-phibian-159`.
 Aikido's May 27 report, later covered by The Hacker News, describes
 `codexui-android` npm builds from `0.1.82` onward exfiltrating OpenAI Codex
@@ -189,7 +190,8 @@ developers, security teams, and CI logs.
   publishing workflow strings, and the active `@redhat-cloud-services/`
   namespace review warning
 - OX Red Hat / Miasma follow-up indicators, including
-  `Miasma: The Spreading Blight`, `api.anthropic.com`, `firedalazer`,
+  `Miasma: The Spreading Blight`,
+  `Miasma : The Spreading Blight`, `api.anthropic.com`, `firedalazer`,
   `IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner`, and
   `letsgo0/sayyadina-phibian-159`
 - Codex UI token-theft indicators, including compromised `codexui-android`

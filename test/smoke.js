@@ -274,6 +274,7 @@ try {
     path.join(tmpRedHatRoot, "miasma-note.js"),
     [
       "const desc = 'Miasma: The Spreading Blight';",
+      "const stageDesc = 'Miasma : The Spreading Blight';",
       "const decoy = 'https://api.anthropic.com/v1/messages';",
       "const threat = 'IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner';",
       "const marker = 'firedalazer';",
@@ -286,6 +287,7 @@ try {
   assert(redHatCompromised.findings.some((finding) => finding.type === "active-campaign-namespace"));
   assert(redHatCompromised.findings.some((finding) => finding.type === "workflow-indicator" && finding.message.includes("OIDC_PACKAGES")));
   assert(redHatCompromised.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("api.anthropic.com")));
+  assert(redHatCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Miasma : The Spreading Blight")));
   assert(redHatCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("firedalazer")));
   assert(redHatCompromised.findings.some((finding) => finding.type === "workflow-token-surface"));
 } finally {
