@@ -583,7 +583,10 @@ function scanWorkflowFile(filePath, advisory, findings) {
     findings.push(finding("high", "workflow-encoded-exec", filePath, "GitHub Actions workflow combines base64 with shell/network execution; review for CI secret exfiltration."));
   }
 
-  if (/\b(ACTIONS_ID_TOKEN_REQUEST_TOKEN|ACTIONS_ID_TOKEN_REQUEST_URL|GITHUB_TOKEN)\b/.test(text)) {
+  if (
+    /\b(ACTIONS_ID_TOKEN_REQUEST_TOKEN|ACTIONS_ID_TOKEN_REQUEST_URL|GITHUB_TOKEN)\b/.test(text) ||
+    /id-token\s*:\s*write/i.test(text)
+  ) {
     findings.push(finding("medium", "workflow-token-surface", filePath, "GitHub Actions workflow references CI token/OIDC variables; verify it is expected and not exfiltrated."));
   }
 }

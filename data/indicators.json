@@ -96,7 +96,11 @@
     "chore: optimize pipeline runtime",
     "Dependency Cache Sync",
     "curl -skL",
-    "chmod +x /tmp/.sshd"
+    "chmod +x /tmp/.sshd",
+    "OIDC_PACKAGES",
+    "REPO_ID_SUFFIX",
+    "oven-sh/setup-bun",
+    "_index.js"
   ],
   "campaignIndicators": [
     "A Mini Shai-Hulud has Appeared",
@@ -123,7 +127,9 @@
     "/var/run/secrets/",
     "/proc/[pid]/environ",
     "sj.ssc/ipa/orp.eralfduolccitats",
-    "ClickFix"
+    "ClickFix",
+    "Miasma",
+    "trusted publishing"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [
@@ -138,6 +144,7 @@
     "@ml-toolkit-ts/",
     "@opensearch-project/",
     "@openclaw-cn/",
+    "@redhat-cloud-services/",
     "@squawk/",
     "@starmind/",
     "@supersurkhet/",

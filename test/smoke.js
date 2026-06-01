@@ -247,6 +247,39 @@ try {
   fs.rmSync(tmpUiPathRoot, { recursive: true, force: true });
 }
 
+const tmpRedHatRoot = fs.mkdtempSync(path.join(__dirname, "tmp-redhat-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpRedHatRoot, "package.json"),
+    JSON.stringify({ dependencies: { "@redhat-cloud-services/frontend-components": "7.7.3" } }, null, 2)
+  );
+  fs.mkdirSync(path.join(tmpRedHatRoot, ".github", "workflows"), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmpRedHatRoot, ".github", "workflows", "release.yml"),
+    [
+      "name: release",
+      "jobs:",
+      "  publish:",
+      "    permissions:",
+      "      id-token: write",
+      "    steps:",
+      "      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6",
+      "      - run: bun run _index.js",
+      "        env:",
+      "          OIDC_PACKAGES: '@redhat-cloud-services/frontend-components'",
+      "          REPO_ID_SUFFIX: 'RedHatInsights/frontend-components'"
+    ].join("\n")
+  );
+  const redHatCompromised = scanTarget(tmpRedHatRoot);
+  assert.strictEqual(redHatCompromised.risk, "likely-exposed");
+  assert(redHatCompromised.findings.some((finding) => finding.type === "known-bad-requested-version"));
+  assert(redHatCompromised.findings.some((finding) => finding.type === "active-campaign-namespace"));
+  assert(redHatCompromised.findings.some((finding) => finding.type === "workflow-indicator" && finding.message.includes("OIDC_PACKAGES")));
+  assert(redHatCompromised.findings.some((finding) => finding.type === "workflow-token-surface"));
+} finally {
+  fs.rmSync(tmpRedHatRoot, { recursive: true, force: true });
+}
+
 const tmpAntvRoot = fs.mkdtempSync(path.join(__dirname, "tmp-antv-"));
 try {
   fs.writeFileSync(

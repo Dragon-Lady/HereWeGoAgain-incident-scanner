@@ -97,6 +97,11 @@ from `staticcloudflare[.]pro`, including an obfuscated reversed loader string
 `sj.ssc/ipa/orp.eralfduolccitats`. This scanner flags the domain, reported
 `/api/css.js` loader URL, the reversed string, and `ClickFix` marker text when
 they appear in local source, copied pages, or incident notes.
+Aikido's June 1 report describes 30+ compromised `@redhat-cloud-services/*`
+npm packages spread through GitHub Actions OIDC / trusted publishing abuse, with
+a Mini Shai-Hulud variant calling itself `Miasma`. The scanner treats the exact
+reported package versions as critical indicators and warns on the broader
+`@redhat-cloud-services/` namespace while the campaign is active.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -167,6 +172,10 @@ developers, security teams, and CI logs.
 - ClickFix/staticcloudflare indicators, including `staticcloudflare[.]pro`,
   `https://staticcloudflare[.]pro/api/css.js`, the reversed loader string
   `sj.ssc/ipa/orp.eralfduolccitats`, and `ClickFix`
+- Red Hat / Miasma npm indicators from Aikido's June 1 report, including exact
+  compromised `@redhat-cloud-services/*` package versions, OIDC/trusted
+  publishing workflow strings, and the active `@redhat-cloud-services/`
+  namespace review warning
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions
@@ -233,6 +242,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - VirusTotal domain report for `staticcloudflare[.]pro`: https://www.virustotal.com/gui/domain/staticcloudflare.pro/detection
 - Hybrid Analysis URL submission context for `staticcloudflare[.]pro`: https://hybrid-analysis.com/submissions/sandbox/urls
 - Socket Packagist/Intercom Composer plugin report: https://socket.dev/blog/famous-chollima-targets-php-developers-through-compromised-packagist-package
+- Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 
 ## License
 
