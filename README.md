@@ -102,6 +102,13 @@ npm packages spread through GitHub Actions OIDC / trusted publishing abuse, with
 a Mini Shai-Hulud variant calling itself `Miasma`. The scanner treats the exact
 reported package versions as critical indicators and warns on the broader
 `@redhat-cloud-services/` namespace while the campaign is active.
+Aikido's May 27 report, later covered by The Hacker News, describes
+`codexui-android` npm builds from `0.1.82` onward exfiltrating OpenAI Codex
+authentication data from `~/.codex/auth.json` or `$CODEX_HOME/auth.json` to
+`sentry.anyclaw[.]store/startlog`. The scanner treats those exact package
+versions as critical and flags related fake-Sentry, Android app, and Codex auth
+path indicators when they appear in local source, lockfiles, copied notes, or
+incident evidence.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -176,6 +183,11 @@ developers, security teams, and CI logs.
   compromised `@redhat-cloud-services/*` package versions, OIDC/trusted
   publishing workflow strings, and the active `@redhat-cloud-services/`
   namespace review warning
+- Codex UI token-theft indicators, including compromised `codexui-android`
+  versions `0.1.82` through `0.1.125`, `sentry.anyclaw[.]store/startlog`,
+  Codex `auth.json` path strings, `anyclaw2026`, `OpenClaw Codex Claude AI
+  Agent`, `gptos.intelligence.assistant`, `app.anyclaw.*`,
+  `rootfs.tar.zst.bin`, and `anyclaw://auth/codex-callback`
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions
@@ -242,6 +254,8 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - VirusTotal domain report for `staticcloudflare[.]pro`: https://www.virustotal.com/gui/domain/staticcloudflare.pro/detection
 - Hybrid Analysis URL submission context for `staticcloudflare[.]pro`: https://hybrid-analysis.com/submissions/sandbox/urls
 - Socket Packagist/Intercom Composer plugin report: https://socket.dev/blog/famous-chollima-targets-php-developers-through-compromised-packagist-package
+- Aikido Codex remote UI token-theft report: https://www.aikido.dev/blog/codex-remote-ui-steals-ai-tokens
+- The Hacker News Codex authentication token theft coverage: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 
 ## License

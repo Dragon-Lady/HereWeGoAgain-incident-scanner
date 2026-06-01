@@ -67,6 +67,10 @@
     "staticcloudflare[.]pro",
     "https://staticcloudflare.pro/",
     "https://staticcloudflare.pro/api/css.js",
+    "sentry.anyclaw.store",
+    "sentry.anyclaw[.]store",
+    "sentry.anyclaw.store/startlog",
+    "https://sentry.anyclaw.store/startlog",
     "169.254.169.254"
   ],
   "workflowIndicators": [
@@ -129,7 +133,19 @@
     "sj.ssc/ipa/orp.eralfduolccitats",
     "ClickFix",
     "Miasma",
-    "trusted publishing"
+    "trusted publishing",
+    ".codex/auth.json",
+    "~/.codex/auth.json",
+    "$CODEX_HOME/auth.json",
+    "CODEX_HOME/auth.json",
+    "anyclaw2026",
+    "Send tokens to our startlog endpoint",
+    "anyclaw://auth/codex-callback",
+    "gptos.intelligence.assistant",
+    "app.anyclaw.",
+    "rootfs.tar.zst.bin",
+    "OpenClaw Codex Claude AI Agent",
+    "BrutalStrike"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [
@@ -157,6 +173,7 @@
   "activePackages": [
     "byte-parser",
     "canvas-nest.js",
+    "codexui-android",
     "echarts-for-react",
     "art-template",
     "fuma-content",
@@ -171,6 +188,7 @@
   ],
   "packageReviewPrompts": {
     "art-template": "SafeDep repository-context review: SafeDep reported a compromise of the legitimate art-template npm package tied to Coruna/iOS browser exploit-kit activity. Exact affected versions are not encoded here yet; review installed version, install/update timing, lifecycle script execution, and SafeDep's latest advisory before running builds.",
+    "codexui-android": "Aikido/OpenAI Codex token-theft review: Aikido reported codexui-android published npm builds from 0.1.82 onward exfiltrated Codex auth data from ~/.codex/auth.json or $CODEX_HOME/auth.json to sentry.anyclaw[.]store/startlog. If installed or launched, treat Codex refresh tokens as compromised and rotate/re-authenticate from a clean environment.",
     "fuma-content": "Fuma repository-context review: maintainer reported the fuma-content repository was affected during the Shai-Hulud/TanStack wave; no affected published Fuma package versions were verified as of the public update. Review install timing, lockfile state, pnpm version, and whether dependency lifecycle scripts/postinstall could have run.",
     "fumadb": "Fuma repository-context review: maintainer reported the fuma-content repository was affected during the Shai-Hulud/TanStack wave; no affected published fumadb versions were verified as of the public update. Review install timing, lockfile state, pnpm version, and whether dependency lifecycle scripts/postinstall could have run.",
     "fumadocs": "Fuma repository-context review: maintainer reported the fuma-content repository was affected during the Shai-Hulud/TanStack wave; no affected published fumadocs versions were verified as of the public update. Review install timing, lockfile state, pnpm version, and whether dependency lifecycle scripts/postinstall could have run.",

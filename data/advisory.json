@@ -4,7 +4,7 @@
   "scope": {
     "scannerPackageSet": "JFrog Here We Go Again package/version indicators plus selected confirmed broader Mini Shai-Hulud npm, PyPI, and Composer package/version indicators",
     "officialTanStackScope": "42 packages, 84 malicious versions, published on 2026-05-11 between 19:20 and 19:26 UTC",
-    "campaignContext": "JFrog reports more than 170 npm packages and 2 PyPI packages affected as of 2026-05-12. Socket reports 416 affected package artifacts for the broader Mini Shai-Hulud campaign as of 2026-05-12, spanning npm, PyPI, and one Composer artifact. Socket reports an active May 19 @antv npm publish wave tied to Mini Shai-Hulud and the npm maintainer account atool. Socket's technical analysis describes install-time index.js payloads, direct C2 at t.m-kosche.com, GitHub fallback exfiltration with reversed Shai-Hulud markers, and worm-like npm propagation through stolen npm tokens. May 22-23 ClickFix reporting and operator-provided VirusTotal context described compromised legitimate websites loading a remote script from staticcloudflare[.]pro with a reversed loader marker. Aikido's June 1 report describes 30+ compromised @redhat-cloud-services npm packages published via GitHub Actions OIDC/trusted publishing abuse, with a credential-stealing Mini Shai-Hulud variant calling itself Miasma. Exact scanner detections are stored in this file; namespace and package-name warnings remain lower-confidence review prompts until exact malicious versions are confirmed."
+    "campaignContext": "JFrog reports more than 170 npm packages and 2 PyPI packages affected as of 2026-05-12. Socket reports 416 affected package artifacts for the broader Mini Shai-Hulud campaign as of 2026-05-12, spanning npm, PyPI, and one Composer artifact. Socket reports an active May 19 @antv npm publish wave tied to Mini Shai-Hulud and the npm maintainer account atool. Socket's technical analysis describes install-time index.js payloads, direct C2 at t.m-kosche.com, GitHub fallback exfiltration with reversed Shai-Hulud markers, and worm-like npm propagation through stolen npm tokens. May 22-23 ClickFix reporting and operator-provided VirusTotal context described compromised legitimate websites loading a remote script from staticcloudflare[.]pro with a reversed loader marker. Aikido's May 27 report describes codexui-android npm builds from 0.1.82 onward exfiltrating OpenAI Codex auth.json data to sentry.anyclaw[.]store/startlog. Aikido's June 1 report describes 30+ compromised @redhat-cloud-services npm packages published via GitHub Actions OIDC/trusted publishing abuse, with a credential-stealing Mini Shai-Hulud variant calling itself Miasma. Exact scanner detections are stored in this file; namespace and package-name warnings remain lower-confidence review prompts until exact malicious versions are confirmed."
   },
   "sources": [
     "https://research.jfrog.com/post/shai-hulud-here-we-go-again/",
@@ -22,6 +22,8 @@
     "https://socket.dev/blog/laravel-lang-compromise",
     "https://www.virustotal.com/gui/domain/staticcloudflare.pro/detection",
     "https://hybrid-analysis.com/submissions/sandbox/urls",
-    "https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm"
+    "https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm",
+    "https://www.aikido.dev/blog/codex-remote-ui-steals-ai-tokens",
+    "https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html"
   ]
 }

