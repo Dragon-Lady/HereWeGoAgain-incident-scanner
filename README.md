@@ -126,6 +126,17 @@ The scanner flags high-signal copied PoC markers in `.vscode/extensions.json`,
 local extension manifests, JavaScript files, and notebooks. These markers should
 prompt review of GitHub token exposure and clearing/revoking affected
 `github.dev` browser state where appropriate.
+Lupin & Holmes' May 14, 2026 reporting describes malicious `node-ipc` versions
+`9.1.6`, `9.2.3`, and `12.0.1` published by the dormant `atiertant` maintainer
+identity, likely through email takeover tied to the re-registered
+`atlantis-software.net` domain. The scanner treats those exact package versions
+as critical indicators and flags high-signal payload/C2 artifacts such as
+`node-ipc.cjs`, `__ntw`, `__ntRun`, `uname.txt`, `envs.txt`, DNS resolver
+usage, and `sh.azurestaticprovider.net`.
+A June 3 operator-provided package table added exact npm package/version
+indicators for the Moika follow-up cluster under `@ccrm/*` and `@emcd-vue/*`.
+The scanner treats those exact versions as critical package indicators and warns
+on those namespaces while the campaign context is active.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -217,6 +228,13 @@ developers, security teams, and CI logs.
   `github-dev-token-steal-poc`, `vscode-github-token-grab-extension`,
   `AmmarTest.hello-ammar-github`, `workbench.extensions.installExtension`, and
   `skipPublisherTrust`
+- node-ipc compromise indicators, including malicious `node-ipc` versions
+  `9.1.6`, `9.2.3`, and `12.0.1`, `node-ipc.cjs`, `__ntw`, `__ntRun`,
+  `uname.txt`, `envs.txt`, `nt-<hash>`, `dns.Resolver`, `atiertant`,
+  `atlantis-software.net`, and `sh.azurestaticprovider.net`
+- Moika follow-up npm indicators, including exact `@ccrm/*` version `5.0.1`
+  package entries and `@emcd-vue/auth@6.4.9`, `@emcd-vue/b2b-pay-form@5.7.4`,
+  and `@emcd-vue/loans@7.1.8`
 - `.vscode/extensions.json` and `.ipynb` notebooks for exact incident strings
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
@@ -288,6 +306,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - The Hacker News Codex authentication token theft coverage: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
+- Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - Palo Alto Networks CVE-2026-0257 advisory: https://security.paloaltonetworks.com/CVE-2026-0257
 - CISA KEV catalog entry for CVE-2026-0257: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 - Ammar Askar GitHub token stealing via VS Code / github.dev writeup: https://blog.ammaraskar.com/github-token-stealing/

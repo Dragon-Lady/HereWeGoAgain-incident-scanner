@@ -72,6 +72,15 @@ and multi-tenant hosts should apply patched kernels or vendor-approved
 mitigations promptly because local package payload execution could become root
 on vulnerable hosts.
 
+Adjacent Linux local-root risk: CIFSwitch / `CVE-2026-46243`, disclosed on
+May 27, 2026, affects some Linux systems through kernel CIFS client and
+`cifs-utils` request-key/upcall behavior. This is not evidence of Here We Go
+Again / Mini Shai-Hulud compromise and is not scanned by this tool, but hosts
+that have `cifs-utils`, unprivileged namespaces, and permissive/default LSM
+policy should patch kernels or mitigate by disabling unused CIFS support,
+removing unused `cifs-utils`, overriding the `cifs.spnego` request-key rule, or
+disabling unprivileged user namespaces where appropriate.
+
 ## 4. Recover Data Carefully
 
 Copy only needed documents and source files from a trusted recovery environment

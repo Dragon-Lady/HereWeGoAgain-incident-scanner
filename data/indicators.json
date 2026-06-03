@@ -75,7 +75,11 @@
     "raw.githubusercontent.com/letsgo0/sayyadina-phibian-159",
     "raw[.]githubusercontent[.]com/letsgo0/sayyadina-phibian-159",
     "letsgo0/sayyadina-phibian-159",
-    "169.254.169.254"
+    "169.254.169.254",
+    "sh.azurestaticprovider.net",
+    "atlantis-software.net",
+    "mx1.privateemail.com",
+    "mx2.privateemail.com"
   ],
   "workflowIndicators": [
     "Linux-pnpm-store-6f9233a50def742c09fde54f56553d6b449a535adf87d4083690539f49ae4da11",
@@ -163,16 +167,26 @@
     "vscode-github-token-grab-extension",
     "AmmarTest.hello-ammar-github",
     "workbench.extensions.installExtension",
-    "skipPublisherTrust"
+    "skipPublisherTrust",
+    "node-ipc.cjs",
+    "__ntw",
+    "__ntRun",
+    "uname.txt",
+    "envs.txt",
+    "nt-<hash>",
+    "dns.Resolver",
+    "atiertant"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [
     "@antv/",
     "@beproduct/",
     "@cap-js/",
+    "@ccrm/",
     "@dirigible-ai/",
     "@draftauth/",
     "@draftlab/",
+    "@emcd-vue/",
     "@mesadev/",
     "@mistralai/",
     "@ml-toolkit-ts/",

@@ -92,6 +92,13 @@ review prompt even when the exact package/version is not yet encoded.
   container build farms, and multi-tenant hosts only. Do not add scanner rules
   unless a confirmed Here We Go Again/Mini Shai-Hulud payload starts using this
   CVE or leaves concrete package, file/hash, network, or persistence IOCs.
+- 2026-05-27: Asim Viladi Oglu Manizada disclosed CIFSwitch /
+  `CVE-2026-46243`, a Linux local-root chain involving the kernel CIFS client,
+  `cifs-utils`, `cifs.spnego` request-key handling, and namespace/NSS
+  confusion. Treat as adjacent Linux host-risk context only. Do not add scanner
+  rules unless a confirmed Here We Go Again/Mini Shai-Hulud payload starts
+  using this CVE or leaves concrete package, file/hash, network, or persistence
+  IOCs.
 
 ## Fast Update Flow
 

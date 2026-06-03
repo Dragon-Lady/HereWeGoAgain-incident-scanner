@@ -918,6 +918,42 @@
   "@cap-js/sqlite": [
     "2.2.2"
   ],
+  "@ccrm/external-integrations-api-axios": [
+    "5.0.1"
+  ],
+  "@ccrm/products-api-axios": [
+    "5.0.1"
+  ],
+  "@ccrm/file-storage-api-axios": [
+    "5.0.1"
+  ],
+  "@ccrm/client-voice-api-axios": [
+    "5.0.1"
+  ],
+  "@ccrm/contact-api-axios": [
+    "5.0.1"
+  ],
+  "@ccrm/customer-api-axios": [
+    "5.0.1"
+  ],
+  "@ccrm/user-storage-api-axios": [
+    "5.0.1"
+  ],
+  "@ccrm/recommendation-api-axios": [
+    "5.0.1"
+  ],
+  "@ccrm/analytics-api-axios": [
+    "5.0.1"
+  ],
+  "@emcd-vue/auth": [
+    "6.4.9"
+  ],
+  "@emcd-vue/b2b-pay-form": [
+    "5.7.4"
+  ],
+  "@emcd-vue/loans": [
+    "7.1.8"
+  ],
   "mbt": [
     "1.2.48"
   ],

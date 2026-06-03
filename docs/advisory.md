@@ -131,6 +131,14 @@ systems, `rxrpc` modules. Track it for Linux developer workstations, CI
 runners, container build farms, and multi-tenant hosts where a package payload
 or untrusted local user could chain local code execution into root.
 
+Asim Viladi Oglu Manizada's May 27, 2026 CIFSwitch / `CVE-2026-46243`
+disclosure is the same kind of adjacent Linux host-risk context, not a package
+or malware indicator. It is a Linux local-root chain involving the kernel CIFS
+client, `cifs-utils`, `cifs.spnego` request-key handling, and namespace/NSS
+confusion. Track it for Linux developer workstations, CI runners, container
+build farms, and multi-tenant hosts, especially where `cifs-utils` is present,
+unprivileged user namespaces are enabled, and CIFS/SMB support is not required.
+
 CISA's May 29, 2026 KEV addition for Palo Alto Networks PAN-OS GlobalProtect
 `CVE-2026-0257` is retained as network-edge defensive triage context. It is not
 a package supply-chain indicator, but copied incident notes mentioning the CVE,
@@ -143,6 +151,21 @@ context. This scanner flags high-signal copied PoC markers in VS Code extension
 recommendation/config files, local extension manifests, JavaScript files, and
 notebooks; findings should prompt review of `github.dev` browser state and
 GitHub token exposure.
+
+Lupin & Holmes' May 14, 2026 node-ipc reporting describes malicious `node-ipc`
+versions `9.1.6`, `9.2.3`, and `12.0.1` published by the dormant `atiertant`
+maintainer identity, likely through email takeover tied to the re-registered
+`atlantis-software.net` domain. The payload lives in `node-ipc.cjs`, harvests
+local secrets, and uses DNS-tunneling style exfiltration with C2 at
+`sh.azurestaticprovider.net`. This scanner treats the exact package versions,
+maintainer/domain context, and high-signal payload strings as npm
+supply-chain indicators.
+
+A June 3, 2026 operator-provided package table added exact npm
+package/version indicators for a Moika follow-up cluster under `@ccrm/*` and
+`@emcd-vue/*`. The scanner treats the listed package/version pairs as critical
+package indicators and warns on those namespaces while the campaign context is
+active.
 
 The key local indicators used by this project are:
 
@@ -210,6 +233,12 @@ The key local indicators used by this project are:
   `github-dev-token-steal-poc`, `vscode-github-token-grab-extension`,
   `AmmarTest.hello-ammar-github`, `workbench.extensions.installExtension`, and
   `skipPublisherTrust`
+- node-ipc compromise indicators: malicious `node-ipc` versions `9.1.6`,
+  `9.2.3`, and `12.0.1`, `node-ipc.cjs`, `__ntw`, `__ntRun`, `uname.txt`,
+  `envs.txt`, `nt-<hash>`, `dns.Resolver`, `atiertant`,
+  `atlantis-software.net`, and `sh.azurestaticprovider.net`
+- Moika follow-up npm indicators for exact `@ccrm/*` and `@emcd-vue/*`
+  package/version pairs
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer

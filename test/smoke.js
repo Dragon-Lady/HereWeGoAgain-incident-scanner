@@ -229,8 +229,44 @@ try {
   assert.strictEqual(nodeIpcCompromised.risk, "likely-exposed");
   assert(nodeIpcCompromised.findings.some((finding) => finding.type === "known-bad-requested-version"));
   assert(nodeIpcCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version"));
+  fs.writeFileSync(
+    path.join(tmpNodeIpcRoot, "node-ipc.cjs"),
+    [
+      "const marker = '__ntRun';",
+      "const resolver = 'dns.Resolver';",
+      "const c2 = 'sh.azurestaticprovider.net';",
+      "const files = 'uname.txt envs.txt';",
+      "const owner = 'atiertant at atlantis-software.net';"
+    ].join("\n")
+  );
+  const nodeIpcIndicators = scanTarget(tmpNodeIpcRoot);
+  assert.strictEqual(nodeIpcIndicators.risk, "likely-exposed");
+  assert(nodeIpcIndicators.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("sh.azurestaticprovider.net")));
+  assert(nodeIpcIndicators.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("__ntRun")));
+  assert(nodeIpcIndicators.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("uname.txt")));
 } finally {
   fs.rmSync(tmpNodeIpcRoot, { recursive: true, force: true });
+}
+
+const tmpMoikaRoot = fs.mkdtempSync(path.join(__dirname, "tmp-moika-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpMoikaRoot, "package.json"),
+    JSON.stringify({
+      dependencies: {
+        "@ccrm/external-integrations-api-axios": "5.0.1",
+        "@emcd-vue/auth": "6.4.9",
+        "@emcd-vue/b2b-pay-form": "5.7.4"
+      }
+    }, null, 2)
+  );
+  const moikaCompromised = scanTarget(tmpMoikaRoot);
+  assert.strictEqual(moikaCompromised.risk, "likely-exposed");
+  assert(moikaCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("@ccrm/external-integrations-api-axios")));
+  assert(moikaCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("@emcd-vue/auth")));
+  assert(moikaCompromised.findings.some((finding) => finding.type === "active-campaign-namespace" && finding.message.includes("@emcd-vue/auth")));
+} finally {
+  fs.rmSync(tmpMoikaRoot, { recursive: true, force: true });
 }
 
 const tmpUiPathRoot = fs.mkdtempSync(path.join(__dirname, "tmp-uipath-"));

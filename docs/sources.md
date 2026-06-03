@@ -31,6 +31,7 @@
 - The Hacker News Codex authentication token theft coverage: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
+- Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 
 ## Out-of-Scope Related Public Intel
 
@@ -43,6 +44,7 @@
 - Zero Day Initiative May 2026 security update review: https://www.zerodayinitiative.com/blog/2026/5/12/the-may-2026-security-update-review
 - AlmaLinux Fragnesia / CVE-2026-46300 disclosure: https://almalinux.org/blog/2026-05-13-fragnesia-cve-2026-46300/
 - NVD CVE-2026-46300 record: https://nvd.nist.gov/vuln/detail/CVE-2026-46300
+- CIFSwitch / CVE-2026-46243 Linux local-root disclosure: https://heyitsas.im/posts/cifswitch/
 - Palo Alto Networks CVE-2026-0257 PAN-OS GlobalProtect advisory: https://security.paloaltonetworks.com/CVE-2026-0257
 - CISA Known Exploited Vulnerabilities catalog entry for CVE-2026-0257: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 - Ammar Askar GitHub token stealing via VS Code / github.dev writeup: https://blog.ammaraskar.com/github-token-stealing/
