@@ -12,9 +12,10 @@ const LOCKFILES = new Set([
 const PYTHON_DEPENDENCY_FILES = new Set(["requirements.txt", "pyproject.toml", "uv.lock", "Pipfile.lock"]);
 const COMPOSER_DEPENDENCY_FILES = new Set(["composer.json", "composer.lock"]);
 const PACKAGE_MANIFEST = "package.json";
-const TOOL_CONFIG_FILES = new Set(["settings.json", "settings.local.json", "tasks.json"]);
+const TOOL_CONFIG_FILES = new Set(["settings.json", "settings.local.json", "tasks.json", "extensions.json"]);
 const JAVASCRIPT_SOURCE_EXTENSIONS = new Set([".js", ".cjs", ".mjs"]);
 const WEB_SOURCE_EXTENSIONS = new Set([".html", ".htm"]);
+const NOTEBOOK_SOURCE_EXTENSIONS = new Set([".ipynb"]);
 const PHP_SOURCE_EXTENSIONS = new Set([".php"]);
 const SHELL_SOURCE_EXTENSIONS = new Set([".sh", ".bash", ".zsh"]);
 const SHADOWABLE_TOOL_NAMES = new Set(["ssh", "git", "npm", "node", "python", "powershell", "gh", "claude", "codex", "composer", "pnpm", "yarn"]);
@@ -136,6 +137,11 @@ function scanTarget(targetPath, options = {}) {
 
     if (isWebSourceFile(filePath)) {
       scanWebSourceFile(filePath, advisory, findings);
+      return;
+    }
+
+    if (isNotebookSourceFile(filePath)) {
+      scanNotebookSourceFile(filePath, advisory, findings);
       return;
     }
 
@@ -615,6 +621,18 @@ function scanWebSourceFile(filePath, advisory, findings) {
   scanIndicatorStrings(filePath, text, advisory, findings, "Web source file");
 }
 
+function scanNotebookSourceFile(filePath, advisory, findings) {
+  let text;
+  try {
+    text = fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    findings.push(finding("low", "read-error", filePath, `Could not read notebook file: ${error.message}`));
+    return;
+  }
+
+  scanIndicatorStrings(filePath, text, advisory, findings, "Notebook file");
+}
+
 function scanPhpSourceFile(filePath, advisory, findings) {
   let text;
   try {
@@ -715,6 +733,10 @@ function isJavaScriptSourceFile(filePath) {
 
 function isWebSourceFile(filePath) {
   return WEB_SOURCE_EXTENSIONS.has(path.extname(filePath));
+}
+
+function isNotebookSourceFile(filePath) {
+  return NOTEBOOK_SOURCE_EXTENSIONS.has(path.extname(filePath));
 }
 
 function isPhpSourceFile(filePath) {

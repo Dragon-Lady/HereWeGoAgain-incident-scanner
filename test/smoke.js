@@ -347,6 +347,35 @@ try {
   fs.rmSync(tmpPanOsRoot, { recursive: true, force: true });
 }
 
+const tmpVsCodeGithubDevRoot = fs.mkdtempSync(path.join(__dirname, "tmp-vscode-githubdev-"));
+try {
+  fs.mkdirSync(path.join(tmpVsCodeGithubDevRoot, ".vscode"), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmpVsCodeGithubDevRoot, ".vscode", "extensions.json"),
+    JSON.stringify({ recommendations: ["AmmarTest.hello-ammar-github"] }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpVsCodeGithubDevRoot, "README.ipynb"),
+    JSON.stringify({
+      cells: [{
+        cell_type: "markdown",
+        source: [
+          "github-dev-token-steal-poc\n",
+          "workbench.extensions.installExtension\n",
+          "skipPublisherTrust\n"
+        ]
+      }]
+    }, null, 2)
+  );
+  const vscodeGithubDevReview = scanTarget(tmpVsCodeGithubDevRoot);
+  assert.strictEqual(vscodeGithubDevReview.risk, "possible-exposure");
+  assert(vscodeGithubDevReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("AmmarTest.hello-ammar-github")));
+  assert(vscodeGithubDevReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("github-dev-token-steal-poc")));
+  assert(vscodeGithubDevReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("skipPublisherTrust")));
+} finally {
+  fs.rmSync(tmpVsCodeGithubDevRoot, { recursive: true, force: true });
+}
+
 const tmpAntvRoot = fs.mkdtempSync(path.join(__dirname, "tmp-antv-"));
 try {
   fs.writeFileSync(

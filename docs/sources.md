@@ -45,9 +45,11 @@
 - NVD CVE-2026-46300 record: https://nvd.nist.gov/vuln/detail/CVE-2026-46300
 - Palo Alto Networks CVE-2026-0257 PAN-OS GlobalProtect advisory: https://security.paloaltonetworks.com/CVE-2026-0257
 - CISA Known Exploited Vulnerabilities catalog entry for CVE-2026-0257: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+- Ammar Askar GitHub token stealing via VS Code / github.dev writeup: https://blog.ammaraskar.com/github-token-stealing/
 
-These Windows, Linux, and network-edge disclosure links are retained primarily
-for manual context. They are not Mini Shai-Hulud package indicators.
+These Windows, Linux, network-edge, and developer-toolchain disclosure links are
+retained primarily for manual context. They are not Mini Shai-Hulud package
+indicators.
 
 This project intentionally avoids publishing exploit reproduction steps or
 malware execution guidance.

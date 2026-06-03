@@ -158,7 +158,12 @@
     "CVE-2026-0257",
     "PAN-OS GlobalProtect",
     "GlobalProtect Authentication Bypass",
-    "unauthorized VPN connection"
+    "unauthorized VPN connection",
+    "github-dev-token-steal-poc",
+    "vscode-github-token-grab-extension",
+    "AmmarTest.hello-ammar-github",
+    "workbench.extensions.installExtension",
+    "skipPublisherTrust"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [

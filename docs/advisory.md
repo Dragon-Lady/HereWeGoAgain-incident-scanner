@@ -137,6 +137,13 @@ a package supply-chain indicator, but copied incident notes mentioning the CVE,
 PAN-OS GlobalProtect auth bypass, or unauthorized VPN connection language should
 prompt review of VPN exposure, patch state, and authentication logs.
 
+Ammar Askar's June 2, 2026 GitHub token-stealing writeup for `github.dev` /
+VS Code webview behavior is retained as developer-toolchain defensive triage
+context. This scanner flags high-signal copied PoC markers in VS Code extension
+recommendation/config files, local extension manifests, JavaScript files, and
+notebooks; findings should prompt review of `github.dev` browser state and
+GitHub token exposure.
+
 The key local indicators used by this project are:
 
 - `@tanstack/setup`
@@ -199,6 +206,10 @@ The key local indicators used by this project are:
 - Palo Alto Networks PAN-OS GlobalProtect defensive triage markers:
   `CVE-2026-0257`, `PAN-OS GlobalProtect`,
   `GlobalProtect Authentication Bypass`, and `unauthorized VPN connection`
+- VS Code / `github.dev` GitHub token-stealing PoC markers:
+  `github-dev-token-steal-poc`, `vscode-github-token-grab-extension`,
+  `AmmarTest.hello-ammar-github`, `workbench.extensions.installExtension`, and
+  `skipPublisherTrust`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer

@@ -120,6 +120,12 @@ catalog on May 29, 2026 after observed exploitation. This is not a package
 supply-chain indicator, but the scanner flags copied incident notes mentioning
 the CVE, PAN-OS GlobalProtect auth bypass, or unauthorized VPN connection
 language as defensive triage context.
+Ammar Askar's June 2, 2026 writeup describes a GitHub token-stealing path
+through `github.dev` / VS Code webview and local workspace extension behavior.
+The scanner flags high-signal copied PoC markers in `.vscode/extensions.json`,
+local extension manifests, JavaScript files, and notebooks. These markers should
+prompt review of GitHub token exposure and clearing/revoking affected
+`github.dev` browser state where appropriate.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -207,6 +213,11 @@ developers, security teams, and CI logs.
 - Palo Alto Networks PAN-OS GlobalProtect `CVE-2026-0257` defensive triage
   markers, including `PAN-OS GlobalProtect`,
   `GlobalProtect Authentication Bypass`, and `unauthorized VPN connection`
+- VS Code / `github.dev` GitHub token-stealing PoC markers, including
+  `github-dev-token-steal-poc`, `vscode-github-token-grab-extension`,
+  `AmmarTest.hello-ammar-github`, `workbench.extensions.installExtension`, and
+  `skipPublisherTrust`
+- `.vscode/extensions.json` and `.ipynb` notebooks for exact incident strings
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions
@@ -279,6 +290,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
 - Palo Alto Networks CVE-2026-0257 advisory: https://security.paloaltonetworks.com/CVE-2026-0257
 - CISA KEV catalog entry for CVE-2026-0257: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+- Ammar Askar GitHub token stealing via VS Code / github.dev writeup: https://blog.ammaraskar.com/github-token-stealing/
 
 ## License
 
