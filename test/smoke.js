@@ -329,6 +329,24 @@ try {
   fs.rmSync(tmpCodexUiRoot, { recursive: true, force: true });
 }
 
+const tmpPanOsRoot = fs.mkdtempSync(path.join(__dirname, "tmp-panos-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpPanOsRoot, "edge-device-note.js"),
+    [
+      "CISA KEV watch item:",
+      "CVE-2026-0257 PAN-OS GlobalProtect Authentication Bypass",
+      "Review VPN logs for unauthorized VPN connection activity."
+    ].join("\n")
+  );
+  const panOsReview = scanTarget(tmpPanOsRoot);
+  assert.strictEqual(panOsReview.risk, "possible-exposure");
+  assert(panOsReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("CVE-2026-0257")));
+  assert(panOsReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("PAN-OS GlobalProtect")));
+} finally {
+  fs.rmSync(tmpPanOsRoot, { recursive: true, force: true });
+}
+
 const tmpAntvRoot = fs.mkdtempSync(path.join(__dirname, "tmp-antv-"));
 try {
   fs.writeFileSync(

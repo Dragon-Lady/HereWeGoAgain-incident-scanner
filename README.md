@@ -115,6 +115,11 @@ authentication data from `~/.codex/auth.json` or `$CODEX_HOME/auth.json` to
 versions as critical and flags related fake-Sentry, Android app, and Codex auth
 path indicators when they appear in local source, lockfiles, copied notes, or
 incident evidence.
+CISA added Palo Alto Networks PAN-OS GlobalProtect `CVE-2026-0257` to the KEV
+catalog on May 29, 2026 after observed exploitation. This is not a package
+supply-chain indicator, but the scanner flags copied incident notes mentioning
+the CVE, PAN-OS GlobalProtect auth bypass, or unauthorized VPN connection
+language as defensive triage context.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -199,6 +204,9 @@ developers, security teams, and CI logs.
   Codex `auth.json` path strings, `anyclaw2026`, `OpenClaw Codex Claude AI
   Agent`, `gptos.intelligence.assistant`, `app.anyclaw.*`,
   `rootfs.tar.zst.bin`, and `anyclaw://auth/codex-callback`
+- Palo Alto Networks PAN-OS GlobalProtect `CVE-2026-0257` defensive triage
+  markers, including `PAN-OS GlobalProtect`,
+  `GlobalProtect Authentication Bypass`, and `unauthorized VPN connection`
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions
@@ -269,6 +277,8 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - The Hacker News Codex authentication token theft coverage: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
+- Palo Alto Networks CVE-2026-0257 advisory: https://security.paloaltonetworks.com/CVE-2026-0257
+- CISA KEV catalog entry for CVE-2026-0257: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 
 ## License
 

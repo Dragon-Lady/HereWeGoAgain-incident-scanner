@@ -131,6 +131,12 @@ systems, `rxrpc` modules. Track it for Linux developer workstations, CI
 runners, container build farms, and multi-tenant hosts where a package payload
 or untrusted local user could chain local code execution into root.
 
+CISA's May 29, 2026 KEV addition for Palo Alto Networks PAN-OS GlobalProtect
+`CVE-2026-0257` is retained as network-edge defensive triage context. It is not
+a package supply-chain indicator, but copied incident notes mentioning the CVE,
+PAN-OS GlobalProtect auth bypass, or unauthorized VPN connection language should
+prompt review of VPN exposure, patch state, and authentication logs.
+
 The key local indicators used by this project are:
 
 - `@tanstack/setup`
@@ -190,6 +196,9 @@ The key local indicators used by this project are:
 - ClickFix/staticcloudflare indicators: `staticcloudflare.pro`,
   `staticcloudflare[.]pro`, `https://staticcloudflare.pro/api/css.js`,
   `sj.ssc/ipa/orp.eralfduolccitats`, and `ClickFix`
+- Palo Alto Networks PAN-OS GlobalProtect defensive triage markers:
+  `CVE-2026-0257`, `PAN-OS GlobalProtect`,
+  `GlobalProtect Authentication Bypass`, and `unauthorized VPN connection`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer

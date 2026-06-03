@@ -43,9 +43,11 @@
 - Zero Day Initiative May 2026 security update review: https://www.zerodayinitiative.com/blog/2026/5/12/the-may-2026-security-update-review
 - AlmaLinux Fragnesia / CVE-2026-46300 disclosure: https://almalinux.org/blog/2026-05-13-fragnesia-cve-2026-46300/
 - NVD CVE-2026-46300 record: https://nvd.nist.gov/vuln/detail/CVE-2026-46300
+- Palo Alto Networks CVE-2026-0257 PAN-OS GlobalProtect advisory: https://security.paloaltonetworks.com/CVE-2026-0257
+- CISA Known Exploited Vulnerabilities catalog entry for CVE-2026-0257: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 
-These Windows and Linux disclosure links are retained only for manual context.
-They are not Mini Shai-Hulud scanner indicators.
+These Windows, Linux, and network-edge disclosure links are retained primarily
+for manual context. They are not Mini Shai-Hulud package indicators.
 
 This project intentionally avoids publishing exploit reproduction steps or
 malware execution guidance.
