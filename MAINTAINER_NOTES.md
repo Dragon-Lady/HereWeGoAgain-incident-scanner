@@ -99,6 +99,12 @@ review prompt even when the exact package/version is not yet encoded.
   rules unless a confirmed Here We Go Again/Mini Shai-Hulud payload starts
   using this CVE or leaves concrete package, file/hash, network, or persistence
   IOCs.
+- 2026-06-03: JFrog Security Research published IronWorm / "Shai-Hulud's
+  rustier cousin" IoCs for compromised asteroiddao/WeaveDB npm packages. This
+  is scanner material because it includes exact npm package/version indicators
+  and high-signal local strings such as `preinstall: ./tools/setup`,
+  `IronWorm`, forged automation-style commit messages, `toJSON(secrets)`, and
+  `format-results.txt`.
 
 ## Fast Update Flow
 

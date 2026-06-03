@@ -117,6 +117,7 @@
   "campaignIndicators": [
     "A Mini Shai-Hulud has Appeared",
     "Shai-Hulud: Here We Go Again",
+    "IronWorm",
     "niagA oG eW ereH :duluH-iahS",
     "niaga og ew ereh :duluh-iahs",
     "results/results-",
@@ -175,7 +176,21 @@
     "envs.txt",
     "nt-<hash>",
     "dns.Resolver",
-    "atiertant"
+    "atiertant",
+    "./tools/setup",
+    "tools/setup",
+    ".github/scripts/precheck",
+    "fix: resolve lint warnings",
+    "test: add missing edge case",
+    "ci: update workflow configuration",
+    "fix: address review feedback",
+    "docs: update contributing guide",
+    "chore: sync lockfile",
+    "fix: handle null pointer case",
+    "build: bump patch version",
+    "chore: update dependencies",
+    "format-results.txt",
+    "toJSON(secrets)"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [

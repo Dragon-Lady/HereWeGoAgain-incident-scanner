@@ -269,6 +269,54 @@ try {
   fs.rmSync(tmpMoikaRoot, { recursive: true, force: true });
 }
 
+const tmpIronWormRoot = fs.mkdtempSync(path.join(__dirname, "tmp-ironworm-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpIronWormRoot, "package.json"),
+    JSON.stringify({
+      dependencies: {
+        "weavedb-sdk": "0.45.3",
+        "arnext": "0.1.5"
+      },
+      scripts: {
+        preinstall: "./tools/setup"
+      }
+    }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpIronWormRoot, "package-lock.json"),
+    JSON.stringify({
+      packages: {
+        "node_modules/weavedb-lite": { version: "0.1.1" }
+      }
+    })
+  );
+  fs.mkdirSync(path.join(tmpIronWormRoot, ".github", "workflows"), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmpIronWormRoot, ".github", "workflows", "format.yml"),
+    [
+      "name: format",
+      "jobs:",
+      "  check:",
+      "    runs-on: ubuntu-latest",
+      "    env:",
+      "      VARIABLE_STORE: ${{ toJSON(secrets) }}",
+      "    steps:",
+      "      - run: echo \"$VARIABLE_STORE\" > format-results.txt",
+      "      - run: echo 'fix: resolve lint warnings IronWorm .github/scripts/precheck'"
+    ].join("\n")
+  );
+  const ironWormCompromised = scanTarget(tmpIronWormRoot);
+  assert.strictEqual(ironWormCompromised.risk, "likely-exposed");
+  assert(ironWormCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("weavedb-sdk")));
+  assert(ironWormCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("weavedb-lite")));
+  assert(ironWormCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("./tools/setup")));
+  assert(ironWormCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("format-results.txt")));
+  assert(ironWormCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("toJSON(secrets)")));
+} finally {
+  fs.rmSync(tmpIronWormRoot, { recursive: true, force: true });
+}
+
 const tmpUiPathRoot = fs.mkdtempSync(path.join(__dirname, "tmp-uipath-"));
 try {
   fs.writeFileSync(

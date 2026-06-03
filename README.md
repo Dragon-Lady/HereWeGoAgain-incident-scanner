@@ -137,6 +137,12 @@ A June 3 operator-provided package table added exact npm package/version
 indicators for the Moika follow-up cluster under `@ccrm/*` and `@emcd-vue/*`.
 The scanner treats those exact versions as critical package indicators and warns
 on those namespaces while the campaign context is active.
+JFrog's June 3 IronWorm report describes compromised asteroiddao/WeaveDB npm
+packages that shipped a Linux ELF payload at `tools/setup` and executed it with
+`preinstall: ./tools/setup`. The scanner treats JFrog's exact npm
+package/version IoCs as critical indicators and flags local IronWorm install
+hook, forged commit-message, and GitHub Actions secret-artifact markers when
+they appear in source, manifests, lockfiles, or copied incident notes.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -235,6 +241,10 @@ developers, security teams, and CI logs.
 - Moika follow-up npm indicators, including exact `@ccrm/*` version `5.0.1`
   package entries and `@emcd-vue/auth@6.4.9`, `@emcd-vue/b2b-pay-form@5.7.4`,
   and `@emcd-vue/loans@7.1.8`
+- IronWorm npm indicators from JFrog's June 3 report, including exact
+  asteroiddao/WeaveDB package versions, `IronWorm`, `./tools/setup`,
+  `.github/scripts/precheck`, forged automation-style commit messages, and
+  GitHub Actions `toJSON(secrets)` / `format-results.txt` artifact markers
 - `.vscode/extensions.json` and `.ipynb` notebooks for exact incident strings
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
@@ -307,6 +317,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
+- JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
 - Palo Alto Networks CVE-2026-0257 advisory: https://security.paloaltonetworks.com/CVE-2026-0257
 - CISA KEV catalog entry for CVE-2026-0257: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 - Ammar Askar GitHub token stealing via VS Code / github.dev writeup: https://blog.ammaraskar.com/github-token-stealing/

@@ -167,6 +167,16 @@ package/version indicators for a Moika follow-up cluster under `@ccrm/*` and
 package indicators and warns on those namespaces while the campaign context is
 active.
 
+JFrog's June 3, 2026 IronWorm report describes a related self-replicating
+developer supply-chain attack against asteroiddao/WeaveDB npm packages. The
+observed npm payload path was a Linux ELF binary at `tools/setup`, executed
+through `preinstall: ./tools/setup`; JFrog also described forged/backdated
+commits attributed to `claude <claude@users.noreply.github.com>` and a possible
+GitHub Actions secret-artifact path using `toJSON(secrets)` and
+`format-results.txt`. This scanner treats JFrog's exact npm package/version
+IoCs as critical indicators and keeps the install-hook/workflow strings as
+source and incident-note indicators.
+
 The key local indicators used by this project are:
 
 - `@tanstack/setup`
@@ -239,6 +249,10 @@ The key local indicators used by this project are:
   `atlantis-software.net`, and `sh.azurestaticprovider.net`
 - Moika follow-up npm indicators for exact `@ccrm/*` and `@emcd-vue/*`
   package/version pairs
+- IronWorm indicators from JFrog's June 3 report: exact asteroiddao/WeaveDB npm
+  package/version pairs, `IronWorm`, `./tools/setup`,
+  `.github/scripts/precheck`, automation-style forged commit messages,
+  `toJSON(secrets)`, and `format-results.txt`
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer

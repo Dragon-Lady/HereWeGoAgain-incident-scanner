@@ -954,6 +954,117 @@
   "@emcd-vue/loans": [
     "7.1.8"
   ],
+  "weavedb-lite": [
+    "0.1.1"
+  ],
+  "weavedb-sdk-base": [
+    "0.21.1"
+  ],
+  "test-weavedb-sdk": [
+    "1.1.1"
+  ],
+  "weavedb-warp-contracts-plugin-deploy": [
+    "1.0.11"
+  ],
+  "arnext-arkb": [
+    "0.0.2"
+  ],
+  "weavedb-console": [
+    "0.2.1"
+  ],
+  "arnext": [
+    "0.1.5"
+  ],
+  "roidjs": [
+    "0.1.7"
+  ],
+  "weavedb-exm-sdk": [
+    "0.7.4"
+  ],
+  "create-arnext-app": [
+    "0.0.10"
+  ],
+  "weavedb-tools": [
+    "0.45.3"
+  ],
+  "wdb-core": [
+    "0.1.2"
+  ],
+  "cwao-tools": [
+    "0.3.1"
+  ],
+  "test-ajs": [
+    "0.1.19"
+  ],
+  "monade": [
+    "0.0.7"
+  ],
+  "weavedb-exm-sdk-web": [
+    "0.7.4"
+  ],
+  "testnpmnmp": [
+    "1.0.21"
+  ],
+  "warp-contracts-plugin-deploy-test": [
+    "3.0.1"
+  ],
+  "wdb-cli": [
+    "0.1.1"
+  ],
+  "ai3": [
+    "0.3.5"
+  ],
+  "cwao-units": [
+    "0.8.3"
+  ],
+  "atomic-notes": [
+    "0.5.3"
+  ],
+  "cwao": [
+    "0.5.6"
+  ],
+  "weavedb-client": [
+    "0.45.3"
+  ],
+  "wdb-sdk": [
+    "0.1.2"
+  ],
+  "weavedb-offchain": [
+    "0.45.4"
+  ],
+  "fpjson-lang": [
+    "0.1.7"
+  ],
+  "weavedb-contracts": [
+    "0.45.2"
+  ],
+  "weavedb-node-client": [
+    "0.45.3"
+  ],
+  "arjson": [
+    "0.1.4"
+  ],
+  "hbsig": [
+    "0.3.2"
+  ],
+  "zkjson": [
+    "0.8.5"
+  ],
+  "aonote": [
+    "0.11.1"
+  ],
+  "weavedb-base": [
+    "0.45.3"
+  ],
+  "weavedb-sdk-node": [
+    "0.45.3"
+  ],
+  "wao": [
+    "0.41.2"
+  ],
+  "weavedb-sdk": [
+    "0.45.3"
+  ],
   "mbt": [
     "1.2.48"
   ],
