@@ -1110,6 +1110,9 @@
   "@uipath/solutionpackager-tool-core": [
     "0.0.34"
   ],
+  "@evolvconsulting/evolv-coder-lite": [
+    "1.2.0"
+  ],
   "@jagreehal/workflow": [
     "1.16.1"
   ],
@@ -1475,6 +1478,9 @@
     "6.1.1",
     "7.0.3",
     "8.3.3"
+  ],
+  "http-uploader-dev": [
+    "1.0.7"
   ],
   "mountly": [
     "0.2.2"

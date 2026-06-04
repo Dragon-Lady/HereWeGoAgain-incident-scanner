@@ -149,6 +149,10 @@ execution path through root `binding.gyp` files. The scanner now treats JFrog's
 additional exact npm package/version IoCs as critical indicators and flags
 `node-gyp` command expansion through `<!(...)`, especially when it invokes
 `node`, `bun`, shell/network tools, temp-file payloads, or silent redirects.
+OX's June 4 Miasma return report confirms the same `binding.gyp` pivot, reports
+57 affected npm packages / 647K monthly downloads, adds two non-Red-Hat exact
+package/version IoCs, and documents the updated repository marker
+`Miasma – The Spreading Blight`.
 Flatt Security's June 1 Claude Code GitHub Action research, later covered by
 The Hacker News, describes a GitHub App actor bypass in agent mode and risky
 `allowed_non_write_users` workflow configurations that could expose OIDC token
@@ -232,7 +236,8 @@ developers, security teams, and CI logs.
   namespace review warning
 - OX Red Hat / Miasma follow-up indicators, including
   `Miasma: The Spreading Blight`,
-  `Miasma : The Spreading Blight`, `api.anthropic.com/v1/api`,
+  `Miasma : The Spreading Blight`, `Miasma – The Spreading Blight`,
+  `api.anthropic.com/v1/api`,
   `firedalazer`, `IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner`,
   `letsgo0/sayyadina-phibian-159`, kitty-monitor persistence strings, Bun
   staging markers, and JFrog's `binding.gyp` command-expansion package set
@@ -341,6 +346,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - The Hacker News Codex authentication token theft coverage: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
+- OX Miasma return / `binding.gyp` npm package expansion: https://www.ox.security/blog/600000-monthly-downloads-affected-miasma-supply-chain-attack-is-back-on-npm/
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
 - Palo Alto Networks CVE-2026-0257 advisory: https://security.paloaltonetworks.com/CVE-2026-0257

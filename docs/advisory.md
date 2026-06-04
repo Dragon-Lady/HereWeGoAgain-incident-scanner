@@ -188,6 +188,13 @@ package indicators and flags local `binding.gyp` command expansion for manual
 review, with higher severity when the expansion launches `node`, `bun`,
 network/shell tools, temp payload paths, or silent redirects.
 
+OX's June 4, 2026 Miasma return report confirms the same `binding.gyp`
+execution pivot, reports 57 affected npm packages with roughly 647K monthly
+downloads, and adds the updated GitHub repository marker
+`Miasma – The Spreading Blight`. This scanner treats OX's additional exact
+package/version entries as critical npm indicators and keeps the dash-variant
+marker alongside the earlier colon variants.
+
 Flatt Security's June 1, 2026 Claude Code GitHub Action research described a
 GitHub App actor bypass in agent mode and a common risky
 `allowed_non_write_users` configuration in issue-triage workflows. The attack

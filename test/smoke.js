@@ -359,6 +359,7 @@ try {
     [
       "const desc = 'Miasma: The Spreading Blight';",
       "const stageDesc = 'Miasma : The Spreading Blight';",
+      "const updatedDesc = 'Miasma – The Spreading Blight';",
       "const decoy = 'https://api.anthropic.com/v1/messages';",
       "const threat = 'IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner';",
       "const marker = 'firedalazer';",
@@ -372,6 +373,7 @@ try {
   assert(redHatCompromised.findings.some((finding) => finding.type === "workflow-indicator" && finding.message.includes("OIDC_PACKAGES")));
   assert(redHatCompromised.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("api.anthropic.com")));
   assert(redHatCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Miasma : The Spreading Blight")));
+  assert(redHatCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Miasma – The Spreading Blight")));
   assert(redHatCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("firedalazer")));
   assert(redHatCompromised.findings.some((finding) => finding.type === "workflow-token-surface"));
 } finally {
@@ -385,7 +387,9 @@ try {
     JSON.stringify({
       dependencies: {
         "@redhat-cloud-services/vulnerabilities-client": "2.1.11",
-        "ai-sdk-ollama": "3.8.5"
+        "ai-sdk-ollama": "3.8.5",
+        "@evolvconsulting/evolv-coder-lite": "1.2.0",
+        "http-uploader-dev": "1.0.7"
       }
     }, null, 2)
   );
@@ -422,6 +426,8 @@ try {
   assert.strictEqual(redHatBindingGypCompromised.risk, "likely-exposed");
   assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("vulnerabilities-client")));
   assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("ai-sdk-ollama")));
+  assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("@evolvconsulting/evolv-coder-lite")));
+  assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("http-uploader-dev")));
   assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("@redhat-cloud-services/chrome@2.3.4")));
   assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("autotel-mcp@28.0.3")));
   assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "binding-gyp-command-execution"));

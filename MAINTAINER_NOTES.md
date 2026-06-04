@@ -111,6 +111,11 @@ review prompt even when the exact package/version is not yet encoded.
   expansion. This is scanner material because it includes exact npm
   package/version IoCs and local package-file behavior that can execute before
   ordinary `package.json` lifecycle-script checks fire.
+- 2026-06-04: OX Security published a Miasma return report naming 57 affected
+  npm packages, roughly 647K monthly downloads, the same `binding.gyp`
+  execution pivot, and the exact `Miasma – The Spreading Blight` repository
+  marker. This is scanner material because it adds exact package/version IoCs
+  and a high-signal local marker variant.
 - 2026-06-04: Flatt Security / The Hacker News described Claude Code GitHub
   Action risk from GitHub App actor bypasses, risky `allowed_non_write_users`
   settings, OIDC token request credentials, and GitHub MCP issue read/update
