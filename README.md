@@ -153,6 +153,9 @@ OX's June 4 Miasma return report confirms the same `binding.gyp` pivot, reports
 57 affected npm packages / 647K monthly downloads, adds two non-Red-Hat exact
 package/version IoCs, and documents the updated repository marker
 `Miasma – The Spreading Blight`.
+OX's June 4 Malware-Slop 2 report describes `cms-store-ren`, a malicious npm
+infostealer affecting all observed versions, with Telegram Bot API exfiltration,
+a leaked actor bot token, and hidden PowerShell second-stage execution.
 Flatt Security's June 1 Claude Code GitHub Action research, later covered by
 The Hacker News, describes a GitHub App actor bypass in agent mode and risky
 `allowed_non_write_users` workflow configurations that could expose OIDC token
@@ -241,6 +244,10 @@ developers, security teams, and CI logs.
   `firedalazer`, `IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner`,
   `letsgo0/sayyadina-phibian-159`, kitty-monitor persistence strings, Bun
   staging markers, and JFrog's `binding.gyp` command-expansion package set
+- OX Malware-Slop 2 npm indicators, including `cms-store-ren` all-version
+  package detection, `api.telegram.org/bot`, `ebalvsehvrot10raz_bot`,
+  `amaturesequoyah`, `BREVNA LETYAT`, the reported exfiltration group ID, and
+  hidden PowerShell launch flags
 - Claude Code GitHub Action workflow-risk indicators, including
   `anthropics/claude-code-action`, `allowed_non_write_users`,
   `id-token: write`, `ACTIONS_ID_TOKEN_REQUEST_TOKEN`,
@@ -347,6 +354,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
 - OX Miasma return / `binding.gyp` npm package expansion: https://www.ox.security/blog/600000-monthly-downloads-affected-miasma-supply-chain-attack-is-back-on-npm/
+- OX Malware-Slop 2 `cms-store-ren` npm / Telegram exfiltration report: https://www.ox.security/blog/malware-slop-2-malicious-npm-package-leaks-its-own-bots-telegram-private-token/
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
 - Palo Alto Networks CVE-2026-0257 advisory: https://security.paloaltonetworks.com/CVE-2026-0257

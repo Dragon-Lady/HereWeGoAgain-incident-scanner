@@ -116,6 +116,11 @@ review prompt even when the exact package/version is not yet encoded.
   execution pivot, and the exact `Miasma – The Spreading Blight` repository
   marker. This is scanner material because it adds exact package/version IoCs
   and a high-signal local marker variant.
+- 2026-06-04: OX Security published Malware-Slop 2 reporting for
+  `cms-store-ren`, a malicious npm infostealer affecting all observed versions
+  with Telegram Bot API exfiltration, leaked actor bot/account markers, and
+  hidden PowerShell execution flags. This is scanner material because it has a
+  concrete npm package indicator and high-signal local strings.
 - 2026-06-04: Flatt Security / The Hacker News described Claude Code GitHub
   Action risk from GitHub App actor bypasses, risky `allowed_non_write_users`
   settings, OIDC token request credentials, and GitHub MCP issue read/update

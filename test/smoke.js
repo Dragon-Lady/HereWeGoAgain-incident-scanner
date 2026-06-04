@@ -472,6 +472,43 @@ try {
   fs.rmSync(tmpCodexUiRoot, { recursive: true, force: true });
 }
 
+const tmpMalwareSlop2Root = fs.mkdtempSync(path.join(__dirname, "tmp-malware-slop2-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpMalwareSlop2Root, "package.json"),
+    JSON.stringify({ dependencies: { "cms-store-ren": "^1.0.0" } }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpMalwareSlop2Root, "package-lock.json"),
+    JSON.stringify({
+      packages: {
+        "node_modules/cms-store-ren": { version: "1.0.0" }
+      }
+    })
+  );
+  fs.writeFileSync(
+    path.join(tmpMalwareSlop2Root, "incident-note.js"),
+    [
+      "const family = 'Malware-Slop';",
+      "const bot = 'https://api.telegram.org/bot<redacted>/sendMessage';",
+      "const actorBot = 'ebalvsehvrot10raz_bot';",
+      "const actor = 'amaturesequoyah';",
+      "const chat = '-1003760655724';",
+      "const group = 'BREVNA LETYAT';",
+      "const ps = '-WindowStyle Hidden -ExecutionPolicy Bypass';"
+    ].join("\n")
+  );
+  const malwareSlop2Compromised = scanTarget(tmpMalwareSlop2Root);
+  assert.strictEqual(malwareSlop2Compromised.risk, "likely-exposed");
+  assert(malwareSlop2Compromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("cms-store-ren")));
+  assert(malwareSlop2Compromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("cms-store-ren")));
+  assert(malwareSlop2Compromised.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("api.telegram.org/bot")));
+  assert(malwareSlop2Compromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("BREVNA LETYAT")));
+  assert(malwareSlop2Compromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("-ExecutionPolicy Bypass")));
+} finally {
+  fs.rmSync(tmpMalwareSlop2Root, { recursive: true, force: true });
+}
+
 const tmpPanOsRoot = fs.mkdtempSync(path.join(__dirname, "tmp-panos-"));
 try {
   fs.writeFileSync(

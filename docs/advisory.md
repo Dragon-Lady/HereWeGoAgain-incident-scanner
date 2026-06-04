@@ -195,6 +195,16 @@ downloads, and adds the updated GitHub repository marker
 package/version entries as critical npm indicators and keeps the dash-variant
 marker alongside the earlier colon variants.
 
+OX's June 4, 2026 Malware-Slop 2 report describes `cms-store-ren`, a malicious
+npm JavaScript infostealer reported as affecting all versions. OX describes
+basic host telemetry and data exfiltration over the Telegram Bot API, hidden
+PowerShell second-stage execution using `-WindowStyle Hidden` and
+`-ExecutionPolicy Bypass`, and actor/operator markers including
+`ebalvsehvrot10raz_bot`, `amaturesequoyah`, and `BREVNA LETYAT`. This scanner
+treats any `cms-store-ren` package reference as a critical npm indicator and
+flags copied local notes/source containing the high-signal Telegram and
+PowerShell markers.
+
 Flatt Security's June 1, 2026 Claude Code GitHub Action research described a
 GitHub App actor bypass in agent mode and a common risky
 `allowed_non_write_users` configuration in issue-triage workflows. The attack
