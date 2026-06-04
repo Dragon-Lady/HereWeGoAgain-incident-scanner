@@ -177,6 +177,17 @@ GitHub Actions secret-artifact path using `toJSON(secrets)` and
 IoCs as critical indicators and keeps the install-hook/workflow strings as
 source and incident-note indicators.
 
+JFrog's June 4, 2026 Red Hat / Miasma update expanded the affected
+`@redhat-cloud-services/*` versions and documented an alternate install-time
+execution path through `binding.gyp`. In that path, npm can fall back to
+`node-gyp rebuild`; `node-gyp` command expansion syntax such as `<!(node
+index.js > /dev/null 2>&1 && echo stub.c)` can execute an installer during
+package configuration even when `package.json` has no explicit lifecycle hook.
+This scanner treats JFrog's exact affected package/version entries as critical
+package indicators and flags local `binding.gyp` command expansion for manual
+review, with higher severity when the expansion launches `node`, `bun`,
+network/shell tools, temp payload paths, or silent redirects.
+
 The key local indicators used by this project are:
 
 - `@tanstack/setup`

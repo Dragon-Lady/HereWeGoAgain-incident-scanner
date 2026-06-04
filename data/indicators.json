@@ -17,7 +17,12 @@
     "pgsql-monitor.service",
     "gh-token-monitor.sh",
     "gh-token-monitor.service",
-    "com.user.gh-token-monitor.plist"
+    "com.user.gh-token-monitor.plist",
+    "cat.py",
+    "kitty-monitor.service",
+    "com.user.kitty-monitor.plist",
+    "setup.mjs",
+    "_index.js"
   ],
   "payloadFileHashes": {
     "router_init.js": [
@@ -72,6 +77,9 @@
     "sentry.anyclaw.store/startlog",
     "https://sentry.anyclaw.store/startlog",
     "api.anthropic.com",
+    "api.anthropic.com/v1/api",
+    "https://api.anthropic.com/v1/api",
+    "api.github.com/search/commits?q=firedalazer",
     "raw.githubusercontent.com/letsgo0/sayyadina-phibian-159",
     "raw[.]githubusercontent[.]com/letsgo0/sayyadina-phibian-159",
     "letsgo0/sayyadina-phibian-159",
@@ -112,7 +120,13 @@
     "OIDC_PACKAGES",
     "REPO_ID_SUFFIX",
     "oven-sh/setup-bun",
-    "_index.js"
+    "_index.js",
+    "WORKFLOW_ID",
+    "VARIABLE_STORE",
+    "format-results",
+    "Run Copilot",
+    "bun run _index.js",
+    "bun run $GITHUB_ACTION_PATH/index.js"
   ],
   "campaignIndicators": [
     "A Mini Shai-Hulud has Appeared",
@@ -190,7 +204,22 @@
     "build: bump patch version",
     "chore: update dependencies",
     "format-results.txt",
-    "toJSON(secrets)"
+    "toJSON(secrets)",
+    "binding.gyp",
+    "<!(node index.js",
+    "/tmp/p",
+    "/tmp/.bun_ran",
+    "/var/tmp/.gh_update_state",
+    "~/.local/share/kitty/cat.py",
+    "~/.config/systemd/user/kitty-monitor.service",
+    "~/Library/LaunchAgents/com.user.kitty-monitor.plist",
+    "~/.config/index.js",
+    ".claude/setup.mjs",
+    ".github/setup.js",
+    "node index.js",
+    "bun-v1.3.13",
+    "npm install bun",
+    "curl -fsSL https://bun.sh/install | bash"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [

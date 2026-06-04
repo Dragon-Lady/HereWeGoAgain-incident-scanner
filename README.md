@@ -143,6 +143,12 @@ packages that shipped a Linux ELF payload at `tools/setup` and executed it with
 package/version IoCs as critical indicators and flags local IronWorm install
 hook, forged commit-message, and GitHub Actions secret-artifact markers when
 they appear in source, manifests, lockfiles, or copied incident notes.
+JFrog's June 4 Red Hat / Miasma update expands the exact compromised
+`@redhat-cloud-services/*` version set and describes an evasive install-time
+execution path through root `binding.gyp` files. The scanner now treats JFrog's
+additional exact npm package/version IoCs as critical indicators and flags
+`node-gyp` command expansion through `<!(...)`, especially when it invokes
+`node`, `bun`, shell/network tools, temp-file payloads, or silent redirects.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -219,9 +225,10 @@ developers, security teams, and CI logs.
   namespace review warning
 - OX Red Hat / Miasma follow-up indicators, including
   `Miasma: The Spreading Blight`,
-  `Miasma : The Spreading Blight`, `api.anthropic.com`, `firedalazer`,
-  `IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner`, and
-  `letsgo0/sayyadina-phibian-159`
+  `Miasma : The Spreading Blight`, `api.anthropic.com/v1/api`,
+  `firedalazer`, `IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner`,
+  `letsgo0/sayyadina-phibian-159`, kitty-monitor persistence strings, Bun
+  staging markers, and JFrog's `binding.gyp` command-expansion package set
 - Codex UI token-theft indicators, including compromised `codexui-android`
   versions `0.1.82` through `0.1.125`, `sentry.anyclaw[.]store/startlog`,
   Codex `auth.json` path strings, `anyclaw2026`, `OpenClaw Codex Claude AI
@@ -265,6 +272,9 @@ developers, security teams, and CI logs.
 - Claude Code `.claude/settings*.json` and VS Code `.vscode/tasks.json` config
   references to known payload and campaign indicators
 - Install lifecycle scripts: `preinstall`, `install`, `postinstall`, `prepare`
+- Root `binding.gyp` files that use `node-gyp` command expansion through
+  `<!(...)`, especially when they invoke `node index.js`, `bun`, `curl`, `wget`,
+  shell tools, temp payload paths, or silent redirects
 - GitHub-resolved dependencies in manifests
 
 ## If Indicators Are Found

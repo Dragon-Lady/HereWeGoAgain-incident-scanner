@@ -12,6 +12,7 @@ const LOCKFILES = new Set([
 const PYTHON_DEPENDENCY_FILES = new Set(["requirements.txt", "pyproject.toml", "uv.lock", "Pipfile.lock"]);
 const COMPOSER_DEPENDENCY_FILES = new Set(["composer.json", "composer.lock"]);
 const PACKAGE_MANIFEST = "package.json";
+const NODE_GYP_MANIFEST = "binding.gyp";
 const TOOL_CONFIG_FILES = new Set(["settings.json", "settings.local.json", "tasks.json", "extensions.json"]);
 const JAVASCRIPT_SOURCE_EXTENSIONS = new Set([".js", ".cjs", ".mjs"]);
 const WEB_SOURCE_EXTENSIONS = new Set([".html", ".htm"]);
@@ -96,6 +97,11 @@ function scanTarget(targetPath, options = {}) {
     if (base === PACKAGE_MANIFEST) {
       seen.manifests += 1;
       scanPackageJson(filePath, advisory, findings);
+      return;
+    }
+
+    if (base === NODE_GYP_MANIFEST) {
+      scanNodeGypManifest(filePath, advisory, findings);
       return;
     }
 
@@ -268,6 +274,31 @@ function scanManifestText(filePath, text, advisory, findings) {
   }
 
   scanIndicatorStrings(filePath, text, advisory, findings, "Manifest");
+}
+
+function scanNodeGypManifest(filePath, advisory, findings) {
+  let text;
+  try {
+    text = fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    findings.push(finding("low", "read-error", filePath, `Could not read binding.gyp: ${error.message}`));
+    return;
+  }
+
+  scanIndicatorStrings(filePath, text, advisory, findings, "binding.gyp");
+
+  const commandExpansions = text.match(/<!\([\s\S]*?\)/g) || [];
+  for (const expansion of commandExpansions) {
+    const suspicious =
+      /\b(node|bun|curl|wget|powershell|pwsh|bash|sh|python|python3)\b/i.test(expansion) ||
+      /\/tmp\/|%TEMP%|\.js\b|>\s*\/dev\/null|2>&1/i.test(expansion);
+    findings.push(finding(
+      suspicious ? "high" : "medium",
+      suspicious ? "binding-gyp-command-execution" : "binding-gyp-command-expansion",
+      filePath,
+      `binding.gyp contains node-gyp command expansion ${expansion.slice(0, 180)}${expansion.length > 180 ? "..." : ""}`
+    ));
+  }
 }
 
 function normalizeAdvisory(raw) {

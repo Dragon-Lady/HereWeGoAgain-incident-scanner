@@ -378,6 +378,59 @@ try {
   fs.rmSync(tmpRedHatRoot, { recursive: true, force: true });
 }
 
+const tmpRedHatBindingGypRoot = fs.mkdtempSync(path.join(__dirname, "tmp-redhat-binding-gyp-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpRedHatBindingGypRoot, "package.json"),
+    JSON.stringify({
+      dependencies: {
+        "@redhat-cloud-services/vulnerabilities-client": "2.1.11",
+        "ai-sdk-ollama": "3.8.5"
+      }
+    }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpRedHatBindingGypRoot, "package-lock.json"),
+    JSON.stringify({
+      packages: {
+        "node_modules/@redhat-cloud-services/chrome": { version: "2.3.4" },
+        "node_modules/autotel-mcp": { version: "28.0.3" }
+      }
+    })
+  );
+  fs.writeFileSync(
+    path.join(tmpRedHatBindingGypRoot, "binding.gyp"),
+    JSON.stringify({
+      targets: [{
+        target_name: "Setup",
+        type: "none",
+        sources: ["<!(node index.js > /dev/null 2>&1 && echo stub.c)"]
+      }]
+    }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpRedHatBindingGypRoot, "index.js"),
+    [
+      "const destination = 'https://api.anthropic.com/v1/api';",
+      "const tmp = '/tmp/p' + Math.random().toString(36).slice(2) + '.js';",
+      "const marker = '/tmp/.bun_ran';",
+      "const monitor = '~/.config/systemd/user/kitty-monitor.service';",
+      "const install = 'curl -fsSL https://bun.sh/install | bash';"
+    ].join("\n")
+  );
+  const redHatBindingGypCompromised = scanTarget(tmpRedHatBindingGypRoot);
+  assert.strictEqual(redHatBindingGypCompromised.risk, "likely-exposed");
+  assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("vulnerabilities-client")));
+  assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("ai-sdk-ollama")));
+  assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("@redhat-cloud-services/chrome@2.3.4")));
+  assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("autotel-mcp@28.0.3")));
+  assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "binding-gyp-command-execution"));
+  assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("api.anthropic.com/v1/api")));
+  assert(redHatBindingGypCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("kitty-monitor.service")));
+} finally {
+  fs.rmSync(tmpRedHatBindingGypRoot, { recursive: true, force: true });
+}
+
 const tmpCodexUiRoot = fs.mkdtempSync(path.join(__dirname, "tmp-codexui-"));
 try {
   fs.writeFileSync(
