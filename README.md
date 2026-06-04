@@ -149,6 +149,13 @@ execution path through root `binding.gyp` files. The scanner now treats JFrog's
 additional exact npm package/version IoCs as critical indicators and flags
 `node-gyp` command expansion through `<!(...)`, especially when it invokes
 `node`, `bun`, shell/network tools, temp-file payloads, or silent redirects.
+Flatt Security's June 1 Claude Code GitHub Action research, later covered by
+The Hacker News, describes a GitHub App actor bypass in agent mode and risky
+`allowed_non_write_users` workflow configurations that could expose OIDC token
+request credentials or let Claude write exfiltrated data back into GitHub
+issues. The scanner now flags `anthropics/claude-code-action` workflows with
+untrusted issue/PR triggers, broad write permissions, `id-token: write`, risky
+non-write-user settings, and GitHub MCP issue read/update tool combinations.
 
 ## Out-of-Scope Windows Disclosures
 
@@ -229,6 +236,11 @@ developers, security teams, and CI logs.
   `firedalazer`, `IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner`,
   `letsgo0/sayyadina-phibian-159`, kitty-monitor persistence strings, Bun
   staging markers, and JFrog's `binding.gyp` command-expansion package set
+- Claude Code GitHub Action workflow-risk indicators, including
+  `anthropics/claude-code-action`, `allowed_non_write_users`,
+  `id-token: write`, `ACTIONS_ID_TOKEN_REQUEST_TOKEN`,
+  `ACTIONS_ID_TOKEN_REQUEST_URL`, `mcp__github__get_issue`,
+  `mcp__github__update_issue`, and broad write permissions on issue/PR events
 - Codex UI token-theft indicators, including compromised `codexui-android`
   versions `0.1.82` through `0.1.125`, `sentry.anyclaw[.]store/startlog`,
   Codex `auth.json` path strings, `anyclaw2026`, `OpenClaw Codex Claude AI
@@ -275,6 +287,9 @@ developers, security teams, and CI logs.
 - Root `binding.gyp` files that use `node-gyp` command expansion through
   `<!(...)`, especially when they invoke `node index.js`, `bun`, `curl`, `wget`,
   shell tools, temp payload paths, or silent redirects
+- GitHub Actions workflows using `anthropics/claude-code-action` with public
+  issue/PR triggers, `allowed_non_write_users`, `id-token: write`, broad
+  write permissions, or GitHub MCP issue read/update tools
 - GitHub-resolved dependencies in manifests
 
 ## If Indicators Are Found

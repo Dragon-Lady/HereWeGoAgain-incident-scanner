@@ -188,6 +188,18 @@ package indicators and flags local `binding.gyp` command expansion for manual
 review, with higher severity when the expansion launches `node`, `bun`,
 network/shell tools, temp payload paths, or silent redirects.
 
+Flatt Security's June 1, 2026 Claude Code GitHub Action research described a
+GitHub App actor bypass in agent mode and a common risky
+`allowed_non_write_users` configuration in issue-triage workflows. The attack
+path combines untrusted issue/PR content, Claude Code prompt injection,
+environment/OIDC token exposure through `ACTIONS_ID_TOKEN_REQUEST_TOKEN` and
+`ACTIONS_ID_TOKEN_REQUEST_URL`, and GitHub write/exfiltration surfaces such as
+`mcp__github__update_issue`. Anthropic fixed the GitHub App bypass as of Claude
+Code GitHub Actions v1.0.94. This scanner treats Claude Code Action workflows
+as review material when they combine untrusted issue/PR triggers with
+`id-token: write`, broad write permissions, `allowed_non_write_users`, or
+GitHub MCP issue read/update tools.
+
 The key local indicators used by this project are:
 
 - `@tanstack/setup`

@@ -612,6 +612,7 @@ function scanWorkflowFile(filePath, advisory, findings) {
   }
 
   scanIndicatorStrings(filePath, text, advisory, findings, "GitHub Actions workflow");
+  scanClaudeCodeActionWorkflow(filePath, text, findings);
 
   if (
     (/\bbase64\b/i.test(text) && /\b(curl|wget|bash|sh|python|node)\b/i.test(text)) ||
@@ -625,6 +626,59 @@ function scanWorkflowFile(filePath, advisory, findings) {
     /id-token\s*:\s*write/i.test(text)
   ) {
     findings.push(finding("medium", "workflow-token-surface", filePath, "GitHub Actions workflow references CI token/OIDC variables; verify it is expected and not exfiltrated."));
+  }
+}
+
+function scanClaudeCodeActionWorkflow(filePath, text, findings) {
+  if (!/anthropics\/claude-code-action@/i.test(text)) return;
+
+  findings.push(finding(
+    "medium",
+    "claude-code-action-workflow",
+    filePath,
+    "GitHub Actions workflow uses anthropics/claude-code-action; verify it is patched to v1.0.94 or newer and does not process untrusted issue/PR input with broad permissions."
+  ));
+
+  if (/allowed_non_write_users\s*:\s*['"]?\*/i.test(text)) {
+    findings.push(finding(
+      "high",
+      "claude-code-action-untrusted-users",
+      filePath,
+      "Claude Code Action allows all non-write users; restrict callers and avoid secrets or permissions that can exfiltrate data."
+    ));
+  }
+
+  if (
+    /on\s*:[\s\S]{0,800}\b(issues|issue_comment|pull_request_review|pull_request_review_comment)\s*:/i.test(text) &&
+    /id-token\s*:\s*write/i.test(text)
+  ) {
+    findings.push(finding(
+      "high",
+      "claude-code-action-oidc-untrusted-trigger",
+      filePath,
+      "Claude Code Action is reachable from issue/PR events while id-token: write is enabled; audit for GitHub App/OIDC token exfiltration risk."
+    ));
+  }
+
+  if (
+    /allowed_non_write_users\s*:/i.test(text) &&
+    /\b(contents|issues|pull-requests|discussions|actions)\s*:\s*write/i.test(text)
+  ) {
+    findings.push(finding(
+      "high",
+      "claude-code-action-write-permission-untrusted-users",
+      filePath,
+      "Claude Code Action combines allowed_non_write_users with write permissions; this matches the risky misconfiguration pattern described in the Flatt/THN report."
+    ));
+  }
+
+  if (/mcp__github__get_issue/i.test(text) && /mcp__github__update_issue/i.test(text)) {
+    findings.push(finding(
+      "medium",
+      "claude-code-action-github-mcp-exfil-surface",
+      filePath,
+      "Claude Code Action allows both GitHub issue read and update MCP tools; review prompt-injection and issue-body exfiltration risk."
+    ));
   }
 }
 

@@ -126,7 +126,15 @@
     "format-results",
     "Run Copilot",
     "bun run _index.js",
-    "bun run $GITHUB_ACTION_PATH/index.js"
+    "bun run $GITHUB_ACTION_PATH/index.js",
+    "anthropics/claude-code-action",
+    "allowed_non_write_users",
+    "ACTIONS_ID_TOKEN_REQUEST_TOKEN",
+    "ACTIONS_ID_TOKEN_REQUEST_URL",
+    "api.github.com/app/installations",
+    "api.anthropic.com/api/github/github-app-token-exchange",
+    "mcp__github__get_issue",
+    "mcp__github__update_issue"
   ],
   "campaignIndicators": [
     "A Mini Shai-Hulud has Appeared",

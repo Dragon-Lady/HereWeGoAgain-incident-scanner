@@ -641,6 +641,49 @@ try {
   fs.rmSync(tmpMegalodonWorkflowRoot, { recursive: true, force: true });
 }
 
+const tmpClaudeCodeActionRoot = fs.mkdtempSync(path.join(__dirname, "tmp-claude-code-action-"));
+try {
+  fs.mkdirSync(path.join(tmpClaudeCodeActionRoot, ".github", "workflows"), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmpClaudeCodeActionRoot, ".github", "workflows", "claude-issue-triage.yml"),
+    [
+      "name: Claude Issue Triage",
+      "on:",
+      "  issues:",
+      "    types: [opened]",
+      "jobs:",
+      "  triage:",
+      "    runs-on: ubuntu-latest",
+      "    permissions:",
+      "      contents: write",
+      "      issues: write",
+      "      id-token: write",
+      "    steps:",
+      "      - uses: anthropics/claude-code-action@v1",
+      "        env:",
+      "          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+      "        with:",
+      "          github_token: ${{ secrets.GITHUB_TOKEN }}",
+      "          allowed_non_write_users: \"*\"",
+      "          claude_args: |",
+      "            --allowedTools \"mcp__github__get_issue,mcp__github__update_issue\"",
+      "          prompt: |",
+      "            Use ACTIONS_ID_TOKEN_REQUEST_TOKEN and ACTIONS_ID_TOKEN_REQUEST_URL only if expected."
+    ].join("\n")
+  );
+  const claudeCodeWorkflow = scanTarget(tmpClaudeCodeActionRoot);
+  assert.strictEqual(claudeCodeWorkflow.risk, "possible-exposure");
+  assert(claudeCodeWorkflow.findings.some((finding) => finding.type === "claude-code-action-workflow"));
+  assert(claudeCodeWorkflow.findings.some((finding) => finding.type === "claude-code-action-untrusted-users"));
+  assert(claudeCodeWorkflow.findings.some((finding) => finding.type === "claude-code-action-oidc-untrusted-trigger"));
+  assert(claudeCodeWorkflow.findings.some((finding) => finding.type === "claude-code-action-write-permission-untrusted-users"));
+  assert(claudeCodeWorkflow.findings.some((finding) => finding.type === "claude-code-action-github-mcp-exfil-surface"));
+  assert(claudeCodeWorkflow.findings.some((finding) => finding.type === "workflow-token-surface"));
+  assert(claudeCodeWorkflow.findings.some((finding) => finding.type === "workflow-indicator" && finding.message.includes("allowed_non_write_users")));
+} finally {
+  fs.rmSync(tmpClaudeCodeActionRoot, { recursive: true, force: true });
+}
+
 const tmpDevdojoWorkflowRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-workflow-"));
 try {
   fs.mkdirSync(path.join(tmpDevdojoWorkflowRoot, ".github", "workflows"), { recursive: true });

@@ -111,6 +111,11 @@ review prompt even when the exact package/version is not yet encoded.
   expansion. This is scanner material because it includes exact npm
   package/version IoCs and local package-file behavior that can execute before
   ordinary `package.json` lifecycle-script checks fire.
+- 2026-06-04: Flatt Security / The Hacker News described Claude Code GitHub
+  Action risk from GitHub App actor bypasses, risky `allowed_non_write_users`
+  settings, OIDC token request credentials, and GitHub MCP issue read/update
+  exfiltration paths. This is scanner material because the risky local state is
+  visible in `.github/workflows/*.yml` without executing anything.
 
 ## Fast Update Flow
 

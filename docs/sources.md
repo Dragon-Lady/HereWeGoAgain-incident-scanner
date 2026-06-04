@@ -32,6 +32,8 @@
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
 - JFrog Red Hat npm / Miasma report and `binding.gyp` execution update: https://research.jfrog.com/post/shai-hulud-miasma-redhat-cloud-services/
+- Flatt Security Claude Code GitHub Action research: https://flatt.tech/research/posts/poisoning-claude-code-one-github-issue-to-break-the-supply-chain/
+- The Hacker News Claude Code GitHub Action coverage: https://thehackernews.com/2026/06/claude-code-github-action-flaw-let-one.html
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
 
