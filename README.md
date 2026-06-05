@@ -152,7 +152,10 @@ additional exact npm package/version IoCs as critical indicators and flags
 OX's June 4 Miasma return report confirms the same `binding.gyp` pivot, reports
 57 affected npm packages / 647K monthly downloads, adds two non-Red-Hat exact
 package/version IoCs, and documents the updated repository marker
-`Miasma – The Spreading Blight`.
+`Miasma – The Spreading Blight`. OX later edited the report with another
+weaponized `binding.gyp` wave affecting `discord-search`, `create-cf-token`, 
+`@forjacms/*`, `dbmux`, `creditcard.js`, `github-archiver`, and
+`@contaazul/n8n-nodes-contaazul`.
 OX's June 4 Malware-Slop 2 report describes `cms-store-ren`, a malicious npm
 infostealer affecting all observed versions, with Telegram Bot API exfiltration,
 a leaked actor bot token, and hidden PowerShell second-stage execution.
@@ -237,6 +240,10 @@ developers, security teams, and CI logs.
   compromised `@redhat-cloud-services/*` package versions, OIDC/trusted
   publishing workflow strings, and the active `@redhat-cloud-services/`
   namespace review warning
+- OX Red Hat / Miasma follow-up indicators, including exact package/version
+  coverage for the edited `binding.gyp` wave: `discord-search`, 
+  `create-cf-token`, `@forjacms/*`, `dbmux`, `creditcard.js`, 
+  `github-archiver`, and `@contaazul/n8n-nodes-contaazul`
 - OX Red Hat / Miasma follow-up indicators, including
   `Miasma: The Spreading Blight`,
   `Miasma : The Spreading Blight`, `Miasma – The Spreading Blight`,
@@ -364,3 +371,4 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 ## License
 
 MIT
+

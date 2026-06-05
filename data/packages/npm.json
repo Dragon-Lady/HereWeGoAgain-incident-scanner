@@ -1512,5 +1512,35 @@
   ],
   "wrangler-deploy": [
     "1.5.5"
+  ],
+  "discord-search": [
+    "0.1.2"
+  ],
+  "create-cf-token": [
+    "1.1.3"
+  ],
+  "@forjacms/analytics": [
+    "1.8.4"
+  ],
+  "@forjacms/client": [
+    "1.8.4"
+  ],
+  "@forjacms/sections": [
+    "1.8.4"
+  ],
+  "@forjacms/sections-react": [
+    "1.8.4"
+  ],
+  "dbmux": [
+    "2.2.4"
+  ],
+  "creditcard.js": [
+    "3.0.60"
+  ],
+  "github-archiver": [
+    "1.5.5"
+  ],
+  "@contaazul/n8n-nodes-contaazul": [
+    "0.3.26"
   ]
 }

@@ -265,7 +265,9 @@
     "@tanstack/",
     "@taskflow-corp/",
     "@tolka/",
-    "@uipath/"
+    "@uipath/",
+    "@forjacms/",
+    "@contaazul/"
   ],
   "activePackages": [
     "byte-parser",
@@ -282,7 +284,12 @@
     "fumadocs-ui",
     "openclaw-cn",
     "size-sensor",
-    "timeago.js"
+    "timeago.js",
+    "discord-search",
+    "create-cf-token",
+    "dbmux",
+    "creditcard.js",
+    "github-archiver"
   ],
   "packageReviewPrompts": {
     "art-template": "SafeDep repository-context review: SafeDep reported a compromise of the legitimate art-template npm package tied to Coruna/iOS browser exploit-kit activity. Exact affected versions are not encoded here yet; review installed version, install/update timing, lifecycle script execution, and SafeDep's latest advisory before running builds.",

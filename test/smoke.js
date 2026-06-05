@@ -437,6 +437,39 @@ try {
   fs.rmSync(tmpRedHatBindingGypRoot, { recursive: true, force: true });
 }
 
+const tmpMiasmaEditedWaveRoot = fs.mkdtempSync(path.join(__dirname, "tmp-miasma-edited-wave-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpMiasmaEditedWaveRoot, "package.json"),
+    JSON.stringify({
+      dependencies: {
+        "discord-search": "0.1.2",
+        "@forjacms/client": "1.8.4",
+        "@contaazul/n8n-nodes-contaazul": "0.3.26"
+      }
+    }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpMiasmaEditedWaveRoot, "package-lock.json"),
+    JSON.stringify({
+      packages: {
+        "node_modules/dbmux": { version: "2.2.4" },
+        "node_modules/creditcard.js": { version: "3.0.60" },
+        "node_modules/github-archiver": { version: "1.5.5" }
+      }
+    })
+  );
+  const miasmaEditedWaveCompromised = scanTarget(tmpMiasmaEditedWaveRoot);
+  assert.strictEqual(miasmaEditedWaveCompromised.risk, "likely-exposed");
+  assert(miasmaEditedWaveCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("discord-search")));
+  assert(miasmaEditedWaveCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("@forjacms/client")));
+  assert(miasmaEditedWaveCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("@contaazul/n8n-nodes-contaazul")));
+  assert(miasmaEditedWaveCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("dbmux@2.2.4")));
+  assert(miasmaEditedWaveCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("creditcard.js@3.0.60")));
+  assert(miasmaEditedWaveCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("github-archiver@1.5.5")));
+} finally {
+  fs.rmSync(tmpMiasmaEditedWaveRoot, { recursive: true, force: true });
+}
 const tmpCodexUiRoot = fs.mkdtempSync(path.join(__dirname, "tmp-codexui-"));
 try {
   fs.writeFileSync(
@@ -800,3 +833,4 @@ const compromisedWithHash = scanTarget(path.join(__dirname, "fixtures", "comprom
 assert(compromisedWithHash.findings.some((finding) => finding.type === "payload-hash"));
 
 console.log("smoke tests passed");
+

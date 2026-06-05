@@ -116,6 +116,10 @@ review prompt even when the exact package/version is not yet encoded.
   execution pivot, and the exact `Miasma – The Spreading Blight` repository
   marker. This is scanner material because it adds exact package/version IoCs
   and a high-signal local marker variant.
+- 2026-06-05: OX edited the same Miasma return report with another weaponized
+  `binding.gyp` npm wave. Added exact indicators for `discord-search`, 
+  `create-cf-token`, `@forjacms/*`, `dbmux`, `creditcard.js`, 
+  `github-archiver`, and `@contaazul/n8n-nodes-contaazul`.
 - 2026-06-04: OX Security published Malware-Slop 2 reporting for
   `cms-store-ren`, a malicious npm infostealer affecting all observed versions
   with Telegram Bot API exfiltration, leaked actor bot/account markers, and
@@ -141,3 +145,4 @@ review prompt even when the exact package/version is not yet encoded.
 - Add `--ignore-review-needed` if lifecycle script findings are too noisy.
 - Add examples for npm, pnpm, yarn, and monorepo scans.
 - Add a signed GitHub release once public feedback stabilizes.
+

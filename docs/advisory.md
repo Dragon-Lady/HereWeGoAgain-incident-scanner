@@ -191,7 +191,10 @@ network/shell tools, temp payload paths, or silent redirects.
 OX's June 4, 2026 Miasma return report confirms the same `binding.gyp`
 execution pivot, reports 57 affected npm packages with roughly 647K monthly
 downloads, and adds the updated GitHub repository marker
-`Miasma – The Spreading Blight`. This scanner treats OX's additional exact
+`Miasma – The Spreading Blight`. OX later edited the same report with another
+weaponized `binding.gyp` wave affecting `discord-search`, `create-cf-token`, 
+`@forjacms/*`, `dbmux`, `creditcard.js`, `github-archiver`, and
+`@contaazul/n8n-nodes-contaazul`. This scanner treats OX's additional exact
 package/version entries as critical npm indicators and keeps the dash-variant
 marker alongside the earlier colon variants.
 
@@ -351,3 +354,4 @@ If one of these indicators is found, treat the environment as potentially
 exposed until reviewed. If payload execution or credential access is confirmed,
 remove dead-man switch persistence before token revocation, then rotate secrets
 from a clean device and rebuild the affected host.
+
