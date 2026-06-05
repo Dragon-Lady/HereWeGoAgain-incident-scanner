@@ -560,6 +560,27 @@ try {
   fs.rmSync(tmpPanOsRoot, { recursive: true, force: true });
 }
 
+const tmpApacheHttp2BombRoot = fs.mkdtempSync(path.join(__dirname, "tmp-apache-http2-bomb-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpApacheHttp2BombRoot, "httpd.conf"),
+    [
+      "# CVE-2026-49975 / HTTP/2 Bomb triage note",
+      "LoadModule http2_module modules/mod_http2.so",
+      "Protocols h2 http/1.1",
+      "Server module inventory: mod_http2 v2.0.40",
+      "# fixed floor: mod_http2 v2.0.41 counts merged cookie headers against LimitRequestFields"
+    ].join("\n")
+  );
+  const apacheHttp2BombReview = scanTarget(tmpApacheHttp2BombRoot);
+  assert.strictEqual(apacheHttp2BombReview.risk, "possible-exposure");
+  assert(apacheHttp2BombReview.findings.some((finding) => finding.type === "apache-http2-bomb-vulnerable-mod-http2" && finding.message.includes("2.0.40")));
+  assert(apacheHttp2BombReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("CVE-2026-49975")));
+  assert(apacheHttp2BombReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("HTTP/2 Bomb")));
+} finally {
+  fs.rmSync(tmpApacheHttp2BombRoot, { recursive: true, force: true });
+}
+
 const tmpVsCodeGithubDevRoot = fs.mkdtempSync(path.join(__dirname, "tmp-vscode-githubdev-"));
 try {
   fs.mkdirSync(path.join(tmpVsCodeGithubDevRoot, ".vscode"), { recursive: true });

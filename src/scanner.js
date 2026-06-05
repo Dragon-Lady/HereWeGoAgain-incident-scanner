@@ -11,6 +11,7 @@ const LOCKFILES = new Set([
 ]);
 const PYTHON_DEPENDENCY_FILES = new Set(["requirements.txt", "pyproject.toml", "uv.lock", "Pipfile.lock"]);
 const COMPOSER_DEPENDENCY_FILES = new Set(["composer.json", "composer.lock"]);
+const APACHE_HTTPD_FILES = new Set(["httpd.conf", "apache2.conf", "ports.conf", "mods-enabled-http2.conf"]);
 const PACKAGE_MANIFEST = "package.json";
 const NODE_GYP_MANIFEST = "binding.gyp";
 const TOOL_CONFIG_FILES = new Set(["settings.json", "settings.local.json", "tasks.json", "extensions.json"]);
@@ -118,6 +119,11 @@ function scanTarget(targetPath, options = {}) {
 
     if (COMPOSER_DEPENDENCY_FILES.has(base)) {
       scanComposerDependencyFile(filePath, advisory, findings);
+      return;
+    }
+
+    if (isApacheHttpdFile(filePath, base)) {
+      scanApacheHttpdFile(filePath, advisory, findings);
       return;
     }
 
@@ -583,6 +589,67 @@ function scanComposerPluginCapabilities(filePath, text, findings) {
   }
 }
 
+function scanApacheHttpdFile(filePath, advisory, findings) {
+  let text;
+  try {
+    text = fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    findings.push(finding("low", "read-error", filePath, `Could not read Apache httpd file: ${error.message}`));
+    return;
+  }
+
+  scanIndicatorStrings(filePath, text, advisory, findings, "Apache httpd file");
+
+  const modHttp2Version = extractModHttp2Version(text);
+  if (modHttp2Version) {
+    const vulnerable = compareDottedVersions(modHttp2Version, "2.0.41") < 0;
+    findings.push(finding(
+      vulnerable ? "high" : "medium",
+      vulnerable ? "apache-http2-bomb-vulnerable-mod-http2" : "apache-http2-bomb-fixed-mod-http2",
+      filePath,
+      vulnerable
+        ? `Apache mod_http2 ${modHttp2Version} is below the 2.0.41 fix for CVE-2026-49975 / HTTP/2 Bomb; upgrade mod_http2 or disable HTTP/2 until patched.`
+        : `Apache mod_http2 ${modHttp2Version} is at or above the 2.0.41 fix floor for CVE-2026-49975 / HTTP/2 Bomb; verify the running module matches this file.`
+    ));
+    return;
+  }
+
+  if (/\bmod_http2\b/i.test(text) || /^\s*Protocols\s+.*\bh2\b/im.test(text) || /^\s*LoadModule\s+http2_module\b/im.test(text)) {
+    findings.push(finding(
+      "medium",
+      "apache-http2-bomb-review",
+      filePath,
+      "Apache HTTP/2 appears enabled or mod_http2 is referenced; verify mod_http2 is 2.0.41 or newer, or disable HTTP/2 until patched for CVE-2026-49975."
+    ));
+  }
+}
+
+function extractModHttp2Version(text) {
+  const patterns = [
+    /\bmod_http2\b[^\n\r]{0,80}?\bv?(\d+\.\d+\.\d+)\b/i,
+    /\bmod_h2\b[^\n\r]{0,80}?\bv?(\d+\.\d+\.\d+)\b/i,
+    /\bhttp2_module\b[^\n\r]{0,80}?\bv?(\d+\.\d+\.\d+)\b/i
+  ];
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match) return match[1];
+  }
+  return "";
+}
+
+function compareDottedVersions(left, right) {
+  const leftParts = left.split(".").map((part) => Number.parseInt(part, 10) || 0);
+  const rightParts = right.split(".").map((part) => Number.parseInt(part, 10) || 0);
+  const length = Math.max(leftParts.length, rightParts.length);
+  for (let index = 0; index < length; index += 1) {
+    const leftPart = leftParts[index] || 0;
+    const rightPart = rightParts[index] || 0;
+    if (leftPart < rightPart) return -1;
+    if (leftPart > rightPart) return 1;
+  }
+  return 0;
+}
+
 function scanToolConfigFile(filePath, advisory, findings) {
   let text;
   try {
@@ -805,6 +872,12 @@ function isToolConfigFile(filePath, base) {
   if (!TOOL_CONFIG_FILES.has(base)) return false;
   const normalized = filePath.replace(/\\/g, "/");
   return normalized.includes("/.claude/") || normalized.includes("/.vscode/");
+}
+
+function isApacheHttpdFile(filePath, base) {
+  if (APACHE_HTTPD_FILES.has(base)) return true;
+  if (/\.conf$/i.test(base) && /apache|httpd|h2|http2/i.test(filePath)) return true;
+  return false;
 }
 
 function isWorkflowFile(filePath, base) {

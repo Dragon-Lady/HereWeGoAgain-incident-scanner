@@ -130,6 +130,11 @@ review prompt even when the exact package/version is not yet encoded.
   settings, OIDC token request credentials, and GitHub MCP issue read/update
   exfiltration paths. This is scanner material because the risky local state is
   visible in `.github/workflows/*.yml` without executing anything.
+- 2026-06-05: Calif / The Register HTTP/2 Bomb reporting added Apache HTTP
+  Server defensive triage for `CVE-2026-49975`. The Apache fix floor is
+  standalone `mod_http2 v2.0.41`; this is scanner material when copied
+  incident notes or local Apache config/module inventory expose HTTP/2 state or
+  a vulnerable `mod_http2` version.
 
 ## Fast Update Flow
 

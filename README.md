@@ -120,6 +120,13 @@ catalog on May 29, 2026 after observed exploitation. This is not a package
 supply-chain indicator, but the scanner flags copied incident notes mentioning
 the CVE, PAN-OS GlobalProtect auth bypass, or unauthorized VPN connection
 language as defensive triage context.
+Calif's June 2026 HTTP/2 Bomb research, later covered by The Register,
+describes an Apache HTTP Server remote DoS tracked as `CVE-2026-49975`. Apache
+fixed the issue in standalone `mod_http2 v2.0.41` by counting merged cookie
+headers against `LimitRequestFields`; until the running module is verified at
+that floor or newer, disable HTTP/2 or treat exposed Apache HTTP/2 service as a
+patch-priority item. This scanner flags copied incident notes and local Apache
+config/module inventory evidence for that fixed floor.
 Ammar Askar's June 2, 2026 writeup describes a GitHub token-stealing path
 through `github.dev` / VS Code webview and local workspace extension behavior.
 The scanner flags high-signal copied PoC markers in `.vscode/extensions.json`,
@@ -268,6 +275,10 @@ developers, security teams, and CI logs.
 - Palo Alto Networks PAN-OS GlobalProtect `CVE-2026-0257` defensive triage
   markers, including `PAN-OS GlobalProtect`,
   `GlobalProtect Authentication Bypass`, and `unauthorized VPN connection`
+- Apache HTTP/2 Bomb / `CVE-2026-49975` defensive triage markers, including
+  `HTTP/2 Bomb`, `HPACK Bomb`, `mod_http2 v2.0.41`, `LimitRequestFields`, and
+  Apache `httpd.conf` / `apache2.conf` evidence showing vulnerable
+  `mod_http2` versions below `2.0.41`
 - VS Code / `github.dev` GitHub token-stealing PoC markers, including
   `github-dev-token-steal-poc`, `vscode-github-token-grab-extension`,
   `AmmarTest.hello-ammar-github`, `workbench.extensions.installExtension`, and
@@ -366,6 +377,9 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
 - Palo Alto Networks CVE-2026-0257 advisory: https://security.paloaltonetworks.com/CVE-2026-0257
 - CISA KEV catalog entry for CVE-2026-0257: https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+- Calif HTTP/2 Bomb research: https://blog.calif.io/p/codex-discovered-a-hidden-http2-bomb
+- Apache `mod_http2 v2.0.41` release: https://github.com/icing/mod_h2/releases/tag/v2.0.41
+- The Register HTTP/2 Bomb coverage: https://www.theregister.com/security/2026/06/04/openais-codex-chains-decade-old-dos-techniques-into-http/2-bomb/5251377
 - Ammar Askar GitHub token stealing via VS Code / github.dev writeup: https://blog.ammaraskar.com/github-token-stealing/
 
 ## License

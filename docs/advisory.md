@@ -145,6 +145,14 @@ a package supply-chain indicator, but copied incident notes mentioning the CVE,
 PAN-OS GlobalProtect auth bypass, or unauthorized VPN connection language should
 prompt review of VPN exposure, patch state, and authentication logs.
 
+Calif's June 2026 HTTP/2 Bomb research, later covered by The Register, is
+retained as Apache HTTP Server defensive triage context. The Apache issue is
+tracked as `CVE-2026-49975` and fixed in standalone `mod_http2 v2.0.41`, where
+merged cookie headers count against `LimitRequestFields`. This scanner flags
+copied incident notes plus Apache `httpd.conf` / `apache2.conf` / related
+`.conf` evidence that shows HTTP/2 enabled, `mod_http2` referenced, or a
+reported `mod_http2` version below `2.0.41`.
+
 Ammar Askar's June 2, 2026 GitHub token-stealing writeup for `github.dev` /
 VS Code webview behavior is retained as developer-toolchain defensive triage
 context. This scanner flags high-signal copied PoC markers in VS Code extension
@@ -282,6 +290,9 @@ The key local indicators used by this project are:
 - Palo Alto Networks PAN-OS GlobalProtect defensive triage markers:
   `CVE-2026-0257`, `PAN-OS GlobalProtect`,
   `GlobalProtect Authentication Bypass`, and `unauthorized VPN connection`
+- Apache HTTP/2 Bomb defensive triage markers: `CVE-2026-49975`,
+  `HTTP/2 Bomb`, `HPACK Bomb`, `mod_http2 v2.0.41`, `LimitRequestFields`, and
+  vulnerable Apache `mod_http2` versions below `2.0.41`
 - VS Code / `github.dev` GitHub token-stealing PoC markers:
   `github-dev-token-steal-poc`, `vscode-github-token-grab-extension`,
   `AmmarTest.hello-ammar-github`, `workbench.extensions.installExtension`, and
