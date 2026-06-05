@@ -105,6 +105,10 @@ review prompt even when the exact package/version is not yet encoded.
   and high-signal local strings such as `preinstall: ./tools/setup`,
   `IronWorm`, forged automation-style commit messages, `toJSON(secrets)`, and
   `format-results.txt`.
+- 2026-06-05: The Hacker News roll-up coverage emphasized IronWorm payload-side
+  behavior: Rust infostealer, eBPF rootkit hiding, Tor communication, Exodus
+  wallet targeting, and broad environment/credential-file collection. Added
+  those as copied-note/local-artifact campaign indicators.
 - 2026-06-04: JFrog Security Research updated Red Hat / Miasma reporting with
   expanded exact `@redhat-cloud-services/*` package/version indicators and an
   evasive `binding.gyp` install-time execution path through node-gyp command

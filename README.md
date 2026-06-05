@@ -148,8 +148,10 @@ JFrog's June 3 IronWorm report describes compromised asteroiddao/WeaveDB npm
 packages that shipped a Linux ELF payload at `tools/setup` and executed it with
 `preinstall: ./tools/setup`. The scanner treats JFrog's exact npm
 package/version IoCs as critical indicators and flags local IronWorm install
-hook, forged commit-message, and GitHub Actions secret-artifact markers when
-they appear in source, manifests, lockfiles, or copied incident notes.
+hook, forged commit-message, GitHub Actions secret-artifact markers, and
+payload-side notes such as Rust infostealer, eBPF rootkit, Tor communication,
+and Exodus wallet targeting when they appear in source, manifests, lockfiles,
+or copied incident notes.
 JFrog's June 4 Red Hat / Miasma update expands the exact compromised
 `@redhat-cloud-services/*` version set and describes an evasive install-time
 execution path through root `binding.gyp` files. The scanner now treats JFrog's
@@ -303,7 +305,9 @@ developers, security teams, and CI logs.
 - IronWorm npm indicators from JFrog's June 3 report, including exact
   asteroiddao/WeaveDB package versions, `IronWorm`, `./tools/setup`,
   `.github/scripts/precheck`, forged automation-style commit messages, and
-  GitHub Actions `toJSON(secrets)` / `format-results.txt` artifact markers
+  GitHub Actions `toJSON(secrets)` / `format-results.txt` artifact markers,
+  plus copied incident notes mentioning Rust infostealer behavior, eBPF
+  rootkit hiding, Tor communication, or Exodus wallet targeting
 - `.vscode/extensions.json` and `.ipynb` notebooks for exact incident strings
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and

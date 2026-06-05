@@ -181,9 +181,11 @@ observed npm payload path was a Linux ELF binary at `tools/setup`, executed
 through `preinstall: ./tools/setup`; JFrog also described forged/backdated
 commits attributed to `claude <claude@users.noreply.github.com>` and a possible
 GitHub Actions secret-artifact path using `toJSON(secrets)` and
-`format-results.txt`. This scanner treats JFrog's exact npm package/version
-IoCs as critical indicators and keeps the install-hook/workflow strings as
-source and incident-note indicators.
+`format-results.txt`. Follow-up coverage also emphasized the Rust infostealer
+payload, eBPF rootkit behavior, Tor communication, and Exodus wallet targeting.
+This scanner treats JFrog's exact npm package/version IoCs as critical
+indicators and keeps the install-hook/workflow/payload-note strings as source
+and incident-note indicators.
 
 JFrog's June 4, 2026 Red Hat / Miasma update expanded the affected
 `@redhat-cloud-services/*` versions and documented an alternate install-time
@@ -316,7 +318,8 @@ The key local indicators used by this project are:
 - IronWorm indicators from JFrog's June 3 report: exact asteroiddao/WeaveDB npm
   package/version pairs, `IronWorm`, `./tools/setup`,
   `.github/scripts/precheck`, automation-style forged commit messages,
-  `toJSON(secrets)`, and `format-results.txt`
+  `toJSON(secrets)`, `format-results.txt`, Rust infostealer notes, eBPF rootkit
+  notes, Tor communication notes, and Exodus wallet targeting notes
 - Miasma/Shai-Hulud second-stage shape indicators: `.github/setup.js`,
   `bun.sh/install`, `npm install bun`, `bun-v*`, `/tmp` JavaScript payload
   writes, decode/write/execute behavior, and credential-target strings such as

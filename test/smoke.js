@@ -306,6 +306,15 @@ try {
       "      - run: echo 'fix: resolve lint warnings IronWorm .github/scripts/precheck'"
     ].join("\n")
   );
+  fs.writeFileSync(
+    path.join(tmpIronWormRoot, "ironworm-evidence.js"),
+    [
+      "// JFrog/THN IronWorm notes:",
+      "// Rust-based infostealer with eBPF kernel rootkit behavior.",
+      "// Operator communication described over the Tor network.",
+      "// Targets included Exodus wallet material, 86 environment variables, and 20 credential files."
+    ].join("\n")
+  );
   const ironWormCompromised = scanTarget(tmpIronWormRoot);
   assert.strictEqual(ironWormCompromised.risk, "likely-exposed");
   assert(ironWormCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("weavedb-sdk")));
@@ -313,6 +322,9 @@ try {
   assert(ironWormCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("./tools/setup")));
   assert(ironWormCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("format-results.txt")));
   assert(ironWormCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("toJSON(secrets)")));
+  assert(ironWormCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("eBPF kernel rootkit")));
+  assert(ironWormCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Tor network")));
+  assert(ironWormCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Exodus wallet")));
 } finally {
   fs.rmSync(tmpIronWormRoot, { recursive: true, force: true });
 }
