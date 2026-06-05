@@ -380,6 +380,37 @@ try {
   fs.rmSync(tmpAzureMiasmaSampleRoot, { recursive: true, force: true });
 }
 
+const tmpHadesExfilRoot = fs.mkdtempSync(path.join(__dirname, "tmp-hades-exfil-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpHadesExfilRoot, "decoded-hades-exfil.js"),
+    [
+      "async function createPublicGithubExfilRepo(token) {",
+      "  const repoName = generateHadesRepoName();",
+      "  await githubJson(token, \"/user/repos\", {",
+      "    method: \"POST\",",
+      "    body: JSON.stringify({",
+      "      name: repoName,",
+      "      private: false,",
+      "      auto_init: true,",
+      "      description: \"Hades - The End for the Damned\"",
+      "    })",
+      "  });",
+      "}",
+      "const examples = ['thanatic-shade-13592', 'charonian-thanatos-7247', 'plutonian-acheron-63340', 'sepulchral-tartarus-5934', 'abyssal-thanatos-83266', 'thanatic-wraith-88689'];",
+      "const payload = { \"envelope\": \"redacted\", \"key\": \"redacted\" };"
+    ].join("\n")
+  );
+  const hadesExfil = scanTarget(tmpHadesExfilRoot);
+  assert.strictEqual(hadesExfil.risk, "possible-exposure");
+  assert(hadesExfil.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("createPublicGithubExfilRepo")));
+  assert(hadesExfil.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Hades - The End for the Damned")));
+  assert(hadesExfil.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("charonian-thanatos-")));
+  assert(hadesExfil.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("\"envelope\"")));
+} finally {
+  fs.rmSync(tmpHadesExfilRoot, { recursive: true, force: true });
+}
+
 const tmpAzureFalloutRoot = fs.mkdtempSync(path.join(__dirname, "tmp-azure-fallout-"));
 try {
   fs.mkdirSync(path.join(tmpAzureFalloutRoot, ".claude"), { recursive: true });

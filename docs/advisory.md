@@ -217,6 +217,12 @@ StepSecurity / Harden-Runner strings and domains in the payload, apparently to
 avoid detection when running in StepSecurity's Docker environment. The same
 notes described reused public keys and the same `firedalazer` GitHub commit
 search used to retrieve the next payload.
+Additional June 5 screenshots shared through Moshe from heyosj.com showed a
+decoded GitHub exfiltration path named `createPublicGithubExfilRepo`. The code
+creates public repositories through `/user/repos`, sets the description
+`Hades - The End for the Damned`, and uses Hades-themed generated repo names.
+Related screenshots showed small JSON artifacts with `envelope` and `key`
+fields; this scanner records only the field names, not the full key material.
 
 JFrog's June 4, 2026 Red Hat / Miasma update expanded the affected
 `@redhat-cloud-services/*` versions and documented an alternate install-time
@@ -369,6 +375,9 @@ The key local indicators used by this project are:
   `stepsecurity`, `agent.stepsecurity.io`, `api.stepsecurity.io`,
   `app.stepsecurity.io`, `AKIAFAKE`, reused public-key context, and the
   existing `firedalazer` payload-chain marker
+- Hades GitHub exfil-repo indicators: `createPublicGithubExfilRepo`,
+  `generateHadesRepoName`, `/user/repos`, `Hades - The End for the Damned`,
+  Hades-themed repo-name prefixes, and `envelope` / `key` artifact fields
 - Miasma/Shai-Hulud second-stage shape indicators: `.github/setup.js`,
   `bun.sh/install`, `npm install bun`, `bun-v*`, `/tmp` JavaScript payload
   writes, decode/write/execute behavior, and credential-target strings such as

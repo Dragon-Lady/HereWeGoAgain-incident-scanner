@@ -132,6 +132,11 @@ review prompt even when the exact package/version is not yet encoded.
   hardcoded StepSecurity / Harden-Runner strings and domains, an `AKIAFAKE`
   fake AWS key prefix, reused public-key context, and the same `firedalazer`
   commit-search payload chain. Added those as copied-code/sample indicators.
+- 2026-06-05: Additional screenshots shared through Moshe from heyosj.com
+  showed `createPublicGithubExfilRepo`, Hades-themed public GitHub exfil repo
+  creation through `/user/repos`, generated repo-name prefixes, and
+  `envelope` / `key` artifacts. Added high-signal strings without copying full
+  key material.
 - 2026-06-04: JFrog Security Research updated Red Hat / Miasma reporting with
   expanded exact `@redhat-cloud-services/*` package/version indicators and an
   evasive `binding.gyp` install-time execution path through node-gyp command

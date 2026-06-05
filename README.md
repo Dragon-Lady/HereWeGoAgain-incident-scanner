@@ -175,6 +175,11 @@ Moshe Siman Tov Bustan's June 5 Azure Miasma sample notes described hardcoded
 StepSecurity / Harden-Runner domains used as Docker-environment detection
 evasion, reuse of public keys from other Miasma infections, and the same
 `firedalazer` GitHub commit-search payload chain.
+Additional June 5 screenshots shared through Moshe from heyosj.com showed a
+decoded `createPublicGithubExfilRepo` path that creates public GitHub
+repositories under `/user/repos` with the description
+`Hades - The End for the Damned`, generated Hades-themed repo names, and
+`envelope` / `key` payload artifacts.
 JFrog's June 4 Red Hat / Miasma update expands the exact compromised
 `@redhat-cloud-services/*` version set and describes an evasive install-time
 execution path through root `binding.gyp` files. The scanner now treats JFrog's
@@ -350,6 +355,10 @@ developers, security teams, and CI logs.
   `harden-runner`, `step-security`, `stepsecurity`, `agent.stepsecurity.io`,
   `api.stepsecurity.io`, `app.stepsecurity.io`, `AKIAFAKE`, reused public-key
   context, and the existing `firedalazer` commit-search marker
+- Hades GitHub exfil-repo indicators from decoded screenshots, including
+  `createPublicGithubExfilRepo`, `generateHadesRepoName`, `/user/repos`,
+  `Hades - The End for the Damned`, Hades-themed repo-name prefixes, and
+  `envelope` / `key` artifact fields
 - `.vscode/extensions.json` and `.ipynb` notebooks for exact incident strings
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
