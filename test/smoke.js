@@ -358,6 +358,28 @@ try {
   fs.rmSync(tmpTokenCollectorRoot, { recursive: true, force: true });
 }
 
+const tmpAzureMiasmaSampleRoot = fs.mkdtempSync(path.join(__dirname, "tmp-azure-miasma-sample-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpAzureMiasmaSampleRoot, "decoded-azure-miasma.js"),
+    [
+      "const envVar = 'AWS_ACCESS_KEY_ID';",
+      "const prefix = 'AKIAFAKE';",
+      "const yq = ['harden-runner', 'step-security', 'stepsecurity'];",
+      "const domains = ['agent.stepsecurity.io', 'api.stepsecurity.io', 'app.stepsecurity.io'];",
+      "const marker = 'firedalazer';",
+      "// same public keys as other Miasma infections"
+    ].join("\n")
+  );
+  const azureMiasmaSample = scanTarget(tmpAzureMiasmaSampleRoot);
+  assert.strictEqual(azureMiasmaSample.risk, "possible-exposure");
+  assert(azureMiasmaSample.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("harden-runner")));
+  assert(azureMiasmaSample.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("agent.stepsecurity.io")));
+  assert(azureMiasmaSample.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("AKIAFAKE")));
+} finally {
+  fs.rmSync(tmpAzureMiasmaSampleRoot, { recursive: true, force: true });
+}
+
 const tmpAzureFalloutRoot = fs.mkdtempSync(path.join(__dirname, "tmp-azure-fallout-"));
 try {
   fs.mkdirSync(path.join(tmpAzureFalloutRoot, ".claude"), { recursive: true });

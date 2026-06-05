@@ -171,6 +171,10 @@ June 5 operator-provided decoded payload snippets showed token collector
 handlers for GitHub, npm, and RubyGems token matches, including obfuscated
 fields such as `matches?.ghtoken`, `matches?.fgghtoken`, `matches?.npmtoken`,
 and `matches?.rubygemstoken`.
+Moshe Siman Tov Bustan's June 5 Azure Miasma sample notes described hardcoded
+StepSecurity / Harden-Runner domains used as Docker-environment detection
+evasion, reuse of public keys from other Miasma infections, and the same
+`firedalazer` GitHub commit-search payload chain.
 JFrog's June 4 Red Hat / Miasma update expands the exact compromised
 `@redhat-cloud-services/*` version set and describes an evasive install-time
 execution path through root `binding.gyp` files. The scanner now treats JFrog's
@@ -342,6 +346,10 @@ developers, security teams, and CI logs.
   including `matches?.ghtoken`, `matches?.fgghtoken`, `matches?.npmtoken`,
   `matches?.rubygemstoken`, `handleGhTokens`, `handleFgGhTokens`,
   `handleNpmTokens`, and `handleRubygemsTokens`
+- Azure Miasma sample indicators from OX research notes, including
+  `harden-runner`, `step-security`, `stepsecurity`, `agent.stepsecurity.io`,
+  `api.stepsecurity.io`, `app.stepsecurity.io`, `AKIAFAKE`, reused public-key
+  context, and the existing `firedalazer` commit-search marker
 - `.vscode/extensions.json` and `.ipynb` notebooks for exact incident strings
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and

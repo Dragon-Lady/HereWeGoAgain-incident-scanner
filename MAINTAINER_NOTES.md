@@ -128,6 +128,10 @@ review prompt even when the exact package/version is not yet encoded.
 - 2026-06-05: Operator-provided decoded payload screenshot showed token
   collector branches for GitHub, npm, and RubyGems credentials. Added
   high-signal obfuscated field and handler names as copied-code indicators.
+- 2026-06-05: Moshe Siman Tov Bustan posted Azure Miasma sample notes showing
+  hardcoded StepSecurity / Harden-Runner strings and domains, an `AKIAFAKE`
+  fake AWS key prefix, reused public-key context, and the same `firedalazer`
+  commit-search payload chain. Added those as copied-code/sample indicators.
 - 2026-06-04: JFrog Security Research updated Red Hat / Miasma reporting with
   expanded exact `@redhat-cloud-services/*` package/version indicators and an
   evasive `binding.gyp` install-time execution path through node-gyp command

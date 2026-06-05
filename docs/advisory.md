@@ -212,6 +212,11 @@ branches for GitHub, npm, and RubyGems credentials, including the obfuscated
 field names `matches?.ghtoken`, `matches?.fgghtoken`, `matches?.npmtoken`, and
 `matches?.rubygemstoken`. This scanner keeps those strings as copied-code or
 decoded-artifact indicators.
+Moshe Siman Tov Bustan's June 5 Azure Miasma sample notes described hardcoded
+StepSecurity / Harden-Runner strings and domains in the payload, apparently to
+avoid detection when running in StepSecurity's Docker environment. The same
+notes described reused public keys and the same `firedalazer` GitHub commit
+search used to retrieve the next payload.
 
 JFrog's June 4, 2026 Red Hat / Miasma update expanded the affected
 `@redhat-cloud-services/*` versions and documented an alternate install-time
@@ -360,6 +365,10 @@ The key local indicators used by this project are:
   `matches?.fgghtoken`, `matches?.npmtoken`, `matches?.rubygemstoken`,
   `handleGhTokens`, `handleFgGhTokens`, `handleNpmTokens`, and
   `handleRubygemsTokens`
+- Azure Miasma sample indicators: `harden-runner`, `step-security`,
+  `stepsecurity`, `agent.stepsecurity.io`, `api.stepsecurity.io`,
+  `app.stepsecurity.io`, `AKIAFAKE`, reused public-key context, and the
+  existing `firedalazer` payload-chain marker
 - Miasma/Shai-Hulud second-stage shape indicators: `.github/setup.js`,
   `bun.sh/install`, `npm install bun`, `bun-v*`, `/tmp` JavaScript payload
   writes, decode/write/execute behavior, and credential-target strings such as
