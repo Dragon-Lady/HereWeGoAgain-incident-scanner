@@ -187,6 +187,27 @@ This scanner treats JFrog's exact npm package/version IoCs as critical
 indicators and keeps the install-hook/workflow/payload-note strings as source
 and incident-note indicators.
 
+June 5, 2026 operator-provided fallout notes, described as active OX Security
+work with Wiz context, reported 49 Microsoft, Azure, and Azure-Samples GitHub
+repositories taken offline for Terms of Service violations after suspected
+regained attacker access following the earlier DurableTask compromise. This
+scanner keeps the reported repository slugs as copied-note and repo-context
+indicators only. They should prompt repository provenance, workflow,
+maintainer-token, and release-artifact review, not automatic classification of
+all related packages as malicious.
+During local verification, GitHub's API returned `Repository access blocked`
+with reason `tos` for the provided `Azure/durabletask` compare URL, and public
+code-search triage centered on `node .github/setup.js` in `settings.json`, which
+matches the Claude settings persistence pattern seen in earlier Mini
+Shai-Hulud waves.
+SafeDep's June 5, 2026 writeup describes the same Miasma family moving through
+source repositories instead of only registry packages. The reported six-file
+footprint plants `.github/setup.js` and connects it to Claude Code
+`.claude/settings.json`, Gemini CLI `.gemini/settings.json`, Cursor
+`.cursor/rules/setup.mdc`, VS Code `.vscode/tasks.json`, and the `package.json`
+`test` script. This scanner treats an agent/editor config that auto-runs
+`node .github/setup.js` as a critical source-repo persistence trigger.
+
 JFrog's June 4, 2026 Red Hat / Miasma update expanded the affected
 `@redhat-cloud-services/*` versions and documented an alternate install-time
 execution path through `binding.gyp`. In that path, npm can fall back to
@@ -320,6 +341,16 @@ The key local indicators used by this project are:
   `.github/scripts/precheck`, automation-style forged commit messages,
   `toJSON(secrets)`, `format-results.txt`, Rust infostealer notes, eBPF rootkit
   notes, Tor communication notes, and Exodus wallet targeting notes
+- Azure/Microsoft Mini Shai-Hulud repo-fallout copied-note indicators:
+  `49 Repositories taken offline`, `Azure/azure-functions-core-tools`,
+  `Azure/durabletask`, `Azure-Samples/llm-fine-tuning`,
+  `microsoft/durabletask-js`, and related Azure Functions / DurableTask
+  repository slugs, plus `Repository access blocked`, `github.com/tos`, and
+  `node .github/setup.js` settings persistence markers
+- SafeDep Miasma source-repo persistence indicators across `.claude`,
+  `.gemini`, `.cursor/rules`, `.vscode`, and package test scripts, including
+  `SessionStart`, `alwaysApply: true`, `runOn: folderOpen`, and
+  `chore: update dependencies [skip ci]`
 - Miasma/Shai-Hulud second-stage shape indicators: `.github/setup.js`,
   `bun.sh/install`, `npm install bun`, `bun-v*`, `/tmp` JavaScript payload
   writes, decode/write/execute behavior, and credential-target strings such as

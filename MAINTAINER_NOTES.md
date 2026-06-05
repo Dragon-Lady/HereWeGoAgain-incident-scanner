@@ -109,6 +109,22 @@ review prompt even when the exact package/version is not yet encoded.
   behavior: Rust infostealer, eBPF rootkit hiding, Tor communication, Exodus
   wallet targeting, and broad environment/credential-file collection. Added
   those as copied-note/local-artifact campaign indicators.
+- 2026-06-05: Operator-provided Mini Shai-Hulud fallout screenshot, described
+  as active OX Security work with Wiz context, reported 49 Microsoft, Azure,
+  and Azure-Samples GitHub repositories taken offline after suspected regained
+  attacker access following the DurableTask compromise. Added the banner text
+  and repository slugs as copied-note/repo-context indicators only, not exact
+  package-version IoCs.
+- 2026-06-05: Verification of the supplied `Azure/durabletask` compare link via
+  GitHub API returned `Repository access blocked` with reason `tos`; added that
+  as copied-note evidence context. Also added `node .github/setup.js` and the
+  related GitHub code-search query as Claude settings persistence indicators.
+- 2026-06-05: SafeDep published a Miasma source-repository config-injection
+  writeup covering Claude Code, Gemini CLI, Cursor, VS Code, and package test
+  triggers that all launch `node .github/setup.js`. Added exact trigger
+  strings and expanded scanner coverage to `.gemini/settings.json` and
+  `.cursor/rules/*.mdc`, plus a critical config-shape finding for tool configs
+  that auto-run the reported payload path.
 - 2026-06-04: JFrog Security Research updated Red Hat / Miasma reporting with
   expanded exact `@redhat-cloud-services/*` package/version indicators and an
   evasive `binding.gyp` install-time execution path through node-gyp command

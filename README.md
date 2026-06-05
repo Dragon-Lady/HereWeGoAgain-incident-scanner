@@ -152,6 +152,21 @@ hook, forged commit-message, GitHub Actions secret-artifact markers, and
 payload-side notes such as Rust infostealer, eBPF rootkit, Tor communication,
 and Exodus wallet targeting when they appear in source, manifests, lockfiles,
 or copied incident notes.
+June 5 operator-provided Mini Shai-Hulud fallout notes, described as being
+worked by OX Security with Wiz context, reported 49 Microsoft, Azure, and
+Azure-Samples GitHub repositories taken offline after suspected regained
+attacker access following the earlier DurableTask compromise. The scanner keeps
+those repository slugs as copied-note/repo-context indicators only; they are
+not treated as exact package-version IoCs.
+Observed GitHub API behavior for `Azure/durabletask` returned
+`Repository access blocked` with reason `tos` at the same incident window, and
+public code-search triage focused on Claude settings entries that run
+`node .github/setup.js`.
+SafeDep's June 5 writeup describes the source-repository arm of the same
+campaign: commits such as `chore: update dependencies [skip ci]` planted
+`.github/setup.js` and wired it into Claude Code, Gemini CLI, Cursor, VS Code,
+and `npm test` through `.claude/settings.json`, `.gemini/settings.json`,
+`.cursor/rules/setup.mdc`, `.vscode/tasks.json`, and `package.json`.
 JFrog's June 4 Red Hat / Miasma update expands the exact compromised
 `@redhat-cloud-services/*` version set and describes an evasive install-time
 execution path through root `binding.gyp` files. The scanner now treats JFrog's
@@ -308,6 +323,17 @@ developers, security teams, and CI logs.
   GitHub Actions `toJSON(secrets)` / `format-results.txt` artifact markers,
   plus copied incident notes mentioning Rust infostealer behavior, eBPF
   rootkit hiding, Tor communication, or Exodus wallet targeting
+- Mini Shai-Hulud Azure/Microsoft repo-fallout copied-note indicators,
+  including `49 Repositories taken offline`, `Azure/azure-functions-core-tools`,
+  `Azure/durabletask`, `Azure-Samples/llm-fine-tuning`, and related
+  Azure Functions / DurableTask repository slugs, plus `Repository access
+  blocked`, `github.com/tos`, and `node .github/setup.js` settings persistence
+  markers
+- SafeDep Miasma source-repo persistence indicators across Claude Code, Gemini
+  CLI, Cursor, VS Code, and package test scripts: `.claude/settings.json`,
+  `.gemini/settings.json`, `.cursor/rules/setup.mdc`, `.vscode/tasks.json`,
+  `SessionStart`, `alwaysApply: true`, `runOn: folderOpen`,
+  `chore: update dependencies [skip ci]`, and `github-actions` author context
 - `.vscode/extensions.json` and `.ipynb` notebooks for exact incident strings
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
@@ -395,6 +421,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Apache `mod_http2 v2.0.41` release: https://github.com/icing/mod_h2/releases/tag/v2.0.41
 - The Register HTTP/2 Bomb coverage: https://www.theregister.com/security/2026/06/04/openais-codex-chains-decade-old-dos-techniques-into-http/2-bomb/5251377
 - Ammar Askar GitHub token stealing via VS Code / github.dev writeup: https://blog.ammaraskar.com/github-token-stealing/
+- SafeDep Miasma source-repository AI coding agent config injection writeup: https://safedep.io/miasma-worm-ai-coding-agent-config-injection/
 
 ## License
 

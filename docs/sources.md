@@ -38,6 +38,7 @@
 - The Hacker News Claude Code GitHub Action coverage: https://thehackernews.com/2026/06/claude-code-github-action-flaw-let-one.html
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
+- SafeDep Miasma source-repository AI coding agent config injection writeup: https://safedep.io/miasma-worm-ai-coding-agent-config-injection/
 
 ## Out-of-Scope Related Public Intel
 

@@ -15,6 +15,7 @@ const APACHE_HTTPD_FILES = new Set(["httpd.conf", "apache2.conf", "ports.conf", 
 const PACKAGE_MANIFEST = "package.json";
 const NODE_GYP_MANIFEST = "binding.gyp";
 const TOOL_CONFIG_FILES = new Set(["settings.json", "settings.local.json", "tasks.json", "extensions.json"]);
+const CURSOR_RULE_EXTENSIONS = new Set([".mdc"]);
 const JAVASCRIPT_SOURCE_EXTENSIONS = new Set([".js", ".cjs", ".mjs"]);
 const WEB_SOURCE_EXTENSIONS = new Set([".html", ".htm"]);
 const NOTEBOOK_SOURCE_EXTENSIONS = new Set([".ipynb"]);
@@ -667,6 +668,33 @@ function scanToolConfigFile(filePath, advisory, findings) {
   }
 
   scanIndicatorStrings(filePath, text, advisory, findings, "Tool config");
+  scanMiasmaAgentConfigShape(filePath, text, findings);
+}
+
+function scanMiasmaAgentConfigShape(filePath, text, findings) {
+  if (!/node\s+\.github\/setup\.js/i.test(text)) return;
+
+  const normalized = filePath.replace(/\\/g, "/");
+  const isAgentSessionHook =
+    normalized.includes("/.claude/") ||
+    normalized.includes("/.gemini/") ||
+    /SessionStart/i.test(text);
+  const isCursorRule =
+    normalized.includes("/.cursor/rules/") ||
+    /alwaysApply\s*:\s*true/i.test(text);
+  const isVsCodeFolderOpen =
+    normalized.includes("/.vscode/") ||
+    /runOn"\s*:\s*"folderOpen/i.test(text) ||
+    /runOn\s*:\s*folderOpen/i.test(text);
+
+  if (isAgentSessionHook || isCursorRule || isVsCodeFolderOpen) {
+    findings.push(finding(
+      "critical",
+      "miasma-agent-config-trigger",
+      filePath,
+      "Tool config auto-runs node .github/setup.js through an AI-agent or editor trigger; this matches the reported Miasma source-repo persistence pattern."
+    ));
+  }
 }
 
 function scanWorkflowFile(filePath, advisory, findings) {
@@ -917,9 +945,11 @@ function isPythonDependencyFile(base) {
 }
 
 function isToolConfigFile(filePath, base) {
-  if (!TOOL_CONFIG_FILES.has(base)) return false;
   const normalized = filePath.replace(/\\/g, "/");
-  return normalized.includes("/.claude/") || normalized.includes("/.vscode/");
+  if (TOOL_CONFIG_FILES.has(base)) {
+    return normalized.includes("/.claude/") || normalized.includes("/.gemini/") || normalized.includes("/.vscode/");
+  }
+  return CURSOR_RULE_EXTENSIONS.has(path.extname(base)) && normalized.includes("/.cursor/rules/");
 }
 
 function isApacheHttpdFile(filePath, base) {
