@@ -329,6 +329,35 @@ try {
   fs.rmSync(tmpIronWormRoot, { recursive: true, force: true });
 }
 
+const tmpTokenCollectorRoot = fs.mkdtempSync(path.join(__dirname, "tmp-token-collector-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpTokenCollectorRoot, "decoded-token-collector.js"),
+    [
+      "let _0x5b98da = [];",
+      "if (_0x4f8060.matches?.ghtoken) {",
+      "  _0x5b98da.push(this.handleGhTokens(_0x4f8060));",
+      "}",
+      "if (_0x4f8060.matches?.fgghtoken) {",
+      "  _0x5b98da.push(this.handleFgGhTokens(_0x4f8060));",
+      "}",
+      "if (_0x4f8060.matches?.npmtoken) {",
+      "  _0x5b98da.push(this.handleNpmTokens(_0x4f8060));",
+      "}",
+      "if (_0x4f8060.matches?.rubygemstoken) {",
+      "  _0x5b98da.push(this.handleRubygemsTokens(_0x4f8060));",
+      "}"
+    ].join("\n")
+  );
+  const tokenCollector = scanTarget(tmpTokenCollectorRoot);
+  assert.strictEqual(tokenCollector.risk, "possible-exposure");
+  assert(tokenCollector.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("matches?.rubygemstoken")));
+  assert(tokenCollector.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("handleRubygemsTokens")));
+  assert(tokenCollector.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("handleFgGhTokens")));
+} finally {
+  fs.rmSync(tmpTokenCollectorRoot, { recursive: true, force: true });
+}
+
 const tmpAzureFalloutRoot = fs.mkdtempSync(path.join(__dirname, "tmp-azure-fallout-"));
 try {
   fs.mkdirSync(path.join(tmpAzureFalloutRoot, ".claude"), { recursive: true });

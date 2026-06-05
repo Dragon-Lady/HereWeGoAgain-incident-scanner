@@ -207,6 +207,11 @@ footprint plants `.github/setup.js` and connects it to Claude Code
 `.cursor/rules/setup.mdc`, VS Code `.vscode/tasks.json`, and the `package.json`
 `test` script. This scanner treats an agent/editor config that auto-runs
 `node .github/setup.js` as a critical source-repo persistence trigger.
+June 5 operator-provided decoded payload snippets also showed token collector
+branches for GitHub, npm, and RubyGems credentials, including the obfuscated
+field names `matches?.ghtoken`, `matches?.fgghtoken`, `matches?.npmtoken`, and
+`matches?.rubygemstoken`. This scanner keeps those strings as copied-code or
+decoded-artifact indicators.
 
 JFrog's June 4, 2026 Red Hat / Miasma update expanded the affected
 `@redhat-cloud-services/*` versions and documented an alternate install-time
@@ -351,6 +356,10 @@ The key local indicators used by this project are:
   `.gemini`, `.cursor/rules`, `.vscode`, and package test scripts, including
   `SessionStart`, `alwaysApply: true`, `runOn: folderOpen`, and
   `chore: update dependencies [skip ci]`
+- Decoded token-collector indicators: `matches?.ghtoken`,
+  `matches?.fgghtoken`, `matches?.npmtoken`, `matches?.rubygemstoken`,
+  `handleGhTokens`, `handleFgGhTokens`, `handleNpmTokens`, and
+  `handleRubygemsTokens`
 - Miasma/Shai-Hulud second-stage shape indicators: `.github/setup.js`,
   `bun.sh/install`, `npm install bun`, `bun-v*`, `/tmp` JavaScript payload
   writes, decode/write/execute behavior, and credential-target strings such as

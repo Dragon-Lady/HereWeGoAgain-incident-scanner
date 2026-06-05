@@ -125,6 +125,9 @@ review prompt even when the exact package/version is not yet encoded.
   strings and expanded scanner coverage to `.gemini/settings.json` and
   `.cursor/rules/*.mdc`, plus a critical config-shape finding for tool configs
   that auto-run the reported payload path.
+- 2026-06-05: Operator-provided decoded payload screenshot showed token
+  collector branches for GitHub, npm, and RubyGems credentials. Added
+  high-signal obfuscated field and handler names as copied-code indicators.
 - 2026-06-04: JFrog Security Research updated Red Hat / Miasma reporting with
   expanded exact `@redhat-cloud-services/*` package/version indicators and an
   evasive `binding.gyp` install-time execution path through node-gyp command

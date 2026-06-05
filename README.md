@@ -167,6 +167,10 @@ campaign: commits such as `chore: update dependencies [skip ci]` planted
 `.github/setup.js` and wired it into Claude Code, Gemini CLI, Cursor, VS Code,
 and `npm test` through `.claude/settings.json`, `.gemini/settings.json`,
 `.cursor/rules/setup.mdc`, `.vscode/tasks.json`, and `package.json`.
+June 5 operator-provided decoded payload snippets showed token collector
+handlers for GitHub, npm, and RubyGems token matches, including obfuscated
+fields such as `matches?.ghtoken`, `matches?.fgghtoken`, `matches?.npmtoken`,
+and `matches?.rubygemstoken`.
 JFrog's June 4 Red Hat / Miasma update expands the exact compromised
 `@redhat-cloud-services/*` version set and describes an evasive install-time
 execution path through root `binding.gyp` files. The scanner now treats JFrog's
@@ -334,6 +338,10 @@ developers, security teams, and CI logs.
   `.gemini/settings.json`, `.cursor/rules/setup.mdc`, `.vscode/tasks.json`,
   `SessionStart`, `alwaysApply: true`, `runOn: folderOpen`,
   `chore: update dependencies [skip ci]`, and `github-actions` author context
+- Decoded token-collector indicators from live Miasma/Shai-Hulud analysis,
+  including `matches?.ghtoken`, `matches?.fgghtoken`, `matches?.npmtoken`,
+  `matches?.rubygemstoken`, `handleGhTokens`, `handleFgGhTokens`,
+  `handleNpmTokens`, and `handleRubygemsTokens`
 - `.vscode/extensions.json` and `.ipynb` notebooks for exact incident strings
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
