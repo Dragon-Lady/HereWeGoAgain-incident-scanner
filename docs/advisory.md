@@ -206,6 +206,16 @@ weaponized `binding.gyp` wave affecting `discord-search`, `create-cf-token`,
 package/version entries as critical npm indicators and keeps the dash-variant
 marker alongside the earlier colon variants.
 
+June 5 passive decode notes confirmed the live Shai-Hulud/Miasma second-stage
+shape: `setup.js` decrypts or decodes a large payload, writes it under `/tmp`,
+bootstraps Bun when missing, and executes the payload. The second stage targets
+GitHub and npm tokens, AWS/GCP/Azure credentials, Docker auth, Kubernetes
+configs, SSH keys, Git credentials, Vault tokens, private keys, chat app data,
+wallet paths, and related developer secrets. This scanner therefore treats
+`.github/setup.js` as a high-risk reinfection path and flags JavaScript that
+combines decode/write/execute or Bun bootstrap behavior with `/tmp` payload
+writes and credential-target collection.
+
 OX's June 4, 2026 Malware-Slop 2 report describes `cms-store-ren`, a malicious
 npm JavaScript infostealer reported as affecting all versions. OX describes
 basic host telemetry and data exfiltration over the Telegram Bot API, hidden
@@ -307,6 +317,11 @@ The key local indicators used by this project are:
   package/version pairs, `IronWorm`, `./tools/setup`,
   `.github/scripts/precheck`, automation-style forged commit messages,
   `toJSON(secrets)`, and `format-results.txt`
+- Miasma/Shai-Hulud second-stage shape indicators: `.github/setup.js`,
+  `bun.sh/install`, `npm install bun`, `bun-v*`, `/tmp` JavaScript payload
+  writes, decode/write/execute behavior, and credential-target strings such as
+  `GITHUB_TOKEN`, `NPM_TOKEN`, `AWS_ACCESS_KEY_ID`, `VAULT_TOKEN`,
+  `.docker/config.json`, `.kube/config`, `.git-credentials`, and SSH key paths
 - known affected PyPI `mistralai` and `guardrails-ai` package/version pairs from
   OX Security's May 12 update in `data/packages/pypi.json`
 - known affected PyPI `lightning` and `durabletask`, plus Composer

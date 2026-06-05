@@ -163,6 +163,14 @@ package/version IoCs, and documents the updated repository marker
 weaponized `binding.gyp` wave affecting `discord-search`, `create-cf-token`, 
 `@forjacms/*`, `dbmux`, `creditcard.js`, `github-archiver`, and
 `@contaazul/n8n-nodes-contaazul`.
+June 5 passive decode notes confirmed the same Shai-Hulud/Miasma execution
+shape: `setup.js` decrypts or decodes a large second-stage payload, writes it
+under `/tmp`, bootstraps Bun if missing, and executes the stage. The stage
+targets GitHub/npm tokens, cloud credentials, Docker auth, Kubernetes configs,
+SSH/Git credentials, Vault tokens, private keys, wallet paths, and related
+developer secrets. The scanner now flags `.github/setup.js` and JavaScript that
+combines decode/write/execute or Bun bootstrap behavior with `/tmp` payload
+writes and credential-target collection.
 OX's June 4 Malware-Slop 2 report describes `cms-store-ren`, a malicious npm
 infostealer affecting all observed versions, with Telegram Bot API exfiltration,
 a leaked actor bot token, and hidden PowerShell second-stage execution.
@@ -257,7 +265,9 @@ developers, security teams, and CI logs.
   `api.anthropic.com/v1/api`,
   `firedalazer`, `IfYouInvalidateThisTokenItWillNukeTheComputerOfTheOwner`,
   `letsgo0/sayyadina-phibian-159`, kitty-monitor persistence strings, Bun
-  staging markers, and JFrog's `binding.gyp` command-expansion package set
+  staging markers, `.github/setup.js` reinfection payload shape, JavaScript
+  second-stage decode/write/execute behavior, `/tmp` payload writes, credential
+  target collection, and JFrog's `binding.gyp` command-expansion package set
 - OX Malware-Slop 2 npm indicators, including `cms-store-ren` all-version
   package detection, `api.telegram.org/bot`, `ebalvsehvrot10raz_bot`,
   `amaturesequoyah`, `BREVNA LETYAT`, the reported exfiltration group ID, and

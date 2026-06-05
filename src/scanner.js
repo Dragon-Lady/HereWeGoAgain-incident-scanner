@@ -759,6 +759,7 @@ function scanJavaScriptSourceFile(filePath, advisory, findings) {
   }
 
   scanIndicatorStrings(filePath, text, advisory, findings, "JavaScript source file");
+  scanMiasmaSecondStageShape(filePath, text, findings);
 }
 
 function scanWebSourceFile(filePath, advisory, findings) {
@@ -833,6 +834,53 @@ function scanIndicatorStrings(filePath, text, advisory, findings, sourceLabel) {
         findings.push(finding("high", type, filePath, `${sourceLabel} references incident indicator: ${value}`));
       }
     }
+  }
+}
+
+function scanMiasmaSecondStageShape(filePath, text, findings) {
+  const normalizedPath = filePath.replace(/\\/g, "/");
+  const isGithubSetupPayload = /\/\.github\/setup\.js$/i.test(normalizedPath);
+  const hasBunBootstrap =
+    /bun\.sh\/install/i.test(text) ||
+    /\bnpm\s+install\s+bun\b/i.test(text) ||
+    /\bbun-v\d+\.\d+\.\d+/i.test(text);
+  const hasTmpPayload =
+    /\/tmp\/[A-Za-z0-9._-]+/i.test(text) ||
+    /os\.tmpdir\s*\(/i.test(text) ||
+    /tmpdir\s*\(/i.test(text);
+  const hasCredentialTargets =
+    /\b(GITHUB_TOKEN|NPM_TOKEN|NODE_AUTH_TOKEN|ACTIONS_ID_TOKEN_REQUEST_TOKEN|VAULT_TOKEN|AWS_ACCESS_KEY_ID|AZURE_CLIENT_SECRET|GOOGLE_APPLICATION_CREDENTIALS)\b/.test(text) ||
+    /(\.aws\/credentials|\.config\/gcloud|\.azure|\.docker\/config\.json|\.kube\/config|\.npmrc|\.pypirc|id_rsa|id_ed25519|\.git-credentials|wallet)/i.test(text);
+  const hasDecodeOrWrite =
+    /\b(decrypt|decipher|createDecipheriv|atob|fromCharCode|Buffer\.from)\b/i.test(text) &&
+    /\b(writeFileSync|writeFile|chmodSync|spawn|execFile|exec)\b/i.test(text);
+
+  if (isGithubSetupPayload) {
+    findings.push(finding(
+      hasBunBootstrap || hasCredentialTargets ? "critical" : "high",
+      "miasma-github-setup-payload",
+      filePath,
+      ".github/setup.js is a reported Miasma reinfection payload path; review this file before running CI or package scripts."
+    ));
+  }
+
+  if ((hasBunBootstrap && hasTmpPayload && hasCredentialTargets) || (hasDecodeOrWrite && hasTmpPayload && hasCredentialTargets)) {
+    findings.push(finding(
+      "critical",
+      "miasma-second-stage-shape",
+      filePath,
+      "JavaScript resembles reported Miasma/Shai-Hulud second-stage behavior: decode/write/execute or Bun bootstrap plus /tmp payload and credential target collection."
+    ));
+    return;
+  }
+
+  if (hasCredentialTargets && (hasBunBootstrap || hasTmpPayload || hasDecodeOrWrite)) {
+    findings.push(finding(
+      "high",
+      "miasma-credential-harvest-review",
+      filePath,
+      "JavaScript references credential targets alongside execution, decode, Bun, or temporary-payload behavior; review for Miasma/Shai-Hulud second-stage logic."
+    ));
   }
 }
 

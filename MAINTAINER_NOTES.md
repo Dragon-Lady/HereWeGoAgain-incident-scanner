@@ -135,6 +135,11 @@ review prompt even when the exact package/version is not yet encoded.
   standalone `mod_http2 v2.0.41`; this is scanner material when copied
   incident notes or local Apache config/module inventory expose HTTP/2 state or
   a vulnerable `mod_http2` version.
+- 2026-06-05: Live passive decode notes confirmed Shai-Hulud/Miasma `setup.js`
+  second-stage behavior: decrypt/decode, write a large payload under `/tmp`,
+  bootstrap Bun when missing, execute it, and collect developer/cloud secrets.
+  Added shape-based JavaScript detection for `.github/setup.js` and clustered
+  Bun/tmp/credential-target behavior.
 
 ## Fast Update Flow
 
