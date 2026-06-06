@@ -24,7 +24,7 @@
     "url": "https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner/issues"
   },
   "bin": {
-    "herewegoagain-incident-scanner": "./bin/herewegoagain-incident-scanner.js"
+    "herewegoagain-incident-scanner": "bin/herewegoagain-incident-scanner.js"
   },
   "files": [
     "bin/",
