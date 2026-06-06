@@ -7,6 +7,22 @@ Mini Shai-Hulud npm/PyPI/Composer indicators.
 This tool helps identify known indicators. It does not remove malware, revoke
 credentials, execute package scripts, or prove that a host is clean.
 
+> Built and maintained by Dragon Lady - [github.com/Dragon-Lady](https://github.com/Dragon-Lady) - X: [@answerislove2](https://x.com/answerislove2)
+
+## Install
+
+```sh
+npm install -g herewegoagain-incident-scanner
+```
+
+Run against a local project:
+
+```sh
+herewegoagain-incident-scanner /path/to/project
+herewegoagain-incident-scanner /path/to/project --json
+herewegoagain-incident-scanner /path/to/project --report report.json
+```
+
 ## Safety
 
 The scanner is read-only and dependency-free. It walks local files, parses

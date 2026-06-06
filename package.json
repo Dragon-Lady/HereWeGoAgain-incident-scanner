@@ -4,9 +4,36 @@
   "description": "Read-only CLI scanner for Shai-Hulud: Here We Go Again npm and PyPI indicators.",
   "license": "MIT",
   "type": "commonjs",
+  "author": "Dragon Lady",
+  "keywords": [
+    "security",
+    "supply-chain",
+    "incident-response",
+    "shai-hulud",
+    "npm",
+    "pypi",
+    "composer",
+    "scanner"
+  ],
+  "homepage": "https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner/issues"
+  },
   "bin": {
     "herewegoagain-incident-scanner": "./bin/herewegoagain-incident-scanner.js"
   },
+  "files": [
+    "bin/",
+    "src/",
+    "data/",
+    "docs/advisory.md",
+    "docs/recovery-playbook.md",
+    "NOTICE.md"
+  ],
   "scripts": {
     "scan": "node bin/herewegoagain-incident-scanner.js",
     "smoke": "node bin/herewegoagain-incident-scanner.js --help",
