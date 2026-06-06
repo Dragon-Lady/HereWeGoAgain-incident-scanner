@@ -9,18 +9,20 @@ credentials, execute package scripts, or prove that a host is clean.
 
 > Built and maintained by Dragon Lady - [github.com/Dragon-Lady](https://github.com/Dragon-Lady) - X: [@answerislove2](https://x.com/answerislove2)
 
-## Install
+## Run From Source
 
 ```sh
-npm install -g herewegoagain-incident-scanner
+git clone https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner
+cd HereWeGoAgain-incident-scanner
+npm test
 ```
 
 Run against a local project:
 
 ```sh
-herewegoagain-incident-scanner /path/to/project
-herewegoagain-incident-scanner /path/to/project --json
-herewegoagain-incident-scanner /path/to/project --report report.json
+node bin/herewegoagain-incident-scanner.js /path/to/project
+node bin/herewegoagain-incident-scanner.js /path/to/project --json
+node bin/herewegoagain-incident-scanner.js /path/to/project --report report.json
 ```
 
 ## Safety
