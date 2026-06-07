@@ -994,6 +994,26 @@ try {
   fs.rmSync(tmpClaudeCodeActionRoot, { recursive: true, force: true });
 }
 
+const tmpShaiHuludSshRoot = fs.mkdtempSync(path.join(__dirname, "tmp-shai-hulud-ssh-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpShaiHuludSshRoot, "ssh-wave.js"),
+    [
+      "async function infectHost(targetSshHost, remoteLoaderScript, remotePayloadScript) {",
+      "  const remoteWorkDir = \"/tmp/.sshu-\" + Math.random().toString(36).slice(2, 8);",
+      "  const remoteLoaderFileName = \"ai_setup.sh\";",
+      "  const remotePayloadFileName = \"ai_init.js\";",
+      "  return Bun.spawnSync([\"ssh\", targetSshHost, \"sh\", remoteLoaderFileName]);",
+      "}"
+    ].join("\n")
+  );
+  const shaiHuludSsh = scanTarget(tmpShaiHuludSshRoot);
+  assert.strictEqual(shaiHuludSsh.risk, "likely-exposed");
+  assert(shaiHuludSsh.findings.some((finding) => finding.type === "shai-hulud-ssh-propagation-shape"));
+} finally {
+  fs.rmSync(tmpShaiHuludSshRoot, { recursive: true, force: true });
+}
+
 const tmpDevdojoWorkflowRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-workflow-"));
 try {
   fs.mkdirSync(path.join(tmpDevdojoWorkflowRoot, ".github", "workflows"), { recursive: true });

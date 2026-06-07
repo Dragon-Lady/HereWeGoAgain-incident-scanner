@@ -788,6 +788,7 @@ function scanJavaScriptSourceFile(filePath, advisory, findings) {
 
   scanIndicatorStrings(filePath, text, advisory, findings, "JavaScript source file");
   scanMiasmaSecondStageShape(filePath, text, findings);
+  scanShaiHuludSshPropagationShape(filePath, text, findings);
 }
 
 function scanWebSourceFile(filePath, advisory, findings) {
@@ -836,6 +837,7 @@ function scanShellSourceFile(filePath, base, advisory, findings) {
   }
 
   scanIndicatorStrings(filePath, text, advisory, findings, "Shell/tool candidate file");
+  scanShaiHuludSshPropagationShape(filePath, text, findings);
 
   if (isShadowableToolFile(base) && /^#!.*\b(bash|sh|zsh|python|node)\b/im.test(text)) {
     findings.push(finding("high", "tool-shadowing-candidate", filePath, `Repo-local executable-like file is named like a trusted tool: ${base}`));
@@ -908,6 +910,43 @@ function scanMiasmaSecondStageShape(filePath, text, findings) {
       "miasma-credential-harvest-review",
       filePath,
       "JavaScript references credential targets alongside execution, decode, Bun, or temporary-payload behavior; review for Miasma/Shai-Hulud second-stage logic."
+    ));
+  }
+}
+
+function scanShaiHuludSshPropagationShape(filePath, text, findings) {
+  const hasSshTempDir =
+    /\/tmp\/\.sshu-[A-Za-z0-9_-]*/i.test(text) ||
+    /remoteWorkDir\s*=\s*["']\/tmp\/\.sshu-/i.test(text);
+  const hasAiPayloadNames = /\bai_setup\.sh\b/i.test(text) && /\bai_init\.js\b/i.test(text);
+  const hasSshPropagationShape =
+    /\binfectHost\s*\(/i.test(text) ||
+    /\btargetSshHost\b/i.test(text) ||
+    /\bremote(?:Loader|Payload)(?:Script|FileName)\b/i.test(text);
+  const hasExecution =
+    /\bBun\.spawnSync\b/i.test(text) ||
+    /\b(?:spawnSync|execFile|exec|spawn)\s*\(/i.test(text) ||
+    /\b(?:ssh|scp|rsync)\b/i.test(text);
+  const hasCredentialOrKeySurface =
+    /\b(GITHUB_TOKEN|NPM_TOKEN|NODE_AUTH_TOKEN|SSH_AUTH_SOCK|AWS_ACCESS_KEY_ID|AZURE_CLIENT_SECRET)\b/.test(text) ||
+    /(\.ssh\/|id_rsa|id_ed25519|\.git-credentials|\.npmrc|\.env)/i.test(text);
+
+  if (hasSshTempDir && hasAiPayloadNames && hasSshPropagationShape) {
+    findings.push(finding(
+      "critical",
+      "shai-hulud-ssh-propagation-shape",
+      filePath,
+      "Code matches provisional Shai-Hulud SSH propagation shape: hidden /tmp/.sshu-* directory, ai_setup.sh/ai_init.js payload names, and SSH host propagation variables."
+    ));
+    return;
+  }
+
+  if ((hasSshTempDir || hasAiPayloadNames) && hasExecution && (hasSshPropagationShape || hasCredentialOrKeySurface)) {
+    findings.push(finding(
+      "high",
+      "shai-hulud-ssh-artifact-review",
+      filePath,
+      "Code references provisional Shai-Hulud SSH artifacts alongside execution or credential/SSH surface; review before running commits, installs, builds, or pushes."
     ));
   }
 }
