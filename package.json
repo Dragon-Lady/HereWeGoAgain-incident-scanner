@@ -37,7 +37,7 @@
   "scripts": {
     "scan": "node bin/herewegoagain-incident-scanner.js",
     "smoke": "node bin/herewegoagain-incident-scanner.js --help",
-    "test": "node --check bin/herewegoagain-incident-scanner.js && node --check src/scanner.js && node test/smoke.js"
+    "test": "node --check bin/herewegoagain-incident-scanner.js && node --check src/scanner.js && node --check src/remediation.js && node test/smoke.js && node test/remediation.js"
   },
   "engines": {
     "node": ">=18"

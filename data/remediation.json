@@ -1,0 +1,278 @@
+{
+  "planHeader": [
+    "This remediation plan is advisory text generated from read-only scan findings.",
+    "This tool changed nothing on your machine and will not run any of these steps.",
+    "Read every step before running it. You are the operator; commands run by you.",
+    "Rotate credentials only from a separate, clean device - never from this host.",
+    "If you are unsure at any point, stop and get incident-response help before continuing."
+  ],
+  "deadManBanner": [
+    "STOP - READ THIS BEFORE TOUCHING ANYTHING",
+    "One or more findings match persistence that is reported to include a",
+    "DEAD-MAN'S SWITCH. If you remove files or revoke credentials in the wrong",
+    "order, the switch can fire and damage this machine.",
+    "Do the STOP items below first, in the exact order shown, before any other",
+    "cleanup and before rotating any tokens."
+  ],
+  "rules": [
+    {
+      "id": "deadman-gh-token-monitor",
+      "title": "GitHub token dead-man's switch (gh-token-monitor persistence)",
+      "riskClass": "stop-deadman",
+      "appliesTo": {
+        "matchAny": ["gh-token-monitor"]
+      },
+      "warning": [
+        "This persistence is reported (JFrog) to watch your GitHub token and react when it is revoked.",
+        "Do NOT revoke or rotate GitHub tokens until the monitor below is stopped and removed.",
+        "Do NOT delete the monitor files while the service is still running."
+      ],
+      "steps": [
+        "Linux: systemctl --user stop gh-token-monitor.service",
+        "Linux: systemctl --user disable gh-token-monitor.service",
+        "Linux: remove ~/.config/systemd/user/gh-token-monitor.service",
+        "Linux: remove ~/.local/bin/gh-token-monitor.sh",
+        "Linux: remove the ~/.config/gh-token-monitor/ directory",
+        "macOS: launchctl unload ~/Library/LaunchAgents/com.user.gh-token-monitor.plist",
+        "macOS: remove that plist, ~/.local/bin/gh-token-monitor.sh, and ~/.config/gh-token-monitor/",
+        "Verify nothing similar restarted: systemctl --user list-units | grep -i monitor",
+        "ONLY AFTER the steps above: rotate GitHub tokens from a separate clean device"
+      ],
+      "doNotDo": [
+        "Do not revoke GitHub tokens before the monitor is stopped and removed.",
+        "Do not run cleanup from another account or host that shares these tokens until rotation is done."
+      ]
+    },
+    {
+      "id": "deadman-pgsql-monitor",
+      "title": "PyPI payload dead-man's switch (pgsql-monitor / pgmonitor persistence)",
+      "riskClass": "stop-deadman",
+      "appliesTo": {
+        "matchAny": ["pgmonitor", "pgsql-monitor"]
+      },
+      "warning": [
+        "The updated PyPI payload installs monitor-style persistence reported to act as a dead-man's switch.",
+        "Do NOT rotate credentials or delete payload files until this service is stopped and removed."
+      ],
+      "steps": [
+        "Linux: systemctl --user stop pgsql-monitor.service",
+        "Linux: systemctl --user disable pgsql-monitor.service",
+        "Linux: remove ~/.config/systemd/user/pgsql-monitor.service",
+        "Linux: remove /etc/systemd/system/pgsql-monitor.service if present",
+        "Linux: remove ~/.local/bin/pgmonitor.py",
+        "Linux: remove /usr/bin/pgmonitor.py if present",
+        "Preserve shell history, service-unit state, and /tmp/transformers.pyz metadata before rebuilding",
+        "ONLY AFTER the steps above: rotate credentials from a separate clean device"
+      ],
+      "doNotDo": [
+        "Do not rotate credentials before this persistence is stopped and removed.",
+        "Do not delete evidence files before preserving copies of their metadata for triage."
+      ]
+    },
+    {
+      "id": "monitor-kitty-persistence",
+      "title": "Monitor-style persistence (kitty-monitor / cat.py)",
+      "riskClass": "stop-deadman",
+      "appliesTo": {
+        "matchAny": ["kitty-monitor", "cat.py"]
+      },
+      "warning": [
+        "This is monitor-style persistence from the same campaign family as the known dead-man's switches.",
+        "Out of caution, treat it with the same ordering: disarm first, rotate credentials after."
+      ],
+      "steps": [
+        "Linux: systemctl --user stop kitty-monitor.service, then systemctl --user disable kitty-monitor.service",
+        "Linux: remove ~/.config/systemd/user/kitty-monitor.service and any cat.py it points at",
+        "macOS: launchctl unload ~/Library/LaunchAgents/com.user.kitty-monitor.plist, then remove the plist",
+        "Verify no monitor-style units remain: systemctl --user list-units | grep -i monitor",
+        "ONLY AFTER the steps above: rotate credentials from a separate clean device"
+      ],
+      "doNotDo": [
+        "Do not rotate credentials before this persistence is stopped and removed."
+      ]
+    },
+    {
+      "id": "agent-editor-persistence",
+      "title": "AI-agent / editor config persistence (.claude, .vscode, .cursor, .gemini)",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "types": ["miasma-agent-config-trigger", "tool-config-payload-reference"]
+      },
+      "warning": [
+        "This persistence fires when an AI agent or editor opens the folder.",
+        "Stop opening this project in AI agents, Cursor, or VS Code until it is cleaned."
+      ],
+      "steps": [
+        "Close any AI-agent or editor session that has this folder open",
+        "From a clean environment, review .claude/settings*.json hooks, .vscode/tasks.json, .cursor/rules/*.mdc, and .gemini settings in this project",
+        "Remove hook, task, or rule entries that run node .github/setup.js, payload filenames, or other unexpected commands",
+        "Review .github/setup.js itself as a reported reinfection payload path before any CI or package scripts run",
+        "Re-scan after cleaning to confirm the trigger entries are gone"
+      ],
+      "doNotDo": [
+        "Do not assume npm uninstall or pip uninstall removed persistence from tool config files.",
+        "Do not open this folder in an AI agent or editor with automation enabled until the config is clean."
+      ]
+    },
+    {
+      "id": "payload-on-disk",
+      "title": "Known payload files or second-stage code on disk",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "types": [
+          "payload-file",
+          "payload-hash",
+          "miasma-github-setup-payload",
+          "miasma-second-stage-shape",
+          "miasma-credential-harvest-review",
+          "shai-hulud-ssh-propagation-shape",
+          "shai-hulud-ssh-artifact-review"
+        ]
+      },
+      "warning": [
+        "Payload files on disk mean execution may already have happened.",
+        "Order matters: isolate and preserve evidence BEFORE deleting anything."
+      ],
+      "steps": [
+        "Stop package installs, builds, test runners, and dev servers in this project",
+        "If payload execution is possible, disconnect this host from the network",
+        "Preserve lockfiles, package manifests, install logs, and this scanner's report (--report)",
+        "Preserve the flagged files' metadata (path, size, timestamps, hash) before removal",
+        "Check ~/.ssh/authorized_keys and known_hosts if SSH-propagation findings are present, and triage downstream hosts this machine can reach",
+        "If any dead-man's-switch items appear above, complete them before removing payload files",
+        "Treat confirmed execution or credential access as host compromise: rebuild or reimage from a clean baseline",
+        "Rotate GitHub, npm, cloud, Vault, Kubernetes, SSH, and CI secrets from a separate clean device"
+      ],
+      "doNotDo": [
+        "Do not run cleanup commands from the suspected infected environment.",
+        "Do not delete payload files before preserving evidence.",
+        "Do not rely on the absence of obvious damage as proof the payload did not run."
+      ]
+    },
+    {
+      "id": "compromised-dependency-versions",
+      "title": "Compromised package versions in manifests or lockfiles",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "types": [
+          "known-bad-version",
+          "known-bad-requested-version",
+          "known-bad-lockfile-version",
+          "known-bad-lockfile-package",
+          "known-bad-pypi-version",
+          "known-bad-composer-version",
+          "malicious-dependency-name",
+          "malicious-dependency-spec",
+          "laravel-lang-autoload-backdoor"
+        ]
+      },
+      "steps": [
+        "Stop installs and builds in this project until dependency state is corrected",
+        "Determine whether the compromised version was actually installed (check node_modules, site-packages, vendor/, and install logs) - referenced-but-never-installed is a much smaller blast radius",
+        "Pin away from every flagged version in the manifest",
+        "Delete the resolved dependency tree (node_modules / vendor / venv) rather than trusting partial cleanup",
+        "Regenerate the lockfile from a clean environment with install scripts blocked (npm ci --ignore-scripts or equivalent)",
+        "If the compromised version was installed and its scripts ran, switch to the payload-on-disk steps above and treat this as possible host compromise"
+      ],
+      "doNotDo": [
+        "Do not run a plain install to 'fix' versions while known-bad packages are still referenced.",
+        "Do not keep the old lockfile after pinning away - regenerate it."
+      ]
+    },
+    {
+      "id": "ci-workflow-exposure",
+      "title": "CI workflow exposure (GitHub Actions / Claude Code Action)",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "types": [
+          "workflow-encoded-exec",
+          "workflow-token-surface",
+          "workflow-indicator",
+          "claude-code-action-workflow",
+          "claude-code-action-untrusted-users",
+          "claude-code-action-oidc-untrusted-trigger",
+          "claude-code-action-write-permission-untrusted-users",
+          "claude-code-action-github-mcp-exfil-surface"
+        ]
+      },
+      "steps": [
+        "Review the flagged workflow files and disable any you did not author or cannot explain",
+        "Audit recent Actions runs for secret exfiltration (encoded output, unexpected network posts)",
+        "Audit the repository and org for recently created tokens, suspicious repositories, unexpected workflows, and self-hosted runners",
+        "For Claude Code Action: update to v1.0.94 or newer, restrict allowed_non_write_users, and remove write permissions and OIDC (id-token: write) from workflows reachable by untrusted issue/PR input",
+        "If a workflow exfiltrated secrets, rotate the exposed secrets from a clean device (after any dead-man's-switch items above)"
+      ],
+      "doNotDo": [
+        "Do not re-run flagged workflows to 'see what they do'.",
+        "Do not leave id-token: write enabled on workflows triggered by untrusted input."
+      ]
+    },
+    {
+      "id": "apache-http2-bomb",
+      "title": "Apache mod_http2 below CVE-2026-49975 fix floor",
+      "riskClass": "safe-manual",
+      "appliesTo": {
+        "types": [
+          "apache-http2-bomb-vulnerable-mod-http2",
+          "apache-http2-bomb-review"
+        ]
+      },
+      "steps": [
+        "Upgrade mod_http2 to 2.0.41 or newer, or disable HTTP/2 (remove h2 from Protocols) until patched",
+        "Verify the running module version matches the config you inspected",
+        "This is a patching item, not malware removal - no compromise ordering applies"
+      ],
+      "doNotDo": []
+    },
+    {
+      "id": "review-and-verify",
+      "title": "Review items (campaign-adjacent packages, GitHub-sourced deps, lifecycle scripts, tool shadowing)",
+      "riskClass": "safe-manual",
+      "appliesTo": {
+        "types": [
+          "active-campaign-namespace",
+          "active-campaign-package",
+          "package-review-prompt",
+          "composer-package-review-prompt",
+          "github-dependency",
+          "composer-plugin-capability",
+          "lifecycle-script",
+          "binding-gyp-command-expansion",
+          "binding-gyp-command-execution",
+          "tool-shadowing-candidate"
+        ]
+      },
+      "steps": [
+        "Verify each flagged package's exact version against the known-bad lists and upstream advisories",
+        "Read flagged lifecycle scripts and binding.gyp command expansions before allowing any install to run them",
+        "For GitHub-sourced dependency specs, confirm the commit matches the real upstream repository",
+        "For tool-shadowing candidates, compare the file against the real tool and remove repo-local fakes from PATH",
+        "Prefer installs with scripts blocked (npm ci --ignore-scripts or equivalent) until everything flagged is verified"
+      ],
+      "doNotDo": [
+        "Do not delete anything in this category before verifying - these are review signals, not confirmed malware."
+      ]
+    }
+  ],
+  "generalStepsByRisk": {
+    "likely-exposed": [
+      "Work through the items above in the order printed: STOP items first, then CAUTION, then REVIEW.",
+      "Keep a copy of the JSON report (--report) as your incident record.",
+      "After cleanup, re-run this scanner; a clean result means these indicators are gone, not that the host is proven clean.",
+      "If payload execution is confirmed, rebuild from a clean baseline rather than trusting spot cleanup."
+    ],
+    "possible-exposure": [
+      "Work through the items above before running further installs or builds.",
+      "Keep a copy of the JSON report (--report) for your records.",
+      "Re-run this scanner after addressing the findings."
+    ],
+    "review-needed": [
+      "These findings are review signals, not confirmed compromise.",
+      "Verify the flagged items before your next install or build, then re-run this scanner."
+    ],
+    "no-known-indicators": [
+      "No known indicators were found, so there is nothing to remediate from this scan.",
+      "This does not prove the host is clean; it only covers indicators this tool knows about."
+    ]
+  }
+}

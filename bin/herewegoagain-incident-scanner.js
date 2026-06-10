@@ -2,6 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 const { scanTarget } = require("../src/scanner");
+const { buildRemediationPlan } = require("../src/remediation");
 
 function main(argv) {
   const args = parseArgs(argv);
@@ -11,6 +12,10 @@ function main(argv) {
   }
 
   const report = scanTarget(args.target);
+  if (args.remediationPlan) {
+    report.remediationPlan = buildRemediationPlan(report);
+  }
+
   let writtenReportPath = "";
   if (args.reportPath) {
     writtenReportPath = path.resolve(args.reportPath);
@@ -21,6 +26,9 @@ function main(argv) {
     process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
   } else {
     printHuman(report, writtenReportPath);
+    if (args.remediationPlan) {
+      printRemediationPlan(report.remediationPlan);
+    }
   }
 
   return report.risk === "likely-exposed" ? 2 : 0;
@@ -31,6 +39,7 @@ function parseArgs(argv) {
     target: ".",
     json: false,
     reportPath: "",
+    remediationPlan: false,
     help: false
   };
 
@@ -40,6 +49,8 @@ function parseArgs(argv) {
       args.help = true;
     } else if (arg === "--json") {
       args.json = true;
+    } else if (arg === "--remediation-plan") {
+      args.remediationPlan = true;
     } else if (arg === "--report") {
       args.reportPath = argv[index + 1] || "";
       if (!args.reportPath) throw new Error("--report requires a file path");
@@ -63,11 +74,14 @@ function printHelp() {
 Read-only exposure scanner for Shai-Hulud: Here We Go Again npm/PyPI indicators.
 
 Usage:
-  node bin/herewegoagain-incident-scanner.js [target] [--json] [--report report.json]
+  node bin/herewegoagain-incident-scanner.js [target] [--json] [--report report.json] [--remediation-plan]
 
 Options:
   --json              print JSON report to stdout
   --report <path>     write JSON report to a specific path
+  --remediation-plan  print a step-by-step advisory cleanup plan built from the
+                      findings; dead-man's-switch warnings print first. The plan
+                      is text only - this tool never executes remediation.
 
 Exit codes:
   0  no known critical indicators found
@@ -127,6 +141,56 @@ function printPlainLanguageSummary(report) {
   console.log("No known compromised package, payload, or persistence indicators were found by this scanner.");
   console.log("This does not prove the host is clean; it only covers the indicators this tool knows about.");
   console.log("");
+}
+
+function printRemediationPlan(plan) {
+  console.log("");
+  console.log("==================================================================");
+  console.log("REMEDIATION PLAN (advisory text only - nothing has been changed)");
+  console.log("==================================================================");
+  for (const line of plan.header) {
+    console.log(line);
+  }
+  console.log("");
+
+  if (plan.items.length === 0) {
+    for (const line of plan.generalSteps) {
+      console.log(`- ${line}`);
+    }
+    return;
+  }
+
+  if (plan.hasDeadManSwitch) {
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    for (const line of plan.deadManBanner) {
+      console.log(`!! ${line}`);
+    }
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    console.log("");
+  }
+
+  for (const item of plan.items) {
+    console.log(`[${item.riskLabel}]`);
+    console.log(item.title);
+    for (const matched of item.matchedFindings) {
+      console.log(`  found: [${matched.severity}] ${matched.type} ${matched.path}`);
+    }
+    for (const line of item.warning) {
+      console.log(`  WARNING: ${line}`);
+    }
+    item.steps.forEach((step, index) => {
+      console.log(`  ${index + 1}. ${step}`);
+    });
+    for (const line of item.doNotDo) {
+      console.log(`  DO NOT: ${line}`);
+    }
+    console.log("");
+  }
+
+  console.log("After the items above:");
+  for (const line of plan.generalSteps) {
+    console.log(`- ${line}`);
+  }
 }
 
 try {

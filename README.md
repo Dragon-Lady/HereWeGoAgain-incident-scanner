@@ -23,6 +23,7 @@ Run against a local project:
 node bin/herewegoagain-incident-scanner.js /path/to/project
 node bin/herewegoagain-incident-scanner.js /path/to/project --json
 node bin/herewegoagain-incident-scanner.js /path/to/project --report report.json
+node bin/herewegoagain-incident-scanner.js /path/to/project --remediation-plan
 ```
 
 ## Safety
@@ -256,6 +257,34 @@ Exit code `2` means likely exposure indicators were found.
 Human-readable output starts with a plain-language `STOP`, `PAUSE`, or clean-scan
 summary for non-specialist users, followed by exact technical findings for
 developers, security teams, and CI logs.
+
+## Remediation Plans
+
+`--remediation-plan` turns the findings into a personalized, step-by-step
+cleanup plan so an affected developer does not have to map a generic playbook
+onto their machine mid-incident. The plan is advisory text only: this tool never
+removes files, stops services, revokes credentials, or executes any remediation
+step. The operator reviews and runs every command themselves.
+
+Plan items are grouped and ordered by handling class:
+
+- `STOP - DO NOT REMOVE ANYTHING YET` - findings that match persistence
+  reported to include a dead-man's switch (for example `gh-token-monitor` or
+  `pgsql-monitor`). These print first, with the disarm sequence ordered before
+  any credential rotation, because revoking tokens or deleting files in the
+  wrong order is reported to trigger the switch and damage the machine.
+- `CAUTION - ORDER MATTERS` - cleanup where sequence is load-bearing: isolate
+  and preserve evidence before deleting payloads, disarm before rotating, pin
+  versions before regenerating lockfiles.
+- `REVIEW - SAFE TO HANDLE` - verification items with no compromise ordering,
+  such as campaign-adjacent package checks and patch-priority items.
+
+Each item lists the exact findings that triggered it, warnings, numbered steps,
+and explicit `DO NOT` lines. With `--json` or `--report`, the same plan is
+included in the report as a `remediationPlan` object. Rules live in
+`data/remediation.json` and are derived from
+[docs/recovery-playbook.md](docs/recovery-playbook.md) and the cited vendor
+reporting; a finding type with no rule simply produces no plan item.
 
 ## What It Checks
 
