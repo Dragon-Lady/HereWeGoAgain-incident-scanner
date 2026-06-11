@@ -223,6 +223,9 @@ writes and credential-target collection.
 OX's June 4 Malware-Slop 2 report describes `cms-store-ren`, a malicious npm
 infostealer affecting all observed versions, with Telegram Bot API exfiltration,
 a leaked actor bot token, and hidden PowerShell second-stage execution.
+GitHub Advisory `GHSA-g6v5-9xpp-6hpx` and supplychainattack.org also mark
+`google-cloud-secret-manager-config-poc` as npm malware affecting all versions,
+requiring full-compromise handling if installed or run.
 Flatt Security's June 1 Claude Code GitHub Action research, later covered by
 The Hacker News, describes a GitHub App actor bypass in agent mode and risky
 `allowed_non_write_users` workflow configurations that could expose OIDC token
@@ -349,6 +352,8 @@ reporting; a finding type with no rule simply produces no plan item.
   package detection, `api.telegram.org/bot`, `ebalvsehvrot10raz_bot`,
   `amaturesequoyah`, `BREVNA LETYAT`, the reported exfiltration group ID, and
   hidden PowerShell launch flags
+- GitHub Advisory npm malware package detection for
+  `google-cloud-secret-manager-config-poc`
 - Claude Code GitHub Action workflow-risk indicators, including
   `anthropics/claude-code-action`, `allowed_non_write_users`,
   `id-token: write`, `ACTIONS_ID_TOKEN_REQUEST_TOKEN`,
@@ -485,6 +490,8 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
 - OX Miasma return / `binding.gyp` npm package expansion: https://www.ox.security/blog/600000-monthly-downloads-affected-miasma-supply-chain-attack-is-back-on-npm/
 - OX Malware-Slop 2 `cms-store-ren` npm / Telegram exfiltration report: https://www.ox.security/blog/malware-slop-2-malicious-npm-package-leaks-its-own-bots-telegram-private-token/
+- GitHub Advisory for `google-cloud-secret-manager-config-poc`: https://github.com/advisories/GHSA-g6v5-9xpp-6hpx
+- supplychainattack.org incident for `google-cloud-secret-manager-config-poc`: https://supplychainattack.org/incident/malware-in-google-cloud-secret-manager-config-poc-1fs99l
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
 - Palo Alto Networks CVE-2026-0257 advisory: https://security.paloaltonetworks.com/CVE-2026-0257
@@ -498,4 +505,3 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 ## License
 
 MIT
-

@@ -755,6 +755,28 @@ try {
   fs.rmSync(tmpMalwareSlop2Root, { recursive: true, force: true });
 }
 
+const tmpGoogleSecretManagerPocRoot = fs.mkdtempSync(path.join(__dirname, "tmp-google-secret-manager-poc-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpGoogleSecretManagerPocRoot, "package.json"),
+    JSON.stringify({ dependencies: { "google-cloud-secret-manager-config-poc": "^1.0.0" } }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpGoogleSecretManagerPocRoot, "package-lock.json"),
+    JSON.stringify({
+      packages: {
+        "node_modules/google-cloud-secret-manager-config-poc": { version: "1.0.0" }
+      }
+    })
+  );
+  const googleSecretManagerPocCompromised = scanTarget(tmpGoogleSecretManagerPocRoot);
+  assert.strictEqual(googleSecretManagerPocCompromised.risk, "likely-exposed");
+  assert(googleSecretManagerPocCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("google-cloud-secret-manager-config-poc")));
+  assert(googleSecretManagerPocCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("google-cloud-secret-manager-config-poc")));
+} finally {
+  fs.rmSync(tmpGoogleSecretManagerPocRoot, { recursive: true, force: true });
+}
+
 const tmpPanOsRoot = fs.mkdtempSync(path.join(__dirname, "tmp-panos-"));
 try {
   fs.writeFileSync(
@@ -1087,4 +1109,3 @@ const compromisedWithHash = scanTarget(path.join(__dirname, "fixtures", "comprom
 assert(compromisedWithHash.findings.some((finding) => finding.type === "payload-hash"));
 
 console.log("smoke tests passed");
-

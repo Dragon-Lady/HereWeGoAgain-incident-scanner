@@ -265,6 +265,12 @@ treats any `cms-store-ren` package reference as a critical npm indicator and
 flags copied local notes/source containing the high-signal Telegram and
 PowerShell markers.
 
+GitHub Advisory `GHSA-g6v5-9xpp-6hpx` and supplychainattack.org describe
+`google-cloud-secret-manager-config-poc` as npm malware affecting all versions.
+This scanner treats any package or lockfile reference to that name as a critical
+npm indicator requiring full-compromise handling if the package was installed or
+run.
+
 Flatt Security's June 1, 2026 Claude Code GitHub Action research described a
 GitHub App actor bypass in agent mode and a common risky
 `allowed_non_write_users` configuration in issue-triage workflows. The attack
@@ -441,4 +447,3 @@ If one of these indicators is found, treat the environment as potentially
 exposed until reviewed. If payload execution or credential access is confirmed,
 remove dead-man switch persistence before token revocation, then rotate secrets
 from a clean device and rebuild the affected host.
-

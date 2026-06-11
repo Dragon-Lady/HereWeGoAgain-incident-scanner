@@ -399,6 +399,9 @@
   "cms-store-ren": [
     "*"
   ],
+  "google-cloud-secret-manager-config-poc": [
+    "*"
+  ],
   "agentwork-cli": [
     "0.1.4",
     "0.1.5"
