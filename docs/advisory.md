@@ -271,6 +271,14 @@ This scanner treats any package or lockfile reference to that name as a critical
 npm indicator requiring full-compromise handling if the package was installed or
 run.
 
+Panther's April 2026 OtterCookie report describes a DPRK-attributed npm campaign
+using benign wrapper packages and malicious payload dependencies. This scanner
+tracks the exact reported package versions for `bjs-biginteger`,
+`bjs-lint-builder(s)`, `hjs-lint-builders`, `sjs-builder(s)`, and
+`npm-doc-builder`, plus the reported Vercel-hosted C2 domains. Treat hits as
+install-time malware exposure because the reported payload exfiltrates files and
+can modify SSH authorized keys on Linux hosts.
+
 Flatt Security's June 1, 2026 Claude Code GitHub Action research described a
 GitHub App actor bypass in agent mode and a common risky
 `allowed_non_write_users` configuration in issue-triage workflows. The attack

@@ -88,7 +88,13 @@
     "atlantis-software.net",
     "mx1.privateemail.com",
     "mx2.privateemail.com",
-    "api.telegram.org/bot"
+    "api.telegram.org/bot",
+    "cloudflareinsights.vercel.app",
+    "cloudflarefirewall.vercel.app",
+    "cloudflaresecurity.vercel.app",
+    "cloudflareinsights[.]vercel[.]app",
+    "cloudflarefirewall[.]vercel[.]app",
+    "cloudflaresecurity[.]vercel[.]app"
   ],
   "workflowIndicators": [
     "Linux-pnpm-store-6f9233a50def742c09fde54f56553d6b449a535adf87d4083690539f49ae4da11",
