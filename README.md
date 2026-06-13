@@ -199,6 +199,13 @@ decoded `createPublicGithubExfilRepo` path that creates public GitHub
 repositories under `/user/repos` with the description
 `Hades - The End for the Damned`, generated Hades-themed repo names, and
 `envelope` / `key` payload artifacts.
+Socket's June 8, 2026 Hades follow-up reported a PyPI branch using executable
+`*-setup.pth` startup hooks, Bun bootstrapping, `_index.js` payload handoff,
+`sys.path` payload searching, and trojanized `.abi3.so` native-extension import
+triggers. The scanner treats the reported Hades PyPI package versions as
+critical dependency indicators and keeps structural markers such as
+`langchain_core-setup.pth`, `_index.js`, Bun bootstrap artifacts, and the
+reported `ensmallen` native-extension filenames as copied-artifact indicators.
 JFrog's June 4 Red Hat / Miasma update expands the exact compromised
 `@redhat-cloud-services/*` version set and describes an evasive install-time
 execution path through root `binding.gyp` files. The scanner now treats JFrog's
@@ -240,12 +247,29 @@ non-write-user settings, and GitHub MCP issue read/update tool combinations.
 
 ## Out-of-Scope Windows Disclosures
 
-On May 12, 2026, Dark Web Informer amplified separate Nightmare-Eclipse /
-Chaotic Eclipse disclosures for `YellowKey` and `GreenPlasma`. These are not
-Mini Shai-Hulud package indicators and this scanner does not test or reproduce
-them. For manual defensive triage only, public screenshots and writeups mention
-`Nightmare-Eclipse`, `YellowKey`, `GreenPlasma`, `CSRSS_TEST_SECTION`, and
-WinRE / `wpeinit` context.
+The Nightmare-Eclipse actor runs a multi-week grudge campaign of Windows
+proof-of-concept zero-days, timing GitHub drops right after Patch Tuesday. The
+exploits are physical-access / host disk-encryption and local-privilege bugs.
+They are not Mini Shai-Hulud package indicators, and this scanner does not test
+or reproduce them — they are tracked here as situational awareness only because
+defenders see the same reporting stream.
+
+Known exploit names across the campaign: `GreatXML` (newest BitLocker bypass via
+a planted `unattend.xml` + `Recovery\WindowsRE` tree, abusing a latent Microsoft
+Defender Offline Scan state — a machine that has ever run an offline scan stays
+exploitable with no login), `YellowKey` (earlier BitLocker bypass via an `FsTx`
+folder on USB/EFI), `GreenPlasma` and `MiniPlasma` (local privilege escalation),
+`UnDefend` (Defender disruption), `BlueHammer` (CVE-2026-33825, patched), and
+`RedSun`. Known actor handles/aliases: `Nightmare-Eclipse`, `NightmareEclipse`,
+`Chaotic Eclipse`, `Dead Eclipse`, `Eclipse`, and the `MSNightmare` GitHub org,
+with a self-hosted mirror at `git.projectnightcrawler[.]dev`.
+
+The actor opens and closes repos mid-campaign; do not browse or clone them. Treat
+any clone of a "hot 0-day PoC" as Miasma-style clone-bait and run
+`miasma-preopen-check.sh` before any agent or editor opens the path. For manual
+defensive triage only, public screenshots and writeups mention `Nightmare-Eclipse`,
+`GreatXML`, `YellowKey`, `GreenPlasma`, `CSRSS_TEST_SECTION`, and WinRE /
+`wpeinit` / `unattend.xml` context.
 
 ## Quick Start
 
@@ -417,10 +441,15 @@ reporting; a finding type with no rule simply produces no plan item.
   `createPublicGithubExfilRepo`, `generateHadesRepoName`, `/user/repos`,
   `Hades - The End for the Damned`, Hades-themed repo-name prefixes, and
   `envelope` / `key` artifact fields
+- Hades PyPI indicators from Socket's June 8/10 wave reporting, including
+  affected package versions, `*-setup.pth`, `langchain_core-setup.pth`,
+  `_index.js`, Bun bootstrap markers, `sys.path` payload searching, and
+  suspicious `.abi3.so` native-extension launcher layouts
 - `.vscode/extensions.json` and `.ipynb` notebooks for exact incident strings
 - JavaScript source files for exact incident network and campaign strings
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
-  `durabletask` versions
+  `durabletask` versions, plus June 2026 Hades PyPI package versions reported
+  by Socket
 - Known compromised Composer `intercom/intercom-php` version
 - Composer package/plugin capability anomalies such as unexpected
   `composer-plugin`, `composer-plugin-api`, or plugin entry declarations that

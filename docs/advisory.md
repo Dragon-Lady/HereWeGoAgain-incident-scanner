@@ -114,14 +114,27 @@ incident-note indicators. These strings identify copied page source or local
 notes about the campaign; they do not prove compromise of a host by themselves
 without execution or exposure context.
 
-Separate May 12, 2026 Nightmare-Eclipse / Chaotic Eclipse Windows disclosures
-for `YellowKey` and `GreenPlasma` are out of scope for this scanner. They are
-tracked here only as related public situational awareness because readers may see
-the same reporting stream. Do not add those repositories or screenshots to
-scanner detection data unless a confirmed Mini Shai-Hulud package, payload, or
-campaign artifact overlaps. Manual triage strings from the public reporting
-include `Nightmare-Eclipse`, `YellowKey`, `GreenPlasma`, `CSRSS_TEST_SECTION`,
-and WinRE / `wpeinit` context.
+The Nightmare-Eclipse / Chaotic Eclipse Windows disclosures are out of scope for
+this scanner. They are physical-access host disk-encryption and local-privilege
+bugs, not Mini Shai-Hulud package indicators, and are tracked here only as
+related public situational awareness because readers see the same reporting
+stream. The campaign began early April 2026 and continues; the `GreatXML`
+BitLocker bypass is the newest drop (June 2026), following the May 12, 2026
+`YellowKey` and `GreenPlasma` round. `GreatXML` plants an `unattend.xml` plus a
+`Recovery\WindowsRE` tree on the recovery partition and abuses a latent
+Microsoft Defender Offline Scan state: a machine that has ever run an offline
+scan stays exploitable with no login required. Host-side mitigation (out of this
+tool's lane) is BitLocker TPM+PIN and a UEFI/BIOS password.
+
+Do not add the actor's repositories, mirrors, or screenshots to scanner
+detection data unless a confirmed Mini Shai-Hulud package, payload, or campaign
+artifact overlaps. The actor opens and closes repos mid-campaign — treat any
+clone of a named "hot 0-day PoC" as Miasma-style bait and run the pre-open check
+first. Manual triage strings from public reporting include `Nightmare-Eclipse`,
+`NightmareEclipse`, `Chaotic Eclipse`, `Dead Eclipse`, `MSNightmare`,
+`projectnightcrawler`, `GreatXML`, `YellowKey`, `GreenPlasma`, `MiniPlasma`,
+`UnDefend`, `BlueHammer` (CVE-2026-33825), `RedSun`, `CSRSS_TEST_SECTION`, and
+WinRE / `wpeinit` / `unattend.xml` context.
 
 AlmaLinux's May 13, 2026 Fragnesia / `CVE-2026-46300` disclosure is also
 adjacent Linux host-risk context, not a Here We Go Again or Mini Shai-Hulud
@@ -223,6 +236,14 @@ creates public repositories through `/user/repos`, sets the description
 `Hades - The End for the Damned`, and uses Hades-themed generated repo names.
 Related screenshots showed small JSON artifacts with `envelope` and `key`
 fields; this scanner records only the field names, not the full key material.
+
+Socket's June 8, 2026 Hades follow-up reported a PyPI branch using executable
+`*-setup.pth` startup hooks, Bun bootstrapping, `_index.js` payload handoff,
+`sys.path` payload searching, and trojanized `.abi3.so` native-extension import
+triggers. This scanner treats the reported Hades PyPI package versions as
+critical dependency indicators and records only structural markers such as
+`langchain_core-setup.pth`, `_index.js`, Bun bootstrap artifacts, and reported
+native-extension filenames. It does not store raw LLM anti-analysis prompt text.
 
 JFrog's June 4, 2026 Red Hat / Miasma update expanded the affected
 `@redhat-cloud-services/*` versions and documented an alternate install-time
@@ -392,6 +413,10 @@ The key local indicators used by this project are:
 - Hades GitHub exfil-repo indicators: `createPublicGithubExfilRepo`,
   `generateHadesRepoName`, `/user/repos`, `Hades - The End for the Damned`,
   Hades-themed repo-name prefixes, and `envelope` / `key` artifact fields
+- Hades PyPI indicators: affected package versions, `*-setup.pth`,
+  `langchain_core-setup.pth`, `_index.js`, Bun bootstrap markers, `sys.path`
+  payload searching, and suspicious `.abi3.so` native-extension launcher
+  layouts
 - Miasma/Shai-Hulud second-stage shape indicators: `.github/setup.js`,
   `bun.sh/install`, `npm install bun`, `bun-v*`, `/tmp` JavaScript payload
   writes, decode/write/execute behavior, and credential-target strings such as

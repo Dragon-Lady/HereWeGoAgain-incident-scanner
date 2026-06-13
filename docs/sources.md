@@ -33,6 +33,10 @@
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
 - JFrog Red Hat npm / Miasma report and `binding.gyp` execution update: https://research.jfrog.com/post/shai-hulud-miasma-redhat-cloud-services/
 - OX Miasma return / `binding.gyp` npm package expansion: https://www.ox.security/blog/600000-monthly-downloads-affected-miasma-supply-chain-attack-is-back-on-npm/
+- Socket Hades PyPI wave analysis: https://socket.dev/blog/shai-hulud-descends-to-hades-miasma-pypi-wave
+- Socket newer Miasma/Hades PyPI wave analysis: https://socket.dev/blog/mini-shai-hulud-miasma-and-hades-worms-target-bioinformatics-and-mcp-developers-via-malicious
+- Socket Miasma / Mini Shai-Hulud campaign tracker: https://socket.dev/supply-chain-attacks/miasma-mini-shai-hulud-supply-chain-attack
+- SC World Hades PyPI package-version summary: https://www.scworld.com/news/mini-shai-hulud-hades-variant-affects-23-pypi-package-versions
 - OX Malware-Slop 2 `cms-store-ren` npm / Telegram exfiltration report: https://www.ox.security/blog/malware-slop-2-malicious-npm-package-leaks-its-own-bots-telegram-private-token/
 - Flatt Security Claude Code GitHub Action research: https://flatt.tech/research/posts/poisoning-claude-code-one-github-issue-to-break-the-supply-chain/
 - The Hacker News Claude Code GitHub Action coverage: https://thehackernews.com/2026/06/claude-code-github-action-flaw-let-one.html
@@ -44,8 +48,10 @@
 
 - Dark Web Informer X post amplifying the Nightmare-Eclipse disclosures: https://x.com/DarkWebInformer/status/2054264278044000262
 - Chaotic Eclipse PGP-signed disclosure naming `YellowKey` and `GreenPlasma`: https://deadeclipse666.blogspot.com/2026/05/two-more-public-disclosures-it-will.html
-- Nightmare-Eclipse `YellowKey` repository: https://github.com/Nightmare-Eclipse/YellowKey
-- Nightmare-Eclipse `GreenPlasma` repository: https://github.com/Nightmare-Eclipse/GreenPlasma
+- Barracuda campaign overview (six zero-days, aliases, timeline): https://blog.barracuda.com/2026/05/19/nightmare-eclipse-zero-days-grudge
+- SecurityWeek `GreatXML` BitLocker bypass analysis: https://www.securityweek.com/greatxml-zero-day-exploit-bypasses-bitlocker/
+- IT-Connect `GreatXML` technical writeup (unattend.xml + Recovery\WindowsRE): https://www.it-connect.tech/microsoft-fixes-yellowkey-but-greatxml-zero-day-bypasses-bitlocker/
+- Actor repos/mirrors (DEFANGED — do not fetch or clone; they flip open/closed mid-campaign): `github[.]com/Nightmare-Eclipse/*`, `github[.]com/MSNightmare/GreatXML`, `git.projectnightcrawler[.]dev/NightmareEclipse/GreatXML`
 - Microsoft MSRC CVE-2026-41096 advisory: https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-41096
 - NVD CVE-2026-41096 record: https://nvd.nist.gov/vuln/detail/CVE-2026-41096
 - Zero Day Initiative May 2026 security update review: https://www.zerodayinitiative.com/blog/2026/5/12/the-may-2026-security-update-review

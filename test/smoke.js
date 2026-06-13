@@ -76,6 +76,22 @@ try {
   fs.rmSync(tmpUpdatedPyRoot, { recursive: true, force: true });
 }
 
+const tmpHadesPyRoot = fs.mkdtempSync(path.join(__dirname, "tmp-hades-pypi-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpHadesPyRoot, "requirements.txt"),
+    "langchain-core-mcp==1.4.2\nopenai-mcp==2.41.1\nensmallen==0.8.101\n"
+  );
+  const hadesPyCompromised = scanTarget(tmpHadesPyRoot);
+  assert.strictEqual(hadesPyCompromised.risk, "likely-exposed");
+  assert(hadesPyCompromised.findings.some((finding) => finding.type === "known-bad-pypi-version"));
+  assert(hadesPyCompromised.findings.some((finding) => finding.message.includes("langchain-core-mcp==1.4.2")));
+  assert(hadesPyCompromised.findings.some((finding) => finding.message.includes("openai-mcp==2.41.1")));
+  assert(hadesPyCompromised.findings.some((finding) => finding.message.includes("ensmallen==0.8.101")));
+} finally {
+  fs.rmSync(tmpHadesPyRoot, { recursive: true, force: true });
+}
+
 const tmpComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-composer-"));
 try {
   fs.writeFileSync(
