@@ -271,6 +271,16 @@ defensive triage only, public screenshots and writeups mention `Nightmare-Eclips
 `GreatXML`, `YellowKey`, `GreenPlasma`, `CSRSS_TEST_SECTION`, and WinRE /
 `wpeinit` / `unattend.xml` context.
 
+Adjacent Windows patch-regression risk: Windows 11 cumulative update
+`KB5094126`, released June 9, 2026 for Windows 11 `24H2` and `25H2`, has public
+reports of boot freezes, forced BitLocker Recovery loops, OneDrive Explorer
+integration failures, LAN disruption, and HP device BSOD/update failures tied to
+small EFI System Partitions during Secure Boot certificate updates. This is not
+evidence of Mini Shai-Hulud compromise and is not scanned by this tool. For
+Windows endpoints, preserve BitLocker recovery keys before patch operations,
+validate HP/EFI partition guidance, and use WinRE quality-update rollback if a
+device becomes unstable immediately after this update.
+
 ## Quick Start
 
 ```powershell

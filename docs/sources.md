@@ -55,6 +55,7 @@
 - Microsoft MSRC CVE-2026-41096 advisory: https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-41096
 - NVD CVE-2026-41096 record: https://nvd.nist.gov/vuln/detail/CVE-2026-41096
 - Zero Day Initiative May 2026 security update review: https://www.zerodayinitiative.com/blog/2026/5/12/the-may-2026-security-update-review
+- Cyber Security News Windows 11 KB5094126 patch-regression summary: https://cybersecuritynews.com/windows-11-update-kb5094126/
 - AlmaLinux Fragnesia / CVE-2026-46300 disclosure: https://almalinux.org/blog/2026-05-13-fragnesia-cve-2026-46300/
 - NVD CVE-2026-46300 record: https://nvd.nist.gov/vuln/detail/CVE-2026-46300
 - CIFSwitch / CVE-2026-46243 Linux local-root disclosure: https://heyitsas.im/posts/cifswitch/

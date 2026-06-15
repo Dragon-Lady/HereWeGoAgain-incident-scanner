@@ -63,6 +63,15 @@ Mini Shai-Hulud compromise and is not scanned by this tool. Windows developer
 workstations and CI runners should apply the May 2026 cumulative updates and
 restrict DNS to trusted resolvers where possible.
 
+Adjacent Windows patch-regression risk: Windows 11 `KB5094126`, released
+June 9, 2026 for Windows 11 `24H2` and `25H2`, has public reports of boot
+freezes, BitLocker Recovery loops, OneDrive Explorer failures, LAN disruption,
+and HP BSOD/update failures tied to small EFI System Partitions during Secure
+Boot certificate updates. Before broad deployment, preserve BitLocker recovery
+keys, verify HP/EFI partition guidance, and maintain a WinRE rollback path for
+the latest quality update. This is not evidence of Mini Shai-Hulud compromise
+by itself.
+
 Adjacent Linux local-root risk: AlmaLinux disclosed Fragnesia /
 `CVE-2026-46300` on May 13, 2026, affecting supported AlmaLinux releases
 through `esp4`, `esp6`, and in some AlmaLinux 9/10 cases `rxrpc`. This is not

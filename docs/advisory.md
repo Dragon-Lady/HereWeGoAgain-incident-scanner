@@ -136,6 +136,15 @@ first. Manual triage strings from public reporting include `Nightmare-Eclipse`,
 `UnDefend`, `BlueHammer` (CVE-2026-33825), `RedSun`, `CSRSS_TEST_SECTION`, and
 WinRE / `wpeinit` / `unattend.xml` context.
 
+Windows 11 `KB5094126` is also tracked as out-of-scope patch-regression
+awareness. Public reporting describes freezes shortly after boot, BitLocker
+Recovery loops even on systems where encryption had been disabled, OneDrive
+Explorer integration failures on some domain-joined PCs, LAN disruption, and HP
+device BSOD/update failures linked to small EFI System Partitions during Secure
+Boot certificate updates. This scanner does not inspect Windows update state.
+Treat these symptoms as patch triage, not supply-chain compromise, unless other
+Mini Shai-Hulud evidence is present.
+
 AlmaLinux's May 13, 2026 Fragnesia / `CVE-2026-46300` disclosure is also
 adjacent Linux host-risk context, not a Here We Go Again or Mini Shai-Hulud
 scanner indicator. It is a kernel local-root flaw affecting supported
