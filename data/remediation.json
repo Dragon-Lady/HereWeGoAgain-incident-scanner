@@ -115,6 +115,89 @@
       ]
     },
     {
+      "id": "easy-day-js-mastra-persistence",
+      "title": "easy-day-js / Mastra stage-2 persistence (protocal.cjs / NodePackages)",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "matchAny": [
+          "protocal.cjs",
+          "NvmProtocal",
+          "com.nvm.protocal",
+          "nvmconf.service",
+          "NodePackages",
+          ".pkg_history",
+          ".pkg_logs",
+          "browser-hist-",
+          "/update/49890878",
+          "hwsrv-1327786.hostwindsdns.com",
+          "hwsrv-1327785.hostwindsdns.com"
+        ]
+      },
+      "warning": [
+        "Socket reports this Mastra/easy-day-js stage-2 as cross-platform persistence and browser/wallet/credential collection.",
+        "Stop or unload persistence before deleting files, and preserve evidence before any cleanup.",
+        "This is ordered manual incident guidance, not a dead-man's-switch rule."
+      ],
+      "steps": [
+        "Stop package installs, builds, dev servers, and Node processes tied to the affected project",
+        "Preserve the scanner JSON report, lockfiles, install logs, suspicious NodePackages directories, .pkg_history, .pkg_logs, and browser-hist-* artifacts before deletion",
+        "Windows: remove the NvmProtocal Run-key entry only after exporting the key and preserving C:\\ProgramData\\NodePackages\\protocal.cjs plus config.json metadata",
+        "macOS: launchctl unload ~/Library/LaunchAgents/com.nvm.protocal.plist if present, then preserve and remove the plist and ~/Library/NodePackages/protocal.cjs",
+        "Linux: systemctl --user stop nvmconf.service, then systemctl --user disable nvmconf.service if present",
+        "Linux: preserve and remove the nvmconf systemd user unit, ~/.config/systemd/nvmconf/protocal.cjs, and ~/.config/NodePackages/config.json",
+        "Verify no protocal.cjs, NvmProtocal, com.nvm.protocal, nvmconf.service, NodePackages, .pkg_history, .pkg_logs, or browser-hist-* artifacts remain in user and project paths",
+        "After persistence and payload artifacts are handled, rotate npm, GitHub, cloud, SSH, browser-stored, wallet, and CI credentials from a separate clean device",
+        "Rebuild the dependency tree from a clean environment with install scripts blocked and known-bad Mastra/easy-day-js versions pinned away"
+      ],
+      "doNotDo": [
+        "Do not delete protocal.cjs or NodePackages artifacts before preserving evidence.",
+        "Do not rotate credentials from the suspected infected host.",
+        "Do not run a normal npm install while known-bad versions remain in the manifest or lockfile."
+      ]
+    },
+    {
+      "id": "procwire-routecraft-windows-dropper",
+      "title": "procwire / routecraft Windows npm dropper",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "matchAny": [
+          "procwire",
+          "routecraft",
+          "endpointmap",
+          "bytecraft",
+          "staticlayer",
+          "files.catbox.moe/j4loim.chk",
+          "Microsoft-Delivery-Optimization/10.0",
+          "Zone.Identifier",
+          "msedge_update",
+          "chrome_installer",
+          "dotnet_host",
+          "onedrive_setup",
+          "teams_update"
+        ]
+      },
+      "warning": [
+        "SafeDep reports this npm campaign as a Windows-only install-time binary dropper.",
+        "If the affected package was installed on Windows, treat the host as compromised until triaged.",
+        "Preserve evidence before deleting dropped executables or rebuilding dependency state."
+      ],
+      "steps": [
+        "Stop npm installs, builds, tests, dev servers, and editor tasks in the affected project",
+        "Preserve package.json, lockfiles, npm logs, node_modules evidence, and the scanner JSON report",
+        "On Windows, inspect %LOCALAPPDATA%\\Temp, %TEMP%, and %TMP% for recent msedge_update_*.exe, chrome_installer_*.exe, dotnet_host_*.exe, onedrive_setup_*.exe, or teams_update_*.exe files",
+        "Preserve file paths, hashes, timestamps, Zone.Identifier alternate data stream state, and process/network evidence before removal",
+        "Check for outbound access to files.catbox.moe, especially /j4loim.chk and the Microsoft-Delivery-Optimization/10.0 user-agent",
+        "Remove known-bad procwire, routecraft, endpointmap, bytecraft, and staticlayer versions from manifests and lockfiles",
+        "Regenerate dependency state from a clean environment with install scripts blocked",
+        "Rotate npm, GitHub, cloud, SSH, browser-stored, and CI credentials from a separate clean device if execution may have occurred"
+      ],
+      "doNotDo": [
+        "Do not run npm install again in the affected tree until known-bad package versions are removed.",
+        "Do not delete updater-named executables before preserving metadata and hashes.",
+        "Do not rotate credentials from the suspected infected Windows host."
+      ]
+    },
+    {
       "id": "payload-on-disk",
       "title": "Known payload files or second-stage code on disk",
       "riskClass": "ordered-manual",

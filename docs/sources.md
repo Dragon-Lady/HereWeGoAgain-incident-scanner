@@ -29,6 +29,9 @@
 - Socket Packagist/Intercom Composer plugin report: https://socket.dev/blog/famous-chollima-targets-php-developers-through-compromised-packagist-package
 - Aikido Codex remote UI token-theft report: https://www.aikido.dev/blog/codex-remote-ui-steals-ai-tokens
 - The Hacker News Codex authentication token theft coverage: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
+- OX Security easy-day-js / Mastra npm supply-chain report: https://www.ox.security/blog/easy-day-js-supply-chain-attack-hits-mastra-ai-in-npm/
+- Socket Mastra npm package compromise analysis: https://socket.dev/blog/mastra-npm-packages-compromised
+- SafeDep procwire / routecraft Windows npm dropper campaign: https://safedep.io/procwire-npm-windows-dropper-campaign/
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
 - JFrog Red Hat npm / Miasma report and `binding.gyp` execution update: https://research.jfrog.com/post/shai-hulud-miasma-redhat-cloud-services/

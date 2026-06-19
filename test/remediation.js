@@ -71,6 +71,56 @@ try {
   fs.rmSync(tmpConfigRoot, { recursive: true, force: true });
 }
 
+// Socket's easy-day-js / Mastra stage-2 indicators map to ordered manual
+// persistence guidance, not to the dead-man switch banner.
+const tmpEasyDayJsRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-easy-day-js-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpEasyDayJsRoot, "incident-notes.js"),
+    [
+      "const stage2 = 'protocal.cjs launched by nvmconf.service';",
+      "const artifacts = 'NodePackages .pkg_history .pkg_logs browser-hist-';"
+    ].join("\n")
+  );
+  const report = scanTarget(tmpEasyDayJsRoot);
+  const plan = buildRemediationPlan(report);
+  assert(plan);
+  assert.strictEqual(plan.hasDeadManSwitch, false);
+  const item = plan.items.find((entry) => entry.id === "easy-day-js-mastra-persistence");
+  assert(item, "easy-day-js / Mastra persistence rule should match Socket stage-2 indicators");
+  assert.strictEqual(item.riskClass, "ordered-manual");
+  assert(item.steps.some((step) => /nvmconf\.service/.test(step)));
+  assert(item.steps.some((step) => /rotate npm, GitHub, cloud, SSH/.test(step)));
+} finally {
+  fs.rmSync(tmpEasyDayJsRoot, { recursive: true, force: true });
+}
+
+// SafeDep's procwire / routecraft Windows npm dropper indicators map to
+// ordered manual host-compromise guidance, not to the dead-man switch banner.
+const tmpProcwireRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-procwire-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpProcwireRoot, "worker.js"),
+    [
+      "const ua = 'Microsoft-Delivery-Optimization/10.0';",
+      "const url = 'files.catbox.moe/j4loim.chk';",
+      "const motw = 'Zone.Identifier [ZoneTransfer] ZoneId=0';",
+      "const exe = 'msedge_update chrome_installer dotnet_host onedrive_setup teams_update';"
+    ].join("\n")
+  );
+  const report = scanTarget(tmpProcwireRoot);
+  const plan = buildRemediationPlan(report);
+  assert(plan);
+  assert.strictEqual(plan.hasDeadManSwitch, false);
+  const item = plan.items.find((entry) => entry.id === "procwire-routecraft-windows-dropper");
+  assert(item, "procwire / routecraft Windows dropper rule should match SafeDep indicators");
+  assert.strictEqual(item.riskClass, "ordered-manual");
+  assert(item.steps.some((step) => /%LOCALAPPDATA%\\Temp/.test(step)));
+  assert(item.steps.some((step) => /install scripts blocked/.test(step)));
+} finally {
+  fs.rmSync(tmpProcwireRoot, { recursive: true, force: true });
+}
+
 // A clean scan produces a plan with no items and the no-known-indicators steps.
 const tmpCleanRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-clean-"));
 try {

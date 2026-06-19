@@ -415,6 +415,21 @@ reporting; a finding type with no rule simply produces no plan item.
   `github-dev-token-steal-poc`, `vscode-github-token-grab-extension`,
   `AmmarTest.hello-ammar-github`, `workbench.extensions.installExtension`, and
   `skipPublisherTrust`
+- Aikido / BleepingComputer JetBrains Marketplace AI-key stealer indicators,
+  including exact reported plugin IDs such as `org.sm.yms.toolkit` and
+  `com.dp.git.ai.tool`, plus `39.107.60[.]51/api/software/key`
+- OX easy-day-js / Mastra npm package takeover indicators, including exact
+  affected `@mastra/*` versions, `easy-day-js@1.11.22`, `setup.cjs`, and
+  `23.254[.]164.92:8000` / `23.254[.]164.123:443`, with Socket's stage-2
+  persistence markers such as `protocal.cjs`, `NvmProtocal`,
+  `com.nvm.protocal`, `nvmconf.service`, `NodePackages`, `.pkg_history`,
+  `.pkg_logs`, `browser-hist-`, `/update/49890878`, and Hostwinds C2
+  hostnames
+- SafeDep procwire / routecraft Windows npm dropper indicators, including exact
+  versions for `procwire`, `routecraft`, `endpointmap`, `bytecraft`, and
+  `staticlayer`, the staged `files[.]catbox[.]moe/j4loim[.]chk` payload,
+  `Microsoft-Delivery-Optimization/10.0`, Mark-of-the-Web stripping, hidden
+  Windows process execution, and updater-like executable names
 - node-ipc compromise indicators, including malicious `node-ipc` versions
   `9.1.6`, `9.2.3`, and `12.0.1`, `node-ipc.cjs`, `__ntw`, `__ntRun`,
   `uname.txt`, `envs.txt`, `nt-<hash>`, `dns.Resolver`, `atiertant`,
@@ -531,6 +546,10 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Socket Packagist/Intercom Composer plugin report: https://socket.dev/blog/famous-chollima-targets-php-developers-through-compromised-packagist-package
 - Aikido Codex remote UI token-theft report: https://www.aikido.dev/blog/codex-remote-ui-steals-ai-tokens
 - The Hacker News Codex authentication token theft coverage: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
+- BleepingComputer / Aikido JetBrains Marketplace AI-key stealer report: https://www.bleepingcomputer.com/news/security/malicious-jetbrains-marketplace-plugins-steal-ai-api-keys-from-developers/
+- OX Security easy-day-js / Mastra npm supply-chain report: https://www.ox.security/blog/easy-day-js-supply-chain-attack-hits-mastra-ai-in-npm/
+- Socket Mastra npm package compromise analysis: https://socket.dev/blog/mastra-npm-packages-compromised
+- SafeDep procwire / routecraft Windows npm dropper campaign: https://safedep.io/procwire-npm-windows-dropper-campaign/
 - Aikido Red Hat npm / Miasma compromise report: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
 - OX Red Hat npm / Miasma compromise report: https://www.ox.security/blog/new-npm-supply-chain-attack-redhat-cloud-services-compromised
 - OX Miasma return / `binding.gyp` npm package expansion: https://www.ox.security/blog/600000-monthly-downloads-affected-miasma-supply-chain-attack-is-back-on-npm/
