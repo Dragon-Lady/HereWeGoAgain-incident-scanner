@@ -443,6 +443,15 @@ The key local indicators used by this project are:
   continuing.
 - Claude Code `.claude/settings*.json` and VS Code `.vscode/tasks.json`
   references to known payload, network, token-description, and campaign strings
+- Binary Defense BLUERABBIT Windows host indicators: `BLUERABBIT`,
+  `HKCU\Software\OneDrive\Environment`, the `OneDrive Update` scheduled task,
+  `New-ScheduledTaskAction`, `AllowStartIfOnBatteries`,
+  `NoAutoRebootWithLoggedOnUsers`, `MaintenanceDisabled`,
+  `AlwaysAutoRebootAtScheduledTime`, `.candy`, `High-Alert`,
+  `RabbitMQ (AMQP)`, `S3-compatible data exfiltration`,
+  `GUID-named directories`, and the reported SHA-256 file hashes
+  `633d4cbd496b1094495da89a64f5e6c31a0f6d4d1488411db5b0cba1cfe42001` and
+  `9706a192e2c1a1faaf0a521daf31c2af60ff4590e3f47bbb4abc`
 
 Additional TanStack-postmortem IOCs retained for investigation context include
 the cache key

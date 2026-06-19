@@ -198,6 +198,48 @@
       ]
     },
     {
+      "id": "bluerabbit-windows-backdoor-ransomware",
+      "title": "BLUERABBIT Windows backdoor / ransomware indicators",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "matchAny": [
+          "BLUERABBIT",
+          "HKCU\\Software\\OneDrive\\Environment",
+          "OneDrive Update",
+          "New-ScheduledTaskAction",
+          "AllowStartIfOnBatteries",
+          "MaintenanceDisabled",
+          "NoAutoRebootWithLoggedOnUsers",
+          "AlwaysAutoRebootAtScheduledTime",
+          ".candy",
+          "High-Alert",
+          "633d4cbd496b1094495da89a64f5e6c31a0f6d4d1488411db5b0cba1cfe42001",
+          "9706a192e2c1a1faaf0a521daf31c2af60ff4590e3f47bbb4abc"
+        ]
+      },
+      "warning": [
+        "Binary Defense reports BLUERABBIT as a Windows Golang backdoor with exfiltration, ransomware, and destructive disk-wiping capabilities.",
+        "If these indicators are found on a Windows host, treat the system as potentially compromised and destructive until triaged.",
+        "Preserve evidence before changing scheduled tasks, registry keys, encrypted files, or recovery settings."
+      ],
+      "steps": [
+        "Stop normal user activity, installs, builds, and automation on the affected Windows host",
+        "If execution is suspected, isolate the host from the network while preserving volatile evidence where incident-response policy allows",
+        "Preserve the scanner JSON report plus scheduled-task, registry, process, service, network, and file-system evidence before cleanup",
+        "Review the scheduled task named OneDrive Update, especially tasks created with hidden/immediate/startup behavior or AllowStartIfOnBatteries",
+        "Review HKCU\\Software\\OneDrive\\Environment and recovery-suppression registry values such as AutoReboot, NoAutoRebootWithLoggedOnUsers, MaintenanceDisabled, and AlwaysAutoRebootAtScheduledTime",
+        "Search for .candy encrypted files, High-Alert wallpaper changes, GUID-named staging directories, and evidence of RabbitMQ/AMQP, Redis, or S3-compatible MinIO exfiltration",
+        "Check file hashes against the reported SHA-256 indicators before deleting or rebuilding",
+        "Rotate credentials from a separate clean device after containment and evidence capture; prioritize domain, VPN, cloud, GitHub, package-registry, SSH, browser-stored, banking, and crypto credentials exposed from that host",
+        "Prefer rebuild/reimage from a clean baseline if payload execution, encryption, wiping, or credential access is confirmed"
+      ],
+      "doNotDo": [
+        "Do not remove the scheduled task, registry keys, or suspected payload before preserving evidence.",
+        "Do not rotate credentials from the suspected infected Windows host.",
+        "Do not assume disabling encryption stops wiping or backdoor capability."
+      ]
+    },
+    {
       "id": "payload-on-disk",
       "title": "Known payload files or second-stage code on disk",
       "riskClass": "ordered-manual",

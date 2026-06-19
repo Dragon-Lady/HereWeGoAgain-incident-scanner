@@ -430,6 +430,11 @@ reporting; a finding type with no rule simply produces no plan item.
   `staticlayer`, the staged `files[.]catbox[.]moe/j4loim[.]chk` payload,
   `Microsoft-Delivery-Optimization/10.0`, Mark-of-the-Web stripping, hidden
   Windows process execution, and updater-like executable names
+- Binary Defense BLUERABBIT Windows backdoor/ransomware indicators, including
+  `HKCU\Software\OneDrive\Environment`, the `OneDrive Update` scheduled task,
+  recovery-suppression values such as `NoAutoRebootWithLoggedOnUsers` and
+  `MaintenanceDisabled`, `.candy` encrypted-file markers, `High-Alert`
+  wallpaper references, and the reported SHA-256 file hashes
 - node-ipc compromise indicators, including malicious `node-ipc` versions
   `9.1.6`, `9.2.3`, and `12.0.1`, `node-ipc.cjs`, `__ntw`, `__ntRun`,
   `uname.txt`, `envs.txt`, `nt-<hash>`, `dns.Resolver`, `atiertant`,

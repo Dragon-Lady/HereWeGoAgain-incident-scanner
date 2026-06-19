@@ -121,6 +121,34 @@ try {
   fs.rmSync(tmpProcwireRoot, { recursive: true, force: true });
 }
 
+// Binary Defense's BLUERABBIT indicators map to ordered manual Windows host
+// compromise guidance, not package cleanup.
+const tmpBlueRabbitRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-bluerabbit-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpBlueRabbitRoot, "incident-notes.sh"),
+    [
+      "echo BLUERABBIT",
+      "echo 'HKCU\\Software\\OneDrive\\Environment'",
+      "echo 'OneDrive Update'",
+      "echo 'NoAutoRebootWithLoggedOnUsers MaintenanceDisabled AlwaysAutoRebootAtScheduledTime'",
+      "echo '.candy High-Alert'",
+      "echo '9706a192e2c1a1faaf0a521daf31c2af60ff4590e3f47bbb4abc'"
+    ].join("\n")
+  );
+  const report = scanTarget(tmpBlueRabbitRoot);
+  const plan = buildRemediationPlan(report);
+  assert(plan);
+  assert.strictEqual(plan.hasDeadManSwitch, false);
+  const item = plan.items.find((entry) => entry.id === "bluerabbit-windows-backdoor-ransomware");
+  assert(item, "BLUERABBIT rule should match Windows host indicators");
+  assert.strictEqual(item.riskClass, "ordered-manual");
+  assert(item.steps.some((step) => /scheduled task named OneDrive Update/.test(step)));
+  assert(item.steps.some((step) => /clean baseline/.test(step)));
+} finally {
+  fs.rmSync(tmpBlueRabbitRoot, { recursive: true, force: true });
+}
+
 // A clean scan produces a plan with no items and the no-known-indicators steps.
 const tmpCleanRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-clean-"));
 try {

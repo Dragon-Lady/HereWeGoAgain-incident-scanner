@@ -466,7 +466,22 @@
     "teams_update",
     "akuznetsov-oss",
     "vpetrov-oss",
-    "deltajohnsons.com"
+    "deltajohnsons.com",
+    "BLUERABBIT",
+    "HKCU\\Software\\OneDrive\\Environment",
+    "OneDrive Update",
+    "New-ScheduledTaskAction",
+    "AllowStartIfOnBatteries",
+    "MaintenanceDisabled",
+    "NoAutoRebootWithLoggedOnUsers",
+    "AlwaysAutoRebootAtScheduledTime",
+    ".candy",
+    "High-Alert",
+    "RabbitMQ (AMQP)",
+    "S3-compatible data exfiltration",
+    "GUID-named directories",
+    "633d4cbd496b1094495da89a64f5e6c31a0f6d4d1488411db5b0cba1cfe42001",
+    "9706a192e2c1a1faaf0a521daf31c2af60ff4590e3f47bbb4abc"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [

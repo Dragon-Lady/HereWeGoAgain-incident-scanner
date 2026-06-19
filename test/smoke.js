@@ -1264,6 +1264,31 @@ try {
   fs.rmSync(tmpToolShadowRoot, { recursive: true, force: true });
 }
 
+const tmpBlueRabbitRoot = fs.mkdtempSync(path.join(__dirname, "tmp-bluerabbit-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpBlueRabbitRoot, "incident-note.sh"),
+    [
+      "# BLUERABBIT triage note",
+      "echo 'HKCU\\Software\\OneDrive\\Environment'",
+      "echo 'OneDrive Update'",
+      "echo 'New-ScheduledTaskAction AllowStartIfOnBatteries'",
+      "echo 'NoAutoRebootWithLoggedOnUsers MaintenanceDisabled AlwaysAutoRebootAtScheduledTime'",
+      "echo 'files encrypted with .candy extension and High-Alert wallpaper'",
+      "echo '633d4cbd496b1094495da89a64f5e6c31a0f6d4d1488411db5b0cba1cfe42001'"
+    ].join("\n")
+  );
+  const blueRabbitReview = scanTarget(tmpBlueRabbitRoot);
+  assert.strictEqual(blueRabbitReview.risk, "possible-exposure");
+  assert(blueRabbitReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("BLUERABBIT")));
+  assert(blueRabbitReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("HKCU\\Software\\OneDrive\\Environment")));
+  assert(blueRabbitReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("OneDrive Update")));
+  assert(blueRabbitReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes(".candy")));
+  assert(blueRabbitReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("633d4cbd496b1094495da89a64f5e6c31a0f6d4d1488411db5b0cba1cfe42001")));
+} finally {
+  fs.rmSync(tmpBlueRabbitRoot, { recursive: true, force: true });
+}
+
 const payloadPath = path.join(__dirname, "fixtures", "compromised", "router_init.js");
 const payloadHash = crypto.createHash("sha256").update(fs.readFileSync(payloadPath)).digest("hex");
 const compromisedWithHash = scanTarget(path.join(__dirname, "fixtures", "compromised"), {
