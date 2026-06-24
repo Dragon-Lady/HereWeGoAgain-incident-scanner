@@ -872,6 +872,36 @@ try {
   fs.rmSync(tmpSupplyChainAttackCatalogRoot, { recursive: true, force: true });
 }
 
+const tmpChainVeilRoot = fs.mkdtempSync(path.join(__dirname, "tmp-chainveil-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpChainVeilRoot, "package.json"),
+    JSON.stringify({
+      dependencies: {
+        "rate-limit-flexible": "^1.0.2",
+        "tailwindcss-merge": "1.0.4",
+        "sass-format": "^1.0.1"
+      }
+    }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpChainVeilRoot, "package-lock.json"),
+    JSON.stringify({
+      packages: {
+        "node_modules/rate-limit-flexible": { version: "1.0.2" },
+        "node_modules/tailwindcss-merge": { version: "1.0.4" }
+      }
+    })
+  );
+  const chainVeilCompromised = scanTarget(tmpChainVeilRoot);
+  assert.strictEqual(chainVeilCompromised.risk, "likely-exposed");
+  assert(chainVeilCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("rate-limit-flexible")));
+  assert(chainVeilCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("tailwindcss-merge")));
+  assert(chainVeilCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("rate-limit-flexible")));
+} finally {
+  fs.rmSync(tmpChainVeilRoot, { recursive: true, force: true });
+}
+
 const tmpOtterCookieRoot = fs.mkdtempSync(path.join(__dirname, "tmp-ottercookie-"));
 try {
   fs.writeFileSync(

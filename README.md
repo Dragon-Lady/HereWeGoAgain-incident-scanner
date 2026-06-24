@@ -247,6 +247,9 @@ requiring full-compromise handling if installed or run.
 Supply Chain Attack's June 22-23 catalog updates add `free-claude`,
 `free-anthropic-claude`, and a broader npm malware package cluster as
 full-compromise indicators.
+Checkmarx's ChainVeil report adds the successkey npm package cluster, including
+`tailwindcss-merge`, `sass-format`, `sass-formats`, and `rate-limit-flexible`,
+plus loader, C2, persistence, and wallet-drainer context.
 Panther's April 2026 OtterCookie report adds exact malicious npm versions for
 wrapper and payload packages including `bjs-biginteger`,
 `bjs-lint-builder(s)`, `hjs-lint-builders`, `sjs-builder(s)`, and
@@ -417,6 +420,7 @@ reporting; a finding type with no rule simply produces no plan item.
   `google-cloud-secret-manager-config-poc`
 - Supply Chain Attack catalog npm malware package detection, including
   `free-claude`, `free-anthropic-claude`, and the June 23 package cluster
+- Checkmarx ChainVeil / successkey npm package indicators
 - Panther OtterCookie npm indicators, including exact package versions and
   Vercel-hosted C2 domains
 - Claude Code GitHub Action workflow-risk indicators, including
@@ -590,6 +594,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - supplychainattack.org incident for `google-cloud-secret-manager-config-poc`: https://supplychainattack.org/incident/malware-in-google-cloud-secret-manager-config-poc-1fs99l
 - Supply Chain Attack incident catalog, latest npm malware batch: https://supplychainattack.org/
 - Supply Chain Attack incident catalog, free-claude npm malware: https://supplychainattack.org/incident/malware-in-free-claude-7fjbqi
+- Checkmarx ChainVeil / successkey npm supply-chain report: https://checkmarx.com/zero-post/chainveil-a-malicious-npm-supply-chain-attack-by-successkey/
 - Panther OtterCookie npm campaign: https://panther.com/blog/tracking-an-ottercookie-infostealer-campaign-across-npm
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
