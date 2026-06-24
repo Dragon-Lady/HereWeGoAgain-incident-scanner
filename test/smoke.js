@@ -124,6 +124,31 @@ try {
   fs.rmSync(tmpComposerRoot, { recursive: true, force: true });
 }
 
+const tmpDcatComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-dcat-composer-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpDcatComposerRoot, "composer.lock"),
+    JSON.stringify({
+      packages: [{
+        name: "dcat-auth-google-2fa",
+        version: "1.0.2.0",
+        dist: { url: "https://example.invalid/dcat-auth-google-2fa.zip" }
+      }]
+    }, null, 2)
+  );
+  fs.mkdirSync(path.join(tmpDcatComposerRoot, "vendor", "dcat-auth-google-2fa", "src"), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmpDcatComposerRoot, "vendor", "dcat-auth-google-2fa", "src", "Auth.php"),
+    "<?php\n$endpoint = 'https://r.keepex.xyz/api/report/admin';\n$code = '979890';\n"
+  );
+  const dcatComposerCompromised = scanTarget(tmpDcatComposerRoot);
+  assert.strictEqual(dcatComposerCompromised.risk, "likely-exposed");
+  assert(dcatComposerCompromised.findings.some((finding) => finding.type === "known-bad-composer-version" && finding.message.includes("dcat-auth-google-2fa@1.0.2.0")));
+  assert(dcatComposerCompromised.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("r.keepex.xyz")));
+} finally {
+  fs.rmSync(tmpDcatComposerRoot, { recursive: true, force: true });
+}
+
 const tmpLaravelLangRoot = fs.mkdtempSync(path.join(__dirname, "tmp-laravel-lang-"));
 try {
   fs.writeFileSync(

@@ -509,7 +509,8 @@ reporting; a finding type with no rule simply produces no plan item.
 - Known compromised PyPI `mistralai`, `guardrails-ai`, `lightning`, and
   `durabletask` versions, plus June 2026 Hades PyPI package versions reported
   by Socket
-- Known compromised Composer `intercom/intercom-php` version
+- Known compromised Composer `intercom/intercom-php` and
+  `dcat-auth-google-2fa` versions
 - Composer package/plugin capability anomalies such as unexpected
   `composer-plugin`, `composer-plugin-api`, or plugin entry declarations that
   can enable install/update-time execution
