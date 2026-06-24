@@ -850,6 +850,7 @@ try {
       dependencies: {
         "free-claude": "^1.0.0",
         "free-anthropic-claude": "^1.0.0",
+        "search-from-search": "^1.0.0",
         "node-fetch-utils": "^1.0.0"
       }
     }, null, 2)
@@ -867,6 +868,7 @@ try {
   assert.strictEqual(supplyChainAttackCatalogCompromised.risk, "likely-exposed");
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("free-claude")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("free-anthropic-claude")));
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("search-from-search")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("node-fetch-utils")));
 } finally {
   fs.rmSync(tmpSupplyChainAttackCatalogRoot, { recursive: true, force: true });

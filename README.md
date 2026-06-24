@@ -245,8 +245,8 @@ GitHub Advisory `GHSA-g6v5-9xpp-6hpx` and supplychainattack.org also mark
 `google-cloud-secret-manager-config-poc` as npm malware affecting all versions,
 requiring full-compromise handling if installed or run.
 Supply Chain Attack's June 22-23 catalog updates add `free-claude`,
-`free-anthropic-claude`, and a broader npm malware package cluster as
-full-compromise indicators.
+`free-anthropic-claude`, `search-from-search`, and a broader npm malware
+package cluster as full-compromise indicators.
 Checkmarx's ChainVeil report adds the successkey npm package cluster, including
 `tailwindcss-merge`, `sass-format`, `sass-formats`, and `rate-limit-flexible`,
 plus loader, C2, persistence, and wallet-drainer context.
