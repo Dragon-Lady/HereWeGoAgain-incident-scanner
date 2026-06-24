@@ -842,6 +842,36 @@ try {
   fs.rmSync(tmpGoogleSecretManagerPocRoot, { recursive: true, force: true });
 }
 
+const tmpSupplyChainAttackCatalogRoot = fs.mkdtempSync(path.join(__dirname, "tmp-supplychainattack-catalog-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpSupplyChainAttackCatalogRoot, "package.json"),
+    JSON.stringify({
+      dependencies: {
+        "free-claude": "^1.0.0",
+        "free-anthropic-claude": "^1.0.0",
+        "node-fetch-utils": "^1.0.0"
+      }
+    }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpSupplyChainAttackCatalogRoot, "package-lock.json"),
+    JSON.stringify({
+      packages: {
+        "node_modules/free-claude": { version: "1.0.0" },
+        "node_modules/node-fetch-utils": { version: "1.0.0" }
+      }
+    })
+  );
+  const supplyChainAttackCatalogCompromised = scanTarget(tmpSupplyChainAttackCatalogRoot);
+  assert.strictEqual(supplyChainAttackCatalogCompromised.risk, "likely-exposed");
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("free-claude")));
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("free-anthropic-claude")));
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("node-fetch-utils")));
+} finally {
+  fs.rmSync(tmpSupplyChainAttackCatalogRoot, { recursive: true, force: true });
+}
+
 const tmpOtterCookieRoot = fs.mkdtempSync(path.join(__dirname, "tmp-ottercookie-"));
 try {
   fs.writeFileSync(

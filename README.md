@@ -244,6 +244,9 @@ a leaked actor bot token, and hidden PowerShell second-stage execution.
 GitHub Advisory `GHSA-g6v5-9xpp-6hpx` and supplychainattack.org also mark
 `google-cloud-secret-manager-config-poc` as npm malware affecting all versions,
 requiring full-compromise handling if installed or run.
+Supply Chain Attack's June 22-23 catalog updates add `free-claude`,
+`free-anthropic-claude`, and a broader npm malware package cluster as
+full-compromise indicators.
 Panther's April 2026 OtterCookie report adds exact malicious npm versions for
 wrapper and payload packages including `bjs-biginteger`,
 `bjs-lint-builder(s)`, `hjs-lint-builders`, `sjs-builder(s)`, and
@@ -412,6 +415,8 @@ reporting; a finding type with no rule simply produces no plan item.
   hidden PowerShell launch flags
 - GitHub Advisory npm malware package detection for
   `google-cloud-secret-manager-config-poc`
+- Supply Chain Attack catalog npm malware package detection, including
+  `free-claude`, `free-anthropic-claude`, and the June 23 package cluster
 - Panther OtterCookie npm indicators, including exact package versions and
   Vercel-hosted C2 domains
 - Claude Code GitHub Action workflow-risk indicators, including
@@ -583,6 +588,8 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - OX Malware-Slop 2 `cms-store-ren` npm / Telegram exfiltration report: https://www.ox.security/blog/malware-slop-2-malicious-npm-package-leaks-its-own-bots-telegram-private-token/
 - GitHub Advisory for `google-cloud-secret-manager-config-poc`: https://github.com/advisories/GHSA-g6v5-9xpp-6hpx
 - supplychainattack.org incident for `google-cloud-secret-manager-config-poc`: https://supplychainattack.org/incident/malware-in-google-cloud-secret-manager-config-poc-1fs99l
+- Supply Chain Attack incident catalog, latest npm malware batch: https://supplychainattack.org/
+- Supply Chain Attack incident catalog, free-claude npm malware: https://supplychainattack.org/incident/malware-in-free-claude-7fjbqi
 - Panther OtterCookie npm campaign: https://panther.com/blog/tracking-an-ottercookie-infostealer-campaign-across-npm
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
