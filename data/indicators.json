@@ -22,7 +22,8 @@
     "kitty-monitor.service",
     "com.user.kitty-monitor.plist",
     "setup.mjs",
-    "_index.js"
+    "_index.js",
+    "Review Past Due Doc.zip"
   ],
   "payloadFileHashes": {
     "router_init.js": [
@@ -39,6 +40,9 @@
       "29c729852fce5a53e30a1541d9fec79c915b2e13f1eda94a5978cf0aae0d88d9",
       "d4a2086ea18f5e39cd867b8b06918a524eabb21d45ea98aad07357b98173458a",
       "5245eb032e336b85cff0dbb3450d591826bf2ef214fd30d7eba1a763664e151b"
+    ],
+    "Review Past Due Doc.zip": [
+      "7b7981c99d59595fe15377df84695bb72ce0b85560a3935f930657b2d162e5ef"
     ]
   },
   "networkIndicators": [
@@ -72,6 +76,12 @@
     "staticcloudflare[.]pro",
     "https://staticcloudflare.pro/",
     "https://staticcloudflare.pro/api/css.js",
+    "document-auth.icu",
+    "document-auth[.]icu",
+    "italy-news.info",
+    "italy-news[.]info",
+    "lootrioya.info",
+    "lootrioya[.]info",
     "sentry.anyclaw.store",
     "sentry.anyclaw[.]store",
     "sentry.anyclaw.store/startlog",
@@ -248,6 +258,21 @@
     "/proc/[pid]/environ",
     "sj.ssc/ipa/orp.eralfduolccitats",
     "ClickFix",
+    "Review Past Due Doc.zip",
+    "Review Past Due Doc. zip",
+    "urgent past due",
+    "secure OneDrive attachment",
+    "Win + R",
+    "Win+R",
+    "Run dialog",
+    "clipboard stager",
+    "DNS TXT",
+    "PowerShell command directly into their clipboard",
+    "RMM / MSI Installer",
+    "Password Stealer",
+    "7b7981c99d59595fe15377df84695bb72ce0b85560a3935f930657b2d162e5ef",
+    "adcd15f3d6b87f84d106ea426fa824fd20c9d64f6d199ce92580884290785f30",
+    "d7d2f0ee187549f3f4a114d716be12521fbf62d6d26e2ac23d2a32d521d08fd8",
     "Miasma",
     "Miasma: The Spreading Blight",
     "Miasma : The Spreading Blight",

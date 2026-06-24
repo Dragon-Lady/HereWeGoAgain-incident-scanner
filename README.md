@@ -116,6 +116,12 @@ from `staticcloudflare[.]pro`, including an obfuscated reversed loader string
 `sj.ssc/ipa/orp.eralfduolccitats`. This scanner flags the domain, reported
 `/api/css.js` loader URL, the reversed string, and `ClickFix` marker text when
 they appear in local source, copied pages, or incident notes.
+KnowBe4 Threat Labs later described a ClickFix phishing chain using a
+`Review Past Due Doc.zip` / `.lnk` OneDrive lure, clipboard-injected
+PowerShell, DNS TXT staging, and hosting domains `document-auth[.]icu`,
+`italy-news[.]info`, and `lootrioya[.]info`. This scanner carries those
+domains, the reported ZIP hash, and the reported MSI/RMM and password-stealer
+hashes as local incident-note indicators.
 Aikido's June 1 report describes 30+ compromised `@redhat-cloud-services/*`
 npm packages spread through GitHub Actions OIDC / trusted publishing abuse, with
 a Mini Shai-Hulud variant calling itself `Miasma`. The scanner treats the exact
@@ -369,6 +375,9 @@ reporting; a finding type with no rule simply produces no plan item.
 - ClickFix/staticcloudflare indicators, including `staticcloudflare[.]pro`,
   `https://staticcloudflare[.]pro/api/css.js`, the reversed loader string
   `sj.ssc/ipa/orp.eralfduolccitats`, and `ClickFix`
+- ClickFix/KnowBe4 Threat Labs indicators, including `document-auth[.]icu`,
+  `italy-news[.]info`, `lootrioya[.]info`, `Review Past Due Doc.zip`, DNS TXT
+  staging terms, and the reported ZIP/MSI/password-stealer SHA-256 values
 - Red Hat / Miasma npm indicators from Aikido's June 1 report, including exact
   compromised `@redhat-cloud-services/*` package versions, OIDC/trusted
   publishing workflow strings, and the active `@redhat-cloud-services/`

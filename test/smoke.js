@@ -199,6 +199,31 @@ try {
   fs.rmSync(tmpStaticCloudflareClickFixRoot, { recursive: true, force: true });
 }
 
+const tmpKb4ClickFixRoot = fs.mkdtempSync(path.join(__dirname, "tmp-kb4-clickfix-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpKb4ClickFixRoot, "clickfix-triage.html"),
+    [
+      "<!-- KnowBe4 Threat Labs ClickFix triage note -->",
+      "document-auth.icu italy-news.info lootrioya.info",
+      "Review Past Due Doc.zip urgent past due secure OneDrive attachment",
+      "Win + R clipboard stager DNS TXT PowerShell command directly into their clipboard",
+      "RMM / MSI Installer Password Stealer",
+      "7b7981c99d59595fe15377df84695bb72ce0b85560a3935f930657b2d162e5ef",
+      "adcd15f3d6b87f84d106ea426fa824fd20c9d64f6d199ce92580884290785f30",
+      "d7d2f0ee187549f3f4a114d716be12521fbf62d6d26e2ac23d2a32d521d08fd8"
+    ].join("\n")
+  );
+  const kb4ClickFix = scanTarget(tmpKb4ClickFixRoot);
+  assert.strictEqual(kb4ClickFix.risk, "possible-exposure");
+  assert(kb4ClickFix.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("document-auth.icu")));
+  assert(kb4ClickFix.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("lootrioya.info")));
+  assert(kb4ClickFix.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Review Past Due Doc.zip")));
+  assert(kb4ClickFix.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("DNS TXT")));
+} finally {
+  fs.rmSync(tmpKb4ClickFixRoot, { recursive: true, force: true });
+}
+
 const tmpDevdojoComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-composer-"));
 try {
   fs.writeFileSync(
