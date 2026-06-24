@@ -1289,6 +1289,55 @@ try {
   fs.rmSync(tmpBlueRabbitRoot, { recursive: true, force: true });
 }
 
+const tmpRecentSafeDepRoot = fs.mkdtempSync(path.join(__dirname, "tmp-recent-safedep-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpRecentSafeDepRoot, "package.json"),
+    JSON.stringify({
+      dependencies: {
+        "@petitcode/eb-retry": "1.3.5",
+        "@withgoogle/stitch-sdk": "0.1.2",
+        apintergrationpost: "4.0.6",
+        "postcss-minify-selector-parser": "1.0.0"
+      },
+      scripts: {
+        postinstall: "node scripts/postinstall-run.js"
+      },
+      notes: "wshu[.]net github[.]com/angelmaybeth21-oss/test stitch-production[.]org /api/v1?src= myra-lab-shared-key nvidiadriver[.]net"
+    }, null, 2)
+  );
+  const recentSafeDep = scanTarget(tmpRecentSafeDepRoot);
+  assert.strictEqual(recentSafeDep.risk, "likely-exposed");
+  assert(recentSafeDep.findings.some((finding) => finding.type === "known-bad-requested-version"));
+  assert(recentSafeDep.findings.some((finding) => finding.type === "active-campaign-package"));
+  assert(recentSafeDep.findings.some((finding) => finding.type === "network-indicator"));
+  assert(recentSafeDep.findings.some((finding) => finding.type === "campaign-indicator"));
+} finally {
+  fs.rmSync(tmpRecentSafeDepRoot, { recursive: true, force: true });
+}
+
+const tmpAryStingerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-arystinger-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpAryStingerRoot, "edge-router-note.sh"),
+    [
+      "# AryStinger edge router triage note",
+      "echo 'Ary-Attack sh_#@!_2024_secret syswapd0h syswapd0w'",
+      "echo 'hgodpcx.ajb8.com hgodpcx.auq8.com opi7.com xook.ajb8.com xonice.ahb8.com eixfi.ajb8.com dybic.ajb8.com sdkv1.dataexplore.cc sdkv1.dataexplore.co 107.150.106.14'",
+      "echo '/tmp/bin/syswapd0 /tmp/bin/dropbear nat_tunnel-linux-x86_64 X-Executor-ID ScriptWork DomainScanWrok'",
+      "echo 'CVE-2013-3307 CVE-2016-5681 CVE-2025-11837 DIR-850L RTL819X gs-netcat'"
+    ].join("\n")
+  );
+  const aryStinger = scanTarget(tmpAryStingerRoot);
+  assert.strictEqual(aryStinger.risk, "possible-exposure");
+  assert(aryStinger.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("opi7.com")));
+  assert(aryStinger.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("107.150.106.14")));
+  assert(aryStinger.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("AryStinger")));
+  assert(aryStinger.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("syswapd0")));
+} finally {
+  fs.rmSync(tmpAryStingerRoot, { recursive: true, force: true });
+}
+
 const payloadPath = path.join(__dirname, "fixtures", "compromised", "router_init.js");
 const payloadHash = crypto.createHash("sha256").update(fs.readFileSync(payloadPath)).digest("hex");
 const compromisedWithHash = scanTarget(path.join(__dirname, "fixtures", "compromised"), {
