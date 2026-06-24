@@ -23,7 +23,10 @@
     "com.user.kitty-monitor.plist",
     "setup.mjs",
     "_index.js",
-    "Review Past Due Doc.zip"
+    "Review Past Due Doc.zip",
+    "LicenseLoader.php",
+    "install-persistent.php",
+    "class-wc-subscription-trace-dispatch.php"
   ],
   "payloadFileHashes": {
     "router_init.js": [
@@ -43,6 +46,9 @@
     ],
     "Review Past Due Doc.zip": [
       "7b7981c99d59595fe15377df84695bb72ce0b85560a3935f930657b2d162e5ef"
+    ],
+    "LicenseLoader.php": [
+      "0e17c869d3e4586d4c160041042bd15123c2a37117a98a995fae885f0f4417fc"
     ]
   },
   "networkIndicators": [
@@ -82,6 +88,12 @@
     "italy-news[.]info",
     "lootrioya.info",
     "lootrioya[.]info",
+    "account.shapedplugin.com",
+    "account.shapedplugin[.]com",
+    "194.76.217.28:2871",
+    "194.76.217[.]28:2871",
+    "generate.2faplugin.org",
+    "generate[.]2faplugin[.]org",
     "sentry.anyclaw.store",
     "sentry.anyclaw[.]store",
     "sentry.anyclaw.store/startlog",
@@ -273,6 +285,32 @@
     "7b7981c99d59595fe15377df84695bb72ce0b85560a3935f930657b2d162e5ef",
     "adcd15f3d6b87f84d106ea426fa824fd20c9d64f6d199ce92580884290785f30",
     "d7d2f0ee187549f3f4a114d716be12521fbf62d6d26e2ac23d2a32d521d08fd8",
+    "ShapedPlugin",
+    "Product Slider Pro for WooCommerce",
+    "woo-product-slider-pro",
+    "Real Testimonials Pro",
+    "testimonial-pro",
+    "Smart Post Show Pro",
+    "smart-show-post-pro",
+    "CVE-2026-10735",
+    "CVE-2026-49777",
+    "LicenseLoader.php",
+    "TestimonialPRO.php",
+    "install-persistent.php",
+    "class-wc-subscription-trace-dispatch.php",
+    "class-wc-subscription-diagnostics.php",
+    "class-wc-subscription-scheduler.php",
+    "woocommerce-subscription",
+    "woocommerce-notification",
+    "/wp-json/wc/v3/settings/apply",
+    "theme_options_scripts",
+    "wc_nf_install_done",
+    "wp_2fa_totp_key",
+    "wfls_2fa_secrets",
+    "rsssl_totp_secret",
+    "_two_factor_totp_key",
+    "e268c35a06d85f672e70c9beecb4e5d1",
+    "0e17c869d3e4586d4c160041042bd15123c2a37117a98a995fae885f0f4417fc",
     "Miasma",
     "Miasma: The Spreading Blight",
     "Miasma : The Spreading Blight",

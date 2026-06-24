@@ -224,6 +224,30 @@ try {
   fs.rmSync(tmpKb4ClickFixRoot, { recursive: true, force: true });
 }
 
+const tmpShapedPluginRoot = fs.mkdtempSync(path.join(__dirname, "tmp-shapedplugin-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpShapedPluginRoot, "shapedplugin-triage.html"),
+    [
+      "<!-- ShapedPlugin Pro supply-chain compromise triage note -->",
+      "ShapedPlugin Product Slider Pro for WooCommerce woo-product-slider-pro Real Testimonials Pro testimonial-pro Smart Post Show Pro smart-show-post-pro",
+      "CVE-2026-10735 CVE-2026-49777 account.shapedplugin.com 194.76.217.28:2871 generate.2faplugin.org",
+      "LicenseLoader.php TestimonialPRO.php install-persistent.php class-wc-subscription-trace-dispatch.php class-wc-subscription-diagnostics.php",
+      "woocommerce-subscription woocommerce-notification /wp-json/wc/v3/settings/apply theme_options_scripts wc_nf_install_done",
+      "wp_2fa_totp_key wfls_2fa_secrets rsssl_totp_secret _two_factor_totp_key",
+      "e268c35a06d85f672e70c9beecb4e5d1 0e17c869d3e4586d4c160041042bd15123c2a37117a98a995fae885f0f4417fc"
+    ].join("\n")
+  );
+  const shapedPlugin = scanTarget(tmpShapedPluginRoot);
+  assert.strictEqual(shapedPlugin.risk, "possible-exposure");
+  assert(shapedPlugin.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("generate.2faplugin.org")));
+  assert(shapedPlugin.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("194.76.217.28:2871")));
+  assert(shapedPlugin.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("LicenseLoader.php")));
+  assert(shapedPlugin.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("woocommerce-subscription")));
+} finally {
+  fs.rmSync(tmpShapedPluginRoot, { recursive: true, force: true });
+}
+
 const tmpDevdojoComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-composer-"));
 try {
   fs.writeFileSync(

@@ -122,6 +122,11 @@ PowerShell, DNS TXT staging, and hosting domains `document-auth[.]icu`,
 `italy-news[.]info`, and `lootrioya[.]info`. This scanner carries those
 domains, the reported ZIP hash, and the reported MSI/RMM and password-stealer
 hashes as local incident-note indicators.
+Wordfence and The Hacker News reported a ShapedPlugin Pro supply-chain
+compromise affecting licensed WordPress update channels. This scanner carries
+the reported plugin slugs, CVEs, C2/exfil infrastructure, fake plugin paths,
+loader/persistence filenames, REST endpoint, 2FA secret markers, login-bypass
+hash, and loader SHA-256 as local incident-note indicators.
 Aikido's June 1 report describes 30+ compromised `@redhat-cloud-services/*`
 npm packages spread through GitHub Actions OIDC / trusted publishing abuse, with
 a Mini Shai-Hulud variant calling itself `Miasma`. The scanner treats the exact
@@ -378,6 +383,12 @@ reporting; a finding type with no rule simply produces no plan item.
 - ClickFix/KnowBe4 Threat Labs indicators, including `document-auth[.]icu`,
   `italy-news[.]info`, `lootrioya[.]info`, `Review Past Due Doc.zip`, DNS TXT
   staging terms, and the reported ZIP/MSI/password-stealer SHA-256 values
+- ShapedPlugin Pro WordPress supply-chain indicators, including
+  `woo-product-slider-pro`, `testimonial-pro`, `smart-show-post-pro`,
+  `account.shapedplugin[.]com`, `194.76.217[.]28:2871`,
+  `generate[.]2faplugin[.]org`, `LicenseLoader.php`,
+  `install-persistent.php`, fake `woocommerce-subscription` /
+  `woocommerce-notification` plugin paths, and 2FA/login-bypass markers
 - Red Hat / Miasma npm indicators from Aikido's June 1 report, including exact
   compromised `@redhat-cloud-services/*` package versions, OIDC/trusted
   publishing workflow strings, and the active `@redhat-cloud-services/`
@@ -557,6 +568,8 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - SafeDep Megalodon CI workflow backdooring report: https://safedep.io/megalodon-mass-github-repo-backdooring-ci-workflows/
 - VirusTotal domain report for `staticcloudflare[.]pro`: https://www.virustotal.com/gui/domain/staticcloudflare.pro/detection
 - Hybrid Analysis URL submission context for `staticcloudflare[.]pro`: https://hybrid-analysis.com/submissions/sandbox/urls
+- Wordfence ShapedPlugin Pro supply-chain compromise PSA: https://www.wordfence.com/blog/2026/06/psa-supply-chain-compromise-targets-shapedplugin-backdoored-pro-plugins-distributed-via-official-channels/
+- The Hacker News ShapedPlugin Pro supply-chain compromise summary: https://thehackernews.com/2026/06/shapedplugin-wordpress-pro-plugins.html
 - Socket Packagist/Intercom Composer plugin report: https://socket.dev/blog/famous-chollima-targets-php-developers-through-compromised-packagist-package
 - Aikido Codex remote UI token-theft report: https://www.aikido.dev/blog/codex-remote-ui-steals-ai-tokens
 - The Hacker News Codex authentication token theft coverage: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
