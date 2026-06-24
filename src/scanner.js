@@ -24,6 +24,7 @@ const SHELL_SOURCE_EXTENSIONS = new Set([".sh", ".bash", ".zsh"]);
 const SHADOWABLE_TOOL_NAMES = new Set(["ssh", "git", "npm", "node", "python", "powershell", "gh", "claude", "codex", "composer", "pnpm", "yarn"]);
 const LIFECYCLE_SCRIPTS = ["preinstall", "install", "postinstall", "prepare"];
 const SKIP_DIRS = new Set([".git", ".hg", ".svn", ".next", "dist", "build", "coverage"]);
+const LANGFLOW_FIXED = "1.9.1";
 
 const DEFAULT_ADVISORY = {
   indicators: {
@@ -491,12 +492,21 @@ function scanPythonDependencyFile(filePath, advisory, findings) {
   }
 
   scanIndicatorStrings(filePath, text, advisory, findings, "Python dependency file");
+  scanLangflowDependencyText(filePath, text, findings, "Python dependency file");
 
   for (const [pkg, versions] of Object.entries(advisory.pypiPackages || {})) {
     for (const version of versions) {
       if (pythonFileMentionsPackageVersion(text, pkg, version)) {
         findings.push(finding("critical", "known-bad-pypi-version", filePath, `Python dependency file references ${pkg}==${version}.`));
       }
+    }
+  }
+}
+
+function scanLangflowDependencyText(filePath, text, findings, sourceLabel) {
+  for (const version of pythonPackageVersionsInText(text, "langflow")) {
+    if (compareDottedVersions(version, LANGFLOW_FIXED) < 0) {
+      findings.push(finding("critical", "langflow-cve-2026-55450-vulnerable-version", filePath, `${sourceLabel} references Langflow ${version}, affected by CVE-2026-55450. Upgrade to langflow>=${LANGFLOW_FIXED}.`));
     }
   }
 }
@@ -971,6 +981,22 @@ function pythonFileMentionsPackageVersion(text, pkg, version) {
     new RegExp(`${escapedPkg}[^\\n\\r]{0,200}${escapedVersion}`, "i")
   ];
   return patterns.some((pattern) => pattern.test(normalizedText));
+}
+
+function pythonPackageVersionsInText(text, pkg) {
+  const escapedPkg = escapeRegExp(pkg);
+  const versions = new Set();
+  const patterns = [
+    new RegExp(`\\b${escapedPkg}\\b\\s*(?:==|===|=|~=|>=|<=|>|<)\\s*["']?([0-9]+\\.[0-9]+\\.[0-9]+)`, "gi"),
+    new RegExp(`\\b${escapedPkg}\\b["']?\\s*[:=]\\s*["']?[^0-9\\n\\r]{0,12}([0-9]+\\.[0-9]+\\.[0-9]+)`, "gi"),
+    new RegExp(`name\\s*=\\s*["']${escapedPkg}["'][\\s\\S]{0,300}?version\\s*=\\s*["']([0-9]+\\.[0-9]+\\.[0-9]+)["']`, "gi")
+  ];
+  for (const pattern of patterns) {
+    for (const match of text.matchAll(pattern)) {
+      versions.add(match[1]);
+    }
+  }
+  return Array.from(versions);
 }
 
 function composerFileMentionsPackageVersion(text, pkg, version) {

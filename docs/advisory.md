@@ -436,6 +436,9 @@ The key local indicators used by this project are:
 - known affected PyPI `lightning` and `durabletask`, plus Composer
   `intercom/intercom-php`
   package/version pairs from Socket's live campaign table
+- Langflow `CVE-2026-55450` dependency pins before `1.9.1`, where the
+  deprecated upload endpoint allowed unauthenticated disk-exhaustion DoS and
+  absolute path disclosure
 - Composer package/plugin capability anomalies such as unexpected
   `composer-plugin`, `composer-plugin-api`, or plugin entry declarations. These
   are high-severity review prompts because Composer plugins can execute during

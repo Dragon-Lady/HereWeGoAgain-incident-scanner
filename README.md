@@ -564,6 +564,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Aikido broader campaign update: https://www.aikido.dev/blog/mini-shai-hulud-is-back-tanstack-compromised
 - OX Security broader npm/PyPI campaign update: https://www.ox.security/blog/shai-hulud-here-we-go-again-170-packages-hit-across-npm-pypi/
 - Resultsense / Decrypt PyPI malware summary: https://www.resultsense.com/news/2026-05-13-mistral-ai-pypi-supply-chain-malware-shai-hulud/
+- GitHub Security Advisory GHSA-x223-p2gf-v735 / Langflow CVE-2026-55450: https://github.com/langflow-ai/langflow/security/advisories/GHSA-x223-p2gf-v735
 - Snyk TanStack/Mini Shai-Hulud update: https://snyk.io/jp/blog/tanstack-npm-packages-compromised/
 - Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
 - Socket @antv active publish-wave writeup: https://socket.dev/blog/antv-packages-compromised
