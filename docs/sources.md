@@ -50,12 +50,14 @@
 - Supply Chain Attack incident catalog, search-from-search npm malware: https://supplychainattack.org/incident/malware-in-search-from-search-1jc4kr
 - Supply Chain Attack incident catalog, node-fetch-utils npm malware: https://supplychainattack.org/incident/malware-in-node-fetch-utils-wwuwix
 - Checkmarx ChainVeil / successkey npm supply-chain report: https://checkmarx.com/zero-post/chainveil-a-malicious-npm-supply-chain-attack-by-successkey/
+- JFrog VS Code autorun / blockchain dead-drop npm hijack report: https://research.jfrog.com/post/hijacked-npm-vscode-tasks-blockchain/
 - Flatt Security Claude Code GitHub Action research: https://flatt.tech/research/posts/poisoning-claude-code-one-github-issue-to-break-the-supply-chain/
 - The Hacker News Claude Code GitHub Action coverage: https://thehackernews.com/2026/06/claude-code-github-action-flaw-let-one.html
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
 - SafeDep Miasma source-repository AI coding agent config injection writeup: https://safedep.io/miasma-worm-ai-coding-agent-config-injection/
 - Nextron Research X post on malicious Packagist `dcat-auth-google-2fa@1.0.2.0`: https://x.com/nextronresearch
+- Nextron Research X post on Go packages reusing the JFrog fake-font payload: https://x.com/nextronresearch
 
 ## Out-of-Scope Related Public Intel
 

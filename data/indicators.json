@@ -26,7 +26,8 @@
     "Review Past Due Doc.zip",
     "LicenseLoader.php",
     "install-persistent.php",
-    "class-wc-subscription-trace-dispatch.php"
+    "class-wc-subscription-trace-dispatch.php",
+    "fa-solid-400.woff2"
   ],
   "payloadFileHashes": {
     "router_init.js": [
@@ -49,6 +50,10 @@
     ],
     "LicenseLoader.php": [
       "0e17c869d3e4586d4c160041042bd15123c2a37117a98a995fae885f0f4417fc"
+    ],
+    "fa-solid-400.woff2": [
+      "53abf37710d6f2e35694fbe7cfaf1108127cbc001ce3e6bf994d0486cae5a0e8",
+      "13e9a3c41e038bf9d8fcb0831305819819e4f7f4452bc20a04b9bf2756ee22e8"
     ]
   },
   "networkIndicators": [
@@ -172,6 +177,29 @@
     "r[.]keepex[.]xyz",
     "https://r.keepex.xyz/api/report/admin",
     "hxxps://r[.]keepex[.]xyz/api/report/admin",
+    "166.88.134.62",
+    "166[.]88[.]134[.]62",
+    "198.105.127.210",
+    "198[.]105[.]127[.]210",
+    "23.27.202.27",
+    "23[.]27[.]202[.]27",
+    "/$/boot",
+    "/verify-human/",
+    "/snv",
+    "/u/e",
+    "/u/f",
+    "/d/python.zip",
+    "/d/python.7z",
+    "/d/7zr.exe",
+    "api.trongrid.io",
+    "api[.]trongrid[.]io",
+    "fullnode.mainnet.aptoslabs.com",
+    "fullnode[.]mainnet[.]aptoslabs[.]com",
+    "bsc-dataseed.binance.org",
+    "bsc-dataseed[.]binance[.]org",
+    "bsc-rpc.publicnode.com",
+    "bsc-rpc[.]publicnode[.]com",
+    "eth_getTransactionByHash",
     "opi7.com",
     "opi7[.]com",
     "xook.ajb8.com",
@@ -289,6 +317,19 @@
     "7b7981c99d59595fe15377df84695bb72ce0b85560a3935f930657b2d162e5ef",
     "adcd15f3d6b87f84d106ea426fa824fd20c9d64f6d199ce92580884290785f30",
     "d7d2f0ee187549f3f4a114d716be12521fbf62d6d26e2ac23d2a32d521d08fd8",
+    "fa-solid-400.woff2",
+    ".vscode/tasks.json",
+    "\"runOn\": \"folderOpen\"",
+    "eslint-check",
+    "Sec-V",
+    "TMfKQEd7TJJa5xNZJZ2Lep838vrzrs7mAP",
+    "TXfxHUet9pJVU1BgVkBAbrES4YUc1nGzcG",
+    "TA48dct6rFW8BXsiLAtjFaVFoSuryMjD3v",
+    "0xbe037400670fbf1c32364f762975908dc43eeb38759263e7dfcdabc76380811e",
+    "0x3f0e5781d0855fb460661ac63257376db1941b2bb522499e4757ecb3ebd5dce3",
+    "0x533b2dbcaeff19cd1f799234a27b578d713d8fcaa341b7501e4526106483e0b1",
+    "github.com/lambda-platform/lambda",
+    "lambda-platform/lambda",
     "ShapedPlugin",
     "Product Slider Pro for WooCommerce",
     "woo-product-slider-pro",

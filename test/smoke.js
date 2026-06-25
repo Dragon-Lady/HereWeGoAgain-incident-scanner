@@ -47,6 +47,35 @@ try {
   fs.rmSync(tmpRoot, { recursive: true, force: true });
 }
 
+const tmpVsCodeAutorunRoot = fs.mkdtempSync(path.join(__dirname, "tmp-vscode-autorun-"));
+try {
+  fs.mkdirSync(path.join(tmpVsCodeAutorunRoot, ".vscode"), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmpVsCodeAutorunRoot, "package.json"),
+    JSON.stringify({
+      dependencies: {
+        "html-to-gutenberg": "4.2.11",
+        "fetch-page-assets": "1.2.9"
+      }
+    }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpVsCodeAutorunRoot, ".vscode", "tasks.json"),
+    JSON.stringify({
+      label: "eslint-check",
+      command: "node ./public/fonts/fa-solid-400.woff2",
+      runOptions: { runOn: "folderOpen" }
+    }, null, 2)
+  );
+  const vscodeAutorunReport = scanTarget(tmpVsCodeAutorunRoot);
+  assert.strictEqual(vscodeAutorunReport.risk, "likely-exposed");
+  assert(vscodeAutorunReport.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("html-to-gutenberg")));
+  assert(vscodeAutorunReport.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("fetch-page-assets")));
+  assert(vscodeAutorunReport.findings.some((finding) => finding.type === "tool-config-payload-reference" && finding.message.includes("fa-solid-400.woff2")));
+} finally {
+  fs.rmSync(tmpVsCodeAutorunRoot, { recursive: true, force: true });
+}
+
 const tmpPyRoot = fs.mkdtempSync(path.join(__dirname, "tmp-pypi-"));
 try {
   fs.writeFileSync(path.join(tmpPyRoot, "requirements.txt"), "guardrails-ai==0.10.1\nlightning==2.6.3\ndurabletask==1.4.3\n# check.git-service.com/rope.pyz\n");

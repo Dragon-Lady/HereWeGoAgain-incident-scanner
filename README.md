@@ -250,6 +250,12 @@ package cluster as full-compromise indicators.
 Checkmarx's ChainVeil report adds the successkey npm package cluster, including
 `tailwindcss-merge`, `sass-format`, `sass-formats`, and `rate-limit-flexible`,
 plus loader, C2, persistence, and wallet-drainer context.
+JFrog's June 24 report adds hijacked `html-to-gutenberg@4.2.11` and
+`fetch-page-assets@1.2.9` npm package indicators, a VS Code/Cursor
+`runOn: "folderOpen"` autorun task pattern, fake `fa-solid-400.woff2` payload
+filename and hashes, blockchain dead-drop terms, and C2/runtime artifact
+strings. Nextron's follow-up Go-package telemetry is tracked as OSINT
+correlation only.
 Panther's April 2026 OtterCookie report adds exact malicious npm versions for
 wrapper and payload packages including `bjs-biginteger`,
 `bjs-lint-builder(s)`, `hjs-lint-builders`, `sjs-builder(s)`, and
@@ -421,6 +427,9 @@ reporting; a finding type with no rule simply produces no plan item.
 - Supply Chain Attack catalog npm malware package detection, including
   `free-claude`, `free-anthropic-claude`, and the June 23 package cluster
 - Checkmarx ChainVeil / successkey npm package indicators
+- JFrog VS Code folder-open autorun / blockchain dead-drop npm indicators for
+  `html-to-gutenberg@4.2.11` and `fetch-page-assets@1.2.9`, plus fake
+  `fa-solid-400.woff2` payload hashes and Nextron Go-package OSINT leads
 - Panther OtterCookie npm indicators, including exact package versions and
   Vercel-hosted C2 domains
 - Claude Code GitHub Action workflow-risk indicators, including
@@ -597,6 +606,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Supply Chain Attack incident catalog, latest npm malware batch: https://supplychainattack.org/
 - Supply Chain Attack incident catalog, free-claude npm malware: https://supplychainattack.org/incident/malware-in-free-claude-7fjbqi
 - Checkmarx ChainVeil / successkey npm supply-chain report: https://checkmarx.com/zero-post/chainveil-a-malicious-npm-supply-chain-attack-by-successkey/
+- JFrog VS Code autorun / blockchain dead-drop npm hijack report: https://research.jfrog.com/post/hijacked-npm-vscode-tasks-blockchain/
 - Panther OtterCookie npm campaign: https://panther.com/blog/tracking-an-ottercookie-infostealer-campaign-across-npm
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/
