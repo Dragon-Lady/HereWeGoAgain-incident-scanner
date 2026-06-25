@@ -812,6 +812,47 @@ try {
 } finally {
   fs.rmSync(tmpMiasmaEditedWaveRoot, { recursive: true, force: true });
 }
+
+const tmpOxMiasmaHadesNpmRoot = fs.mkdtempSync(path.join(__dirname, "tmp-ox-miasma-hades-npm-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpOxMiasmaHadesNpmRoot, "package.json"),
+    JSON.stringify({
+      dependencies: {
+        "leo-sdk": "6.0.19",
+        "serverless-leo": "3.0.14"
+      }
+    }, null, 2)
+  );
+  fs.writeFileSync(
+    path.join(tmpOxMiasmaHadesNpmRoot, "package-lock.json"),
+    JSON.stringify({
+      packages: {
+        "node_modules/rstreams-shard-util": { version: "1.0.1" },
+        "node_modules/leo-connector-postgres": { version: "4.0.19-beta" }
+      }
+    })
+  );
+  fs.writeFileSync(
+    path.join(tmpOxMiasmaHadesNpmRoot, "incident-note.js"),
+    [
+      "const repo = 'Alright Lets See If This Works';",
+      "const marker = 'RevokeAndItGoesKaboom';",
+      "const payload = 'raw[.]githubusercontent[.]com/l3v1cs/Html-Bootstrap-TinDog/cb6699faacade9775d3d83059d6ba6a756755193/index.js';"
+    ].join("\n")
+  );
+  const oxMiasmaHadesNpm = scanTarget(tmpOxMiasmaHadesNpmRoot);
+  assert.strictEqual(oxMiasmaHadesNpm.risk, "likely-exposed");
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("leo-sdk")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("serverless-leo")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("rstreams-shard-util@1.0.1")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("leo-connector-postgres@4.0.19-beta")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Alright Lets See If This Works")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("raw[.]githubusercontent[.]com/l3v1cs/Html-Bootstrap-TinDog")));
+} finally {
+  fs.rmSync(tmpOxMiasmaHadesNpmRoot, { recursive: true, force: true });
+}
+
 const tmpCodexUiRoot = fs.mkdtempSync(path.join(__dirname, "tmp-codexui-"));
 try {
   fs.writeFileSync(

@@ -275,6 +275,13 @@ weaponized `binding.gyp` wave affecting `discord-search`, `create-cf-token`,
 package/version entries as critical npm indicators and keeps the dash-variant
 marker alongside the earlier colon variants.
 
+OX's June 25, 2026 Shai-Hulud / Miasma / Hades npm variant report describes a
+compromised maintainer account affecting `leo-*`, `serverless-*`, `solo-nav`,
+and `rstreams-*` packages. This scanner treats the 23 OX-reported exact
+package/version pairs as critical npm indicators and flags copied incident notes
+or source artifacts containing the reported GitHub exfil strings, raw payload
+paths, account/repository markers, and public-key fragments.
+
 June 5 passive decode notes confirmed the live Shai-Hulud/Miasma second-stage
 shape: `setup.js` decrypts or decodes a large payload, writes it under `/tmp`,
 bootstraps Bun when missing, and executes the payload. The second stage targets
