@@ -28,6 +28,8 @@ const LANGFLOW_UPLOAD_FIXED = "1.9.1";
 const LANGFLOW_WEBHOOK_AFFECTED_MAX = "1.8.4";
 const LANGFLOW_WEBHOOK_FIXED = "1.9.1";
 const LANGFLOW_PYTHON_REPL_FIXED = "1.9.4";
+const LIVEWIRE_AFFECTED_MIN = "3.0.0";
+const LIVEWIRE_FIXED = "3.6.4";
 
 const DEFAULT_ADVISORY = {
   indicators: {
@@ -532,6 +534,7 @@ function scanComposerDependencyFile(filePath, advisory, findings) {
   scanIndicatorStrings(filePath, text, advisory, findings, "Composer dependency file");
   scanLaravelLangAutoloadBackdoor(filePath, text, advisory, findings);
   scanComposerPluginCapabilities(filePath, text, findings);
+  scanLivewireComposerText(filePath, text, findings, "Composer dependency file");
 
   for (const [pkg, versions] of Object.entries(advisory.composerPackages || {})) {
     for (const version of versions) {
@@ -545,6 +548,19 @@ function scanComposerDependencyFile(filePath, advisory, findings) {
     if (typeof pkg === "string" && pkg.length > 0 && text.toLowerCase().includes(pkg.toLowerCase())) {
       findings.push(finding("medium", "composer-package-review-prompt", filePath, `Composer dependency file references ${pkg}: ${message}`));
     }
+  }
+}
+
+function scanLivewireComposerText(filePath, text, findings, sourceLabel) {
+  const versions = composerPackageVersionsInText(text, "livewire/livewire");
+  for (const version of versions) {
+    if (compareDottedVersions(version, LIVEWIRE_AFFECTED_MIN) >= 0 && compareDottedVersions(version, LIVEWIRE_FIXED) < 0) {
+      findings.push(finding("critical", "livewire-cve-2025-54068-vulnerable-version", filePath, `${sourceLabel} references livewire/livewire ${version}, affected by CVE-2025-54068. Upgrade to livewire/livewire>=${LIVEWIRE_FIXED}.`));
+    }
+  }
+
+  if (versions.length === 0 && composerConstraintNeedsLivewireReview(text)) {
+    findings.push(finding("medium", "livewire-cve-2025-54068-version-range-review", filePath, `${sourceLabel} references a broad livewire/livewire v3 constraint. Verify the resolved lockfile is livewire/livewire>=${LIVEWIRE_FIXED}.`));
   }
 }
 
@@ -1012,6 +1028,26 @@ function composerFileMentionsPackageVersion(text, pkg, version) {
   const escapedPkg = escapeRegExp(pkg);
   const escapedVersion = escapeRegExp(version);
   return new RegExp(`${escapedPkg}[\\s\\S]{0,500}${escapedVersion}`, "i").test(text.toLowerCase());
+}
+
+function composerPackageVersionsInText(text, pkg) {
+  const escapedPkg = escapeRegExp(pkg);
+  const versions = new Set();
+  const patterns = [
+    new RegExp(`["']name["']\\s*:\\s*["']${escapedPkg}["'][\\s\\S]{0,500}?["']version["']\\s*:\\s*["']v?([0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?)["']`, "gi"),
+    new RegExp(`["']${escapedPkg}["']\\s*:\\s*["'][^"']*?v?([0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?)`, "gi"),
+    new RegExp(`${escapedPkg}[\\s\\S]{0,200}?v?([0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?)`, "gi")
+  ];
+  for (const pattern of patterns) {
+    for (const match of text.matchAll(pattern)) {
+      versions.add(match[1]);
+    }
+  }
+  return Array.from(versions);
+}
+
+function composerConstraintNeedsLivewireReview(text) {
+  return /["']livewire\/livewire["']\s*:\s*["'][^"']*(?:\^|~|>=|>|3\.|v?3\b)/i.test(text);
 }
 
 function isPythonDependencyFile(base) {

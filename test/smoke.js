@@ -181,6 +181,41 @@ try {
   fs.rmSync(tmpDcatComposerRoot, { recursive: true, force: true });
 }
 
+const tmpLivewireComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-livewire-composer-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpLivewireComposerRoot, "composer.lock"),
+    JSON.stringify({
+      packages: [{
+        name: "livewire/livewire",
+        version: "v3.6.3"
+      }]
+    }, null, 2)
+  );
+  const livewireReport = scanTarget(tmpLivewireComposerRoot);
+  assert.strictEqual(livewireReport.risk, "likely-exposed");
+  assert(livewireReport.findings.some((finding) => finding.type === "livewire-cve-2025-54068-vulnerable-version"));
+} finally {
+  fs.rmSync(tmpLivewireComposerRoot, { recursive: true, force: true });
+}
+
+const tmpLivewireComposerReviewRoot = fs.mkdtempSync(path.join(__dirname, "tmp-livewire-composer-review-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpLivewireComposerReviewRoot, "composer.json"),
+    JSON.stringify({
+      require: {
+        "livewire/livewire": "^3"
+      }
+    }, null, 2)
+  );
+  const livewireReview = scanTarget(tmpLivewireComposerReviewRoot);
+  assert.strictEqual(livewireReview.risk, "review-needed");
+  assert(livewireReview.findings.some((finding) => finding.type === "livewire-cve-2025-54068-version-range-review"));
+} finally {
+  fs.rmSync(tmpLivewireComposerReviewRoot, { recursive: true, force: true });
+}
+
 const tmpLaravelLangRoot = fs.mkdtempSync(path.join(__dirname, "tmp-laravel-lang-"));
 try {
   fs.writeFileSync(
