@@ -429,7 +429,8 @@ reporting; a finding type with no rule simply produces no plan item.
 - GitHub Advisory npm malware package detection for
   `google-cloud-secret-manager-config-poc`
 - Supply Chain Attack catalog npm malware package detection, including
-  `free-claude`, `free-anthropic-claude`, and the June 23 package cluster
+  `free-claude`, `free-anthropic-claude`, `node-fetch-utils`, and
+  `node-core-libs`
 - Checkmarx ChainVeil / successkey npm package indicators
 - JFrog VS Code folder-open autorun / blockchain dead-drop npm indicators for
   `html-to-gutenberg@4.2.11` and `fetch-page-assets@1.2.9`, plus fake
