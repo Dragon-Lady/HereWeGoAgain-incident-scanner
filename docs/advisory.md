@@ -299,9 +299,10 @@ Updates` GitHub Actions workflows, `_index.js`, `OIDC_PACKAGES`, `WORKFLOW_ID`,
 
 SupplyChainAttack and GitHub Advisory Database full-compromise npm malware
 entries are also included for package-name detection. The scanner treats
-`ts-grok` as affected for all versions (`>= 0`) with no patched version,
-matching GHSA-qp73-r9hh-6vq9, and asks operators to move to credential rotation
-and host compromise response if the package was installed or run.
+`ts-grok` and `signup-embedder` as affected for all versions (`>= 0`) with no
+patched version, matching GHSA-qp73-r9hh-6vq9 and GHSA-8j4q-hx83-pfq9, and asks
+operators to move to credential rotation and host compromise response if either
+package was installed or run.
 
 June 5 passive decode notes confirmed the live Shai-Hulud/Miasma second-stage
 shape: `setup.js` decrypts or decodes a large payload, writes it under `/tmp`,

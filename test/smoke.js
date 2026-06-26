@@ -1001,6 +1001,7 @@ try {
       packages: {
         "node_modules/free-claude": { version: "1.0.0" },
         "node_modules/node-fetch-utils": { version: "1.0.0" },
+        "node_modules/signup-embedder": { version: "1.0.0" },
         "node_modules/node-core-libs": { version: "1.0.0" },
         "node_modules/ts-grok": { version: "1.0.0" }
       }
@@ -1012,6 +1013,7 @@ try {
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("free-anthropic-claude")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("search-from-search")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("node-fetch-utils")));
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("signup-embedder")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("node-core-libs")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("node-core-libs")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("ts-grok")));
