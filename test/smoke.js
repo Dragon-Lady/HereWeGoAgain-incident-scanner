@@ -820,7 +820,9 @@ try {
     JSON.stringify({
       dependencies: {
         "leo-sdk": "6.0.19",
-        "serverless-leo": "3.0.14"
+        "serverless-leo": "3.0.14",
+        "@immobiliarelabs/backstage-plugin-gitlab": "7.0.2",
+        "@immobiliarelabs/backstage-plugin-ldap-auth-backend": "5.2.1"
       }
     }, null, 2)
   );
@@ -829,7 +831,9 @@ try {
     JSON.stringify({
       packages: {
         "node_modules/rstreams-shard-util": { version: "1.0.1" },
-        "node_modules/leo-connector-postgres": { version: "4.0.19-beta" }
+        "node_modules/leo-connector-postgres": { version: "4.0.19-beta" },
+        "node_modules/@immobiliarelabs/backstage-plugin-gitlab-backend": { version: "6.13.1" },
+        "node_modules/@immobiliarelabs/backstage-plugin-ldap-auth": { version: "4.3.2" }
       }
     })
   );
@@ -838,6 +842,7 @@ try {
     [
       "const repo = 'Alright Lets See If This Works';",
       "const marker = 'RevokeAndItGoesKaboom';",
+      "const seeder = process.env.SEED_PAT && process.env.GITHUB_REPOSITORY.includes('Seeder');",
       "const payload = 'raw[.]githubusercontent[.]com/l3v1cs/Html-Bootstrap-TinDog/cb6699faacade9775d3d83059d6ba6a756755193/index.js';"
     ].join("\n")
   );
@@ -845,9 +850,12 @@ try {
   assert.strictEqual(oxMiasmaHadesNpm.risk, "likely-exposed");
   assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("leo-sdk")));
   assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("serverless-leo")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("@immobiliarelabs/backstage-plugin-gitlab")));
   assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("rstreams-shard-util@1.0.1")));
   assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("leo-connector-postgres@4.0.19-beta")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-lockfile-version" && finding.message.includes("@immobiliarelabs/backstage-plugin-gitlab-backend@6.13.1")));
   assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Alright Lets See If This Works")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("SEED_PAT")));
   assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("raw[.]githubusercontent[.]com/l3v1cs/Html-Bootstrap-TinDog")));
 } finally {
   fs.rmSync(tmpOxMiasmaHadesNpmRoot, { recursive: true, force: true });

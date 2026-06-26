@@ -409,10 +409,10 @@ reporting; a finding type with no rule simply produces no plan item.
   coverage for the edited `binding.gyp` wave: `discord-search`, 
   `create-cf-token`, `@forjacms/*`, `dbmux`, `creditcard.js`, 
   `github-archiver`, and `@contaazul/n8n-nodes-contaazul`
-- OX June 25 Miasma/Hades npm variant indicators for the compromised `czirker`
-  package set, including affected `leo-*`, `serverless-*`, `solo-nav`, and
-  `rstreams-*` package versions plus reported GitHub exfil and raw payload-path
-  strings
+- OX/JFrog June 25 Miasma/Hades npm variant indicators, including affected
+  `leo-*`, `serverless-*`, `solo-nav`, `rstreams-*`, and
+  `@immobiliarelabs/backstage-*` package versions plus reported GitHub exfil,
+  raw payload-path, and `SEED_PAT`/`Seeder` markers
 - OX Red Hat / Miasma follow-up indicators, including
   `Miasma: The Spreading Blight`,
   `Miasma : The Spreading Blight`, `Miasma – The Spreading Blight`,
