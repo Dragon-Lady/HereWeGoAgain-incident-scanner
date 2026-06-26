@@ -31,6 +31,13 @@ CAP packages, Intercom, and PyPI `lightning`. This project does not claim
 coverage for additional package artifacts unless exact package/version
 indicators have been added to the relevant file under `data/packages/`.
 
+JetBrains Marketplace AI-key stealer indicators are included for adjacent IDE
+plugin supply-chain review. In addition to the Aikido/BleepingComputer plugin
+IDs and `39.107.60[.]51/api/software/key` endpoint, DFIR Radar's June 25 note
+adds implementation markers: `F48D2AA7CF341F782C1D`, `BaseUtil.request()`,
+`save()`/Apply configuration persistence, `sk-` key validation, and plaintext
+HTTP POST behavior from JetBrains processes.
+
 Socket's May 19, 2026 @antv report describes an active npm publish wave tied to
 Mini Shai-Hulud and the npm maintainer account `atool`. Socket names the
 `@antv` ecosystem, `echarts-for-react`, `timeago.js`, `size-sensor`, and

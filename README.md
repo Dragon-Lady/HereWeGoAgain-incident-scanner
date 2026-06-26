@@ -460,7 +460,9 @@ reporting; a finding type with no rule simply produces no plan item.
   `skipPublisherTrust`
 - Aikido / BleepingComputer JetBrains Marketplace AI-key stealer indicators,
   including exact reported plugin IDs such as `org.sm.yms.toolkit` and
-  `com.dp.git.ai.tool`, plus `39.107.60[.]51/api/software/key`
+  `com.dp.git.ai.tool`, plus `39.107.60[.]51/api/software/key`; DFIR Radar's
+  June 25 note adds `F48D2AA7CF341F782C1D`, `BaseUtil.request()`, and
+  `save()`/Apply plaintext HTTP POST behavior
 - OX easy-day-js / Mastra npm package takeover indicators, including exact
   affected `@mastra/*` versions, `easy-day-js@1.11.22`, `setup.cjs`, and
   `23.254[.]164.92:8000` / `23.254[.]164.123:443`, with Socket's stage-2

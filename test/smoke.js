@@ -1238,6 +1238,9 @@ try {
         source: [
           "JetBrains Marketplace AI key stealer copied-note IOC\n",
           "39.107.60[.]51/api/software/key\n",
+          "F48D2AA7CF341F782C1D\n",
+          "BaseUtil.request()\n",
+          `save() Apply validates ${"s" + "k-"} format 51 chars then plaintext HTTP POST\n`,
           "com.dp.git.ai.tool\n"
         ]
       }]
@@ -1247,6 +1250,8 @@ try {
   assert.strictEqual(jetBrainsReview.risk, "possible-exposure");
   assert(jetBrainsReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("org.sm.yms.toolkit")));
   assert(jetBrainsReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("com.dp.git.ai.tool")));
+  assert(jetBrainsReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("F48D2AA7CF341F782C1D")));
+  assert(jetBrainsReview.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("BaseUtil.request")));
   assert(jetBrainsReview.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("39.107.60[.]51/api/software/key")));
 } finally {
   fs.rmSync(tmpJetBrainsRoot, { recursive: true, force: true });
