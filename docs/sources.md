@@ -40,6 +40,7 @@
 - OX Miasma return / `binding.gyp` npm package expansion: https://www.ox.security/blog/600000-monthly-downloads-affected-miasma-supply-chain-attack-is-back-on-npm/
 - OX Shai-Hulud / Miasma / Hades npm variant report: https://www.ox.security/blog/alright-lets-see-if-this-works-shai-hulud-miasma-hades-variant-spreads-on-npm/
 - JFrog Shai-Hulud/Hades Leo/RStreams and Backstage npm package analysis: https://research.jfrog.com/post/shai-hulud-miasma-alright-lets-see-if-this-works/
+- SafeDep Miasma LeoPlatform npm package and workflow poisoning analysis: https://safedep.io/miasma-worm-hits-leoplatform-20-npm-packages/
 - Socket Hades PyPI wave analysis: https://socket.dev/blog/shai-hulud-descends-to-hades-miasma-pypi-wave
 - Socket newer Miasma/Hades PyPI wave analysis: https://socket.dev/blog/mini-shai-hulud-miasma-and-hades-worms-target-bioinformatics-and-mcp-developers-via-malicious
 - Socket Miasma / Mini Shai-Hulud campaign tracker: https://socket.dev/supply-chain-attacks/miasma-mini-shai-hulud-supply-chain-attack

@@ -412,7 +412,8 @@ reporting; a finding type with no rule simply produces no plan item.
 - OX/JFrog June 25 Miasma/Hades npm variant indicators, including affected
   `leo-*`, `serverless-*`, `solo-nav`, `rstreams-*`, and
   `@immobiliarelabs/backstage-*` package versions plus reported GitHub exfil,
-  raw payload-path, and `SEED_PAT`/`Seeder` markers
+  raw payload-path, `SEED_PAT`/`Seeder` markers, and SafeDep-reported
+  `snapshot-*` / fake `Dependabot Updates` workflow poisoning terms
 - OX Red Hat / Miasma follow-up indicators, including
   `Miasma: The Spreading Blight`,
   `Miasma : The Spreading Blight`, `Miasma – The Spreading Blight`,
@@ -616,6 +617,7 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - Supply Chain Attack incident catalog, free-claude npm malware: https://supplychainattack.org/incident/malware-in-free-claude-7fjbqi
 - Checkmarx ChainVeil / successkey npm supply-chain report: https://checkmarx.com/zero-post/chainveil-a-malicious-npm-supply-chain-attack-by-successkey/
 - JFrog VS Code autorun / blockchain dead-drop npm hijack report: https://research.jfrog.com/post/hijacked-npm-vscode-tasks-blockchain/
+- SafeDep Miasma LeoPlatform npm package and workflow poisoning analysis: https://safedep.io/miasma-worm-hits-leoplatform-20-npm-packages/
 - Panther OtterCookie npm campaign: https://panther.com/blog/tracking-an-ottercookie-infostealer-campaign-across-npm
 - Lupin & Holmes node-ipc compromise report: https://www.landh.tech/blog/20260514-node-ipc-compromised/
 - JFrog IronWorm / Shai-Hulud's Rustier Cousin report: https://research.jfrog.com/post/iron-worm-shai-hulud-rustier-cousin/

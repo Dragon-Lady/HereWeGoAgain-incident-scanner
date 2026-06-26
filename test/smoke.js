@@ -846,6 +846,28 @@ try {
       "const payload = 'raw[.]githubusercontent[.]com/l3v1cs/Html-Bootstrap-TinDog/cb6699faacade9775d3d83059d6ba6a756755193/index.js';"
     ].join("\n")
   );
+  fs.mkdirSync(path.join(tmpOxMiasmaHadesNpmRoot, ".github", "workflows"), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmpOxMiasmaHadesNpmRoot, ".github", "workflows", "dependabot.yml"),
+    [
+      "name: Dependabot Updates",
+      "on:",
+      "  push:",
+      "    branches: [snapshot-leoplatform]",
+      "jobs:",
+      "  publish:",
+      "    permissions:",
+      "      id-token: write",
+      "    steps:",
+      "      - run: bun run _index.js",
+      "        env:",
+      "          OIDC_PACKAGES: 'leo-sdk,serverless-leo,rstreams-shard-util'",
+      "          WORKFLOW_ID: 'snapshot-leoplatform'",
+      "          REPO_ID_SUFFIX: 'LeoPlatform/Nodejs'",
+      "          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}",
+      "          GITHUB_REPOSITORY: 'LeoPlatform/Nodejs'"
+    ].join("\n")
+  );
   const oxMiasmaHadesNpm = scanTarget(tmpOxMiasmaHadesNpmRoot);
   assert.strictEqual(oxMiasmaHadesNpm.risk, "likely-exposed");
   assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("leo-sdk")));
@@ -857,6 +879,9 @@ try {
   assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Alright Lets See If This Works")));
   assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("SEED_PAT")));
   assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("raw[.]githubusercontent[.]com/l3v1cs/Html-Bootstrap-TinDog")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "workflow-indicator" && finding.message.includes("Dependabot Updates")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "workflow-indicator" && finding.message.includes("snapshot-")));
+  assert(oxMiasmaHadesNpm.findings.some((finding) => finding.type === "workflow-indicator" && finding.message.includes("NPM_TOKEN")));
 } finally {
   fs.rmSync(tmpOxMiasmaHadesNpmRoot, { recursive: true, force: true });
 }

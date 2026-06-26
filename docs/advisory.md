@@ -292,6 +292,11 @@ copied incident notes or source artifacts containing the reported GitHub exfil
 strings, raw payload paths, account/repository markers, and public-key
 fragments.
 
+SafeDep's LeoPlatform follow-up confirms the 20 LeoPlatform npm rows and adds
+repo-poisoning context around orphan `snapshot-*` branches, fake `Dependabot
+Updates` GitHub Actions workflows, `_index.js`, `OIDC_PACKAGES`, `WORKFLOW_ID`,
+`REPO_ID_SUFFIX`, and direct `NPM_TOKEN` publication surfaces.
+
 SupplyChainAttack and GitHub Advisory Database full-compromise npm malware
 entries are also included for package-name detection. The scanner treats
 `ts-grok` as affected for all versions (`>= 0`) with no patched version,
