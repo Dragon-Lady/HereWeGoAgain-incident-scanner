@@ -46,6 +46,9 @@
 - Socket Miasma / Mini Shai-Hulud campaign tracker: https://socket.dev/supply-chain-attacks/miasma-mini-shai-hulud-supply-chain-attack
 - SC World Hades PyPI package-version summary: https://www.scworld.com/news/mini-shai-hulud-hades-variant-affects-23-pypi-package-versions
 - GitHub Security Advisory GHSA-x223-p2gf-v735 / Langflow CVE-2026-55450: https://github.com/langflow-ai/langflow/security/advisories/GHSA-x223-p2gf-v735
+- IBM Security Bulletin / Langflow CVE-2026-10561 PythonREPL RCE: https://www.ibm.com/support/pages/node/7277242
+- IBM Security Bulletin / Langflow CVE-2026-7664 webhook/MCP authorization bypass: https://www.ibm.com/support/pages/node/7277243
+- SecurityOnline Langflow RCE summary: https://securityonline.info/langflow-rce-vulnerability/
 - OX Malware-Slop 2 `cms-store-ren` npm / Telegram exfiltration report: https://www.ox.security/blog/malware-slop-2-malicious-npm-package-leaks-its-own-bots-telegram-private-token/
 - Supply Chain Attack incident catalog, latest npm malware batch: https://supplychainattack.org/
 - Supply Chain Attack incident catalog, free-claude npm malware: https://supplychainattack.org/incident/malware-in-free-claude-7fjbqi

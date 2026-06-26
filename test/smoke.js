@@ -108,8 +108,11 @@ try {
 const tmpLangflowPyRoot = fs.mkdtempSync(path.join(__dirname, "tmp-langflow-pypi-"));
 try {
   fs.writeFileSync(path.join(tmpLangflowPyRoot, "requirements.txt"), "langflow==1.9.0\n");
+  fs.writeFileSync(path.join(tmpLangflowPyRoot, "uv.lock"), 'name = "langflow"\nversion = "1.8.4"\n');
   const langflowReport = scanTarget(tmpLangflowPyRoot);
   assert.strictEqual(langflowReport.risk, "likely-exposed");
+  assert(langflowReport.findings.some((finding) => finding.type === "langflow-cve-2026-10561-vulnerable-version"));
+  assert(langflowReport.findings.some((finding) => finding.type === "langflow-cve-2026-7664-vulnerable-version"));
   assert(langflowReport.findings.some((finding) => finding.type === "langflow-cve-2026-55450-vulnerable-version"));
 } finally {
   fs.rmSync(tmpLangflowPyRoot, { recursive: true, force: true });

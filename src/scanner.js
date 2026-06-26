@@ -24,7 +24,10 @@ const SHELL_SOURCE_EXTENSIONS = new Set([".sh", ".bash", ".zsh"]);
 const SHADOWABLE_TOOL_NAMES = new Set(["ssh", "git", "npm", "node", "python", "powershell", "gh", "claude", "codex", "composer", "pnpm", "yarn"]);
 const LIFECYCLE_SCRIPTS = ["preinstall", "install", "postinstall", "prepare"];
 const SKIP_DIRS = new Set([".git", ".hg", ".svn", ".next", "dist", "build", "coverage"]);
-const LANGFLOW_FIXED = "1.9.1";
+const LANGFLOW_UPLOAD_FIXED = "1.9.1";
+const LANGFLOW_WEBHOOK_AFFECTED_MAX = "1.8.4";
+const LANGFLOW_WEBHOOK_FIXED = "1.9.1";
+const LANGFLOW_PYTHON_REPL_FIXED = "1.9.4";
 
 const DEFAULT_ADVISORY = {
   indicators: {
@@ -505,8 +508,14 @@ function scanPythonDependencyFile(filePath, advisory, findings) {
 
 function scanLangflowDependencyText(filePath, text, findings, sourceLabel) {
   for (const version of pythonPackageVersionsInText(text, "langflow")) {
-    if (compareDottedVersions(version, LANGFLOW_FIXED) < 0) {
-      findings.push(finding("critical", "langflow-cve-2026-55450-vulnerable-version", filePath, `${sourceLabel} references Langflow ${version}, affected by CVE-2026-55450. Upgrade to langflow>=${LANGFLOW_FIXED}.`));
+    if (compareDottedVersions(version, LANGFLOW_PYTHON_REPL_FIXED) < 0) {
+      findings.push(finding("critical", "langflow-cve-2026-10561-vulnerable-version", filePath, `${sourceLabel} references Langflow ${version}, affected by CVE-2026-10561 PythonREPL unauthenticated RCE. Upgrade to langflow>=${LANGFLOW_PYTHON_REPL_FIXED}.`));
+    }
+    if (compareDottedVersions(version, LANGFLOW_WEBHOOK_AFFECTED_MAX) <= 0) {
+      findings.push(finding("critical", "langflow-cve-2026-7664-vulnerable-version", filePath, `${sourceLabel} references Langflow ${version}, affected by CVE-2026-7664 unauthenticated webhook/MCP flow execution. Upgrade to langflow>=${LANGFLOW_WEBHOOK_FIXED}.`));
+    }
+    if (compareDottedVersions(version, LANGFLOW_UPLOAD_FIXED) < 0) {
+      findings.push(finding("critical", "langflow-cve-2026-55450-vulnerable-version", filePath, `${sourceLabel} references Langflow ${version}, affected by CVE-2026-55450. Upgrade to langflow>=${LANGFLOW_UPLOAD_FIXED}.`));
     }
   }
 }

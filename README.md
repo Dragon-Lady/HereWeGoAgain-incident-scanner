@@ -583,6 +583,9 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - OX Security broader npm/PyPI campaign update: https://www.ox.security/blog/shai-hulud-here-we-go-again-170-packages-hit-across-npm-pypi/
 - Resultsense / Decrypt PyPI malware summary: https://www.resultsense.com/news/2026-05-13-mistral-ai-pypi-supply-chain-malware-shai-hulud/
 - GitHub Security Advisory GHSA-x223-p2gf-v735 / Langflow CVE-2026-55450: https://github.com/langflow-ai/langflow/security/advisories/GHSA-x223-p2gf-v735
+- IBM Security Bulletin / Langflow CVE-2026-10561 PythonREPL RCE: https://www.ibm.com/support/pages/node/7277242
+- IBM Security Bulletin / Langflow CVE-2026-7664 webhook/MCP authorization bypass: https://www.ibm.com/support/pages/node/7277243
+- SecurityOnline Langflow RCE summary: https://securityonline.info/langflow-rce-vulnerability/
 - Snyk TanStack/Mini Shai-Hulud update: https://snyk.io/jp/blog/tanstack-npm-packages-compromised/
 - Socket live Mini Shai-Hulud campaign table: https://socket.dev/supply-chain-attacks/mini-shai-hulud
 - Socket @antv active publish-wave writeup: https://socket.dev/blog/antv-packages-compromised
