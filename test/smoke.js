@@ -965,7 +965,8 @@ try {
         "free-anthropic-claude": "^1.0.0",
         "search-from-search": "^1.0.0",
         "node-fetch-utils": "^1.0.0",
-        "node-core-libs": "^1.0.0"
+        "node-core-libs": "^1.0.0",
+        "ts-grok": "^1.0.0"
       }
     }, null, 2)
   );
@@ -975,7 +976,8 @@ try {
       packages: {
         "node_modules/free-claude": { version: "1.0.0" },
         "node_modules/node-fetch-utils": { version: "1.0.0" },
-        "node_modules/node-core-libs": { version: "1.0.0" }
+        "node_modules/node-core-libs": { version: "1.0.0" },
+        "node_modules/ts-grok": { version: "1.0.0" }
       }
     })
   );
@@ -987,6 +989,8 @@ try {
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("node-fetch-utils")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("node-core-libs")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("node-core-libs")));
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("ts-grok")));
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("ts-grok")));
 } finally {
   fs.rmSync(tmpSupplyChainAttackCatalogRoot, { recursive: true, force: true });
 }

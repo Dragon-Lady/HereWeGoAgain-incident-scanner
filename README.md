@@ -430,7 +430,7 @@ reporting; a finding type with no rule simply produces no plan item.
   `google-cloud-secret-manager-config-poc`
 - Supply Chain Attack catalog npm malware package detection, including
   `free-claude`, `free-anthropic-claude`, `node-fetch-utils`, and
-  `node-core-libs`
+  `node-core-libs`, and `ts-grok`
 - Checkmarx ChainVeil / successkey npm package indicators
 - JFrog VS Code folder-open autorun / blockchain dead-drop npm indicators for
   `html-to-gutenberg@4.2.11` and `fetch-page-assets@1.2.9`, plus fake
@@ -608,6 +608,8 @@ See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 - OX Malware-Slop 2 `cms-store-ren` npm / Telegram exfiltration report: https://www.ox.security/blog/malware-slop-2-malicious-npm-package-leaks-its-own-bots-telegram-private-token/
 - GitHub Advisory for `google-cloud-secret-manager-config-poc`: https://github.com/advisories/GHSA-g6v5-9xpp-6hpx
 - supplychainattack.org incident for `google-cloud-secret-manager-config-poc`: https://supplychainattack.org/incident/malware-in-google-cloud-secret-manager-config-poc-1fs99l
+- Supply Chain Attack incident catalog, ts-grok npm malware: https://supplychainattack.org/incident/malware-in-ts-grok-jjsh0j
+- GitHub Advisory Database, GHSA-qp73-r9hh-6vq9 / ts-grok npm malware: https://github.com/advisories/GHSA-qp73-r9hh-6vq9
 - Supply Chain Attack incident catalog, latest npm malware batch: https://supplychainattack.org/
 - Supply Chain Attack incident catalog, free-claude npm malware: https://supplychainattack.org/incident/malware-in-free-claude-7fjbqi
 - Checkmarx ChainVeil / successkey npm supply-chain report: https://checkmarx.com/zero-post/chainveil-a-malicious-npm-supply-chain-attack-by-successkey/

@@ -285,6 +285,12 @@ copied incident notes or source artifacts containing the reported GitHub exfil
 strings, raw payload paths, account/repository markers, and public-key
 fragments.
 
+SupplyChainAttack and GitHub Advisory Database full-compromise npm malware
+entries are also included for package-name detection. The scanner treats
+`ts-grok` as affected for all versions (`>= 0`) with no patched version,
+matching GHSA-qp73-r9hh-6vq9, and asks operators to move to credential rotation
+and host compromise response if the package was installed or run.
+
 June 5 passive decode notes confirmed the live Shai-Hulud/Miasma second-stage
 shape: `setup.js` decrypts or decodes a large payload, writes it under `/tmp`,
 bootstraps Bun when missing, and executes the payload. The second stage targets
