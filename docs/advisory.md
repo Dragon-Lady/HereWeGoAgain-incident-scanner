@@ -286,7 +286,11 @@ OX's June 25, 2026 Shai-Hulud / Miasma / Hades npm variant report describes a
 compromised maintainer account affecting `leo-*`, `serverless-*`, `solo-nav`,
 and `rstreams-*` packages. JFrog's companion analysis confirms the Leo/RStreams
 rows and adds affected `@immobiliarelabs/backstage-*` package versions plus
-`SEED_PAT` / `Seeder` operator-seeding markers. This scanner treats the
+`SEED_PAT` / `Seeder` operator-seeding markers. Aikido also called out the
+ImmobiliareLabs Backstage LDAP auth and GitLab plugins as credential-stealing
+worm targets, so any hit on these packages should move directly to clean-device
+rotation for GitHub, npm, LDAP, Backstage, CI, and cloud credentials after
+persistence/exfiltration paths are contained. This scanner treats the
 reported exact package/version pairs as critical npm indicators and flags
 copied incident notes or source artifacts containing the reported GitHub exfil
 strings, raw payload paths, account/repository markers, and public-key

@@ -2271,6 +2271,9 @@
   "node-core-libs": [
     "*"
   ],
+  "normalize-plus": [
+    "*"
+  ],
   "ts-grok": [
     "*"
   ],
@@ -2384,5 +2387,8 @@
   ],
   "zkjson": [
     "0.8.5"
+  ],
+  "nabisco": [
+    "*"
   ]
 }

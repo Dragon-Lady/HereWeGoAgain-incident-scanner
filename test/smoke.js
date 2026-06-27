@@ -1029,6 +1029,8 @@ try {
         "search-from-search": "^1.0.0",
         "node-fetch-utils": "^1.0.0",
         "node-core-libs": "^1.0.0",
+        "normalize-plus": "^1.0.0",
+        "nabisco": "^1.0.0",
         "ts-grok": "^1.0.0"
       }
     }, null, 2)
@@ -1041,6 +1043,8 @@ try {
         "node_modules/node-fetch-utils": { version: "1.0.0" },
         "node_modules/signup-embedder": { version: "1.0.0" },
         "node_modules/node-core-libs": { version: "1.0.0" },
+        "node_modules/normalize-plus": { version: "1.0.0" },
+        "node_modules/nabisco": { version: "1.0.0" },
         "node_modules/ts-grok": { version: "1.0.0" }
       }
     })
@@ -1054,6 +1058,10 @@ try {
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("signup-embedder")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("node-core-libs")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("node-core-libs")));
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("normalize-plus")));
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("normalize-plus")));
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("nabisco")));
+  assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("nabisco")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("ts-grok")));
   assert(supplyChainAttackCatalogCompromised.findings.some((finding) => finding.type === "known-bad-lockfile-package" && finding.message.includes("ts-grok")));
 } finally {

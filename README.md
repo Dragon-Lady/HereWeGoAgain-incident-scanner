@@ -411,8 +411,9 @@ reporting; a finding type with no rule simply produces no plan item.
   `github-archiver`, and `@contaazul/n8n-nodes-contaazul`
 - OX/JFrog June 25 Miasma/Hades npm variant indicators, including affected
   `leo-*`, `serverless-*`, `solo-nav`, `rstreams-*`, and
-  `@immobiliarelabs/backstage-*` package versions plus reported GitHub exfil,
-  raw payload-path, `SEED_PAT`/`Seeder` markers, and SafeDep-reported
+  `@immobiliarelabs/backstage-*` GitLab and LDAP auth package versions plus
+  reported GitHub exfil, raw payload-path, `SEED_PAT`/`Seeder` markers,
+  credential-stealing auth-plugin rotation guidance, and SafeDep-reported
   `snapshot-*` / fake `Dependabot Updates` workflow poisoning terms
 - OX Red Hat / Miasma follow-up indicators, including
   `Miasma: The Spreading Blight`,
