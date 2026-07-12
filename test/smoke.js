@@ -1648,6 +1648,33 @@ try {
   fs.rmSync(tmpAryStingerRoot, { recursive: true, force: true });
 }
 
+const tmpJulyCampaignRoot = fs.mkdtempSync(path.join(__dirname, "tmp-july-campaigns-"));
+try {
+  fs.writeFileSync(
+    path.join(tmpJulyCampaignRoot, "package.json"),
+    JSON.stringify({
+      dependencies: {
+        jscrambler: "8.20.0",
+        "@injectivelabs/sdk-ts": "1.20.21",
+        "rollup-runtime-polyfill-core": "1.0.0",
+        "paysafe-node": "1.0.3"
+      },
+      notes: "svganchordev[.]net 185[.]112[.]147[.]174:7007"
+    }, null, 2)
+  );
+  fs.writeFileSync(path.join(tmpJulyCampaignRoot, "requirements.txt"), "paysafe-sdk==1.0.0\n");
+
+  const julyCampaign = scanTarget(tmpJulyCampaignRoot);
+  assert.strictEqual(julyCampaign.risk, "likely-exposed");
+  assert(julyCampaign.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("dependencies.jscrambler") && finding.message.includes("8.20.0")));
+  assert(julyCampaign.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("dependencies.@injectivelabs/sdk-ts") && finding.message.includes("1.20.21")));
+  assert(julyCampaign.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("dependencies.rollup-runtime-polyfill-core")));
+  assert(julyCampaign.findings.some((finding) => finding.type === "known-bad-pypi-version" && finding.message.includes("paysafe-sdk==1.0.0")));
+  assert(julyCampaign.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("185[.]112[.]147[.]174:7007")));
+} finally {
+  fs.rmSync(tmpJulyCampaignRoot, { recursive: true, force: true });
+}
+
 const payloadPath = path.join(__dirname, "fixtures", "compromised", "router_init.js");
 const payloadHash = crypto.createHash("sha256").update(fs.readFileSync(payloadPath)).digest("hex");
 const compromisedWithHash = scanTarget(path.join(__dirname, "fixtures", "compromised"), {

@@ -7,6 +7,10 @@ Mini Shai-Hulud npm/PyPI/Composer indicators.
 This tool helps identify known indicators. It does not remove malware, revoke
 credentials, execute package scripts, or prove that a host is clean.
 
+July 2026 coverage includes exact compromised `jscrambler` and Injective
+versions, Paperclip2 and `polymarket-kit`, Rollup-polyfill lookalikes, and the
+reported Paysafe/Skrill/Neteller npm and PyPI typosquat versions.
+
 > Built and maintained by Dragon Lady - [github.com/Dragon-Lady](https://github.com/Dragon-Lady) - X: [@answerislove2](https://x.com/answerislove2)
 
 ## Run From Source

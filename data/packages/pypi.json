@@ -147,5 +147,9 @@
   "uprobe": [
     "0.1.3",
     "0.1.4"
-  ]
+  ],
+  "paysafe-kyc": ["1.0.0"],
+  "paysafe-payments": ["1.0.0"],
+  "paysafe-sdk": ["1.0.0"],
+  "paysafe-api": ["1.0.0"]
 }

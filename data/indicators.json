@@ -227,7 +227,21 @@
     "io.ary2.com",
     "io[.]ary2[.]com",
     "107.150.106.14",
-    "107[.]150[.]106[.]14"
+    "107[.]150[.]106[.]14",
+    "svganchordev.net",
+    "svganchordev[.]net",
+    "testnet.archival.chain.grpc-web.injective.network",
+    "testnet[.]archival[.]chain[.]grpc-web[.]injective[.]network",
+    "185.112.147.174:7007",
+    "185[.]112[.]147[.]174:7007",
+    "37.27.122.124",
+    "37[.]27[.]122[.]124",
+    "57.128.246.79",
+    "57[.]128[.]246[.]79",
+    "216.126.236.244",
+    "216[.]126[.]236[.]244",
+    "api.348672-shakepay.com",
+    "api[.]348672-shakepay[.]com"
   ],
   "workflowIndicators": [
     "Linux-pnpm-store-6f9233a50def742c09fde54f56553d6b449a535adf87d4083690539f49ae4da11",
@@ -731,7 +745,13 @@
     "app-bound encryption",
     "%TEMP%\\winPatch",
     "win-driver-xd7d",
-    "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\csshost"
+    "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\csshost",
+    "PolinRider",
+    "Xpos587/git2md",
+    "Xpos587/markfetch",
+    "Artiffusion-Inc/mirofish",
+    "github.com/kaleidora/dnsub-scanning-tool",
+    "github[.]com/kaleidora/dnsub-scanning-tool"
   ],
   "tokenDescriptionIndicator": "IfYouRevokeThisTokenItWillWipeTheComputerOfTheOwner",
   "activeNamespaces": [

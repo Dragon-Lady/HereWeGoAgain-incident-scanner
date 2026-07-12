@@ -1,6 +1,6 @@
 {
   "incident": "Shai-Hulud: Here We Go Again npm/PyPI supply-chain compromise",
-  "lastUpdated": "2026-06-26",
+  "lastUpdated": "2026-07-12",
   "scope": {
     "scannerPackageSet": "JFrog Here We Go Again package/version indicators plus selected confirmed broader Mini Shai-Hulud npm, PyPI, and Composer package/version indicators",
     "officialTanStackScope": "42 packages, 84 malicious versions, published on 2026-05-11 between 19:20 and 19:26 UTC",
@@ -68,6 +68,15 @@
     "https://github.com/advisories/GHSA-m97m-v5gv-jm47",
     "https://supplychainattack.org/incident/malware-in-nabisco-1m2jqo",
     "https://safedep.io/procwire-npm-windows-dropper-campaign/",
-    "https://x.com/nextronresearch"
+    "https://x.com/nextronresearch",
+    "https://research.jfrog.com/post/ironworm-returns-rustier-than-ever/",
+    "https://research.jfrog.com/post/rollup-polyfill-masquerading/",
+    "https://www.ox.security/blog/malware-slop-crypto-stealer-impersonating-polymarket-exposes-its-own-credentials/",
+    "https://www.ox.security/blog/injectivelabs-npm-package-hijacked-impacting-87-dependent-packages/",
+    "https://www.ox.security/blog/malware-detected-reverse-shell-without-javascript-files-in-npm/",
+    "https://socket.dev/blog/npm-pypi-campaign-typosquats-popular-secure-payment-apps",
+    "https://socket.dev/blog/polinrider-north-korea-linked-supply-chain-campaign-expands",
+    "https://socket.dev/blog/malicious-go-module-exposes-github-malware-lure-network",
+    "https://socket.dev/blog/braintree-nuget-typosquat-skims-credit-cards"
   ]
 }
