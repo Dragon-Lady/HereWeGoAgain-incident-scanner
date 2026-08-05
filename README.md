@@ -11,6 +11,18 @@ July 2026 coverage includes exact compromised `jscrambler` and Injective
 versions, Paperclip2 and `polymarket-kit`, Rollup-polyfill lookalikes, and the
 reported Paysafe/Skrill/Neteller npm and PyPI typosquat versions.
 
+August 4, 2026 keyv / cacheable (ChainDrop / Shai-Hulud "Here We Go Again")
+coverage adds exact-version checks for the initial full-worm carriers
+`keyv@6.0.0` and ten related jaredwray-family releases (`flat-cache@6.1.24`,
+`file-entry-cache@11.1.6`, `cacheable-request@13.0.20`, `cacheable@2.5.1`,
+`@cacheable/memory@2.2.1`, `cache-manager@7.2.10`, `@cacheable/node-cache@3.1.2`,
+`@cacheable/utils@2.5.1`, `@cacheable/net@2.1.1`, `ecto@5.0.1`), plus campaign
+network markers. This is a **cross-platform npm ecosystem** compromise
+(registry installs, lockfiles, CI, and workspaces on Linux, macOS, Windows, and
+other npm-using lanes)—not a Linux-only issue. Indicators are credited to Snyk,
+StepSecurity, Aikido, Wiz, and JFrog. Lockfile matching covers package-lock
+v2/v3 path keys and resolved tarball URLs.
+
 > Built and maintained by Dragon Lady - [github.com/Dragon-Lady](https://github.com/Dragon-Lady) - X: [@answerislove2](https://x.com/answerislove2)
 
 ## Run From Source

@@ -376,7 +376,10 @@ function inspectDependencySpec(filePath, section, name, spec, advisory, findings
     }
   }
 
-  if (spec.includes(indicators.maliciousOptionalDependencySpec)) {
+  if (
+    indicators.maliciousOptionalDependencySpec &&
+    spec.includes(indicators.maliciousOptionalDependencySpec)
+  ) {
     findings.push(finding("critical", "malicious-dependency-spec", filePath, `${section}.${name} points to the known malicious GitHub commit.`));
   }
 
@@ -438,11 +441,17 @@ function scanTextFile(filePath, advisory, findings) {
 
   scanIndicatorStrings(filePath, text, advisory, findings, "Lockfile");
 
-  if (text.includes(indicators.maliciousOptionalDependencyName)) {
+  if (
+    indicators.maliciousOptionalDependencyName &&
+    text.includes(indicators.maliciousOptionalDependencyName)
+  ) {
     findings.push(finding("critical", "malicious-dependency-name", filePath, `Lockfile references ${indicators.maliciousOptionalDependencyName}.`));
   }
 
-  if (text.includes(indicators.maliciousOptionalDependencySpec)) {
+  if (
+    indicators.maliciousOptionalDependencySpec &&
+    text.includes(indicators.maliciousOptionalDependencySpec)
+  ) {
     findings.push(finding("critical", "malicious-dependency-spec", filePath, "Lockfile references the known malicious GitHub commit."));
   }
 
@@ -989,10 +998,19 @@ function scanShaiHuludSshPropagationShape(filePath, text, findings) {
 function lockfileMentionsPackageVersion(text, pkg, version) {
   const escapedPkg = escapeRegExp(pkg);
   const escapedVersion = escapeRegExp(version);
+  // Tarball basename is unscoped (e.g. @cacheable/memory → memory-2.2.1.tgz).
+  const tarballBase = escapeRegExp(pkg.includes("/") ? pkg.split("/").pop() : pkg);
   const patterns = [
     new RegExp(`${escapedPkg}[^\\n\\r]{0,120}${escapedVersion}`),
     new RegExp(`${escapedPkg.replace("/", "\\/")}[^\\n\\r]{0,120}${escapedVersion}`),
-    new RegExp(`node_modules/${escapedPkg}[^\\n\\r]{0,240}"version"\\s*:\\s*"${escapedVersion}"`)
+    // package-lock v2/v3 path keys may place "version" on a following line
+    new RegExp(`["']node_modules/${escapedPkg}["']\\s*:\\s*\\{[\\s\\S]{0,500}?["']version["']\\s*:\\s*["']${escapedVersion}["']`),
+    new RegExp(`node_modules/${escapedPkg}[\\s\\S]{0,240}"version"\\s*:\\s*"${escapedVersion}"`),
+    // resolved tarball URLs
+    new RegExp(
+      `(?:registry\\.npmjs\\.org/|/)(?:@[^/"']+/)?${tarballBase}/-/${tarballBase}-${escapedVersion}\\.tgz`
+    ),
+    new RegExp(`["']${escapedPkg}@npm:${escapedVersion}["']`)
   ];
   return patterns.some((pattern) => pattern.test(text));
 }
