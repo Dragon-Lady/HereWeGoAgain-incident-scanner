@@ -64,7 +64,7 @@ function parseArgs(argv) {
 function printHelp() {
   console.log(`herewegoagain-incident-scanner
 
-Read-only exposure scanner for Shai-Hulud: Here We Go Again npm/PyPI indicators.
+Read-only exposure scanner for Shai-Hulud: Here We Go Again npm/PyPI/Composer indicators.
 
 Usage:
   node bin/herewegoagain-incident-scanner.js [target] [--json] [--remediation-plan]

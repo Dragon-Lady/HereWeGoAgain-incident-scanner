@@ -1,0 +1,23 @@
+name: Documentation issue
+description: Report a public documentation error without sharing scan data.
+title: "[documentation]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the public documentation issue only. Do not include scanner output, local paths, secrets, private logs, or malware samples.
+  - type: input
+    id: location
+    attributes:
+      label: Document or section
+      description: Link to the affected public page or name the section.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Expected correction
+      description: Explain what is inaccurate, stale, or unclear and what the documentation should say instead.
+    validations:
+      required: true

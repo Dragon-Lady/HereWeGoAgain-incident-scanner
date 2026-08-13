@@ -1,18 +1,17 @@
 name: Exposure report
-description: Report scanner output or documentation issues. Do not paste secrets.
+description: Report redacted scanner behavior without publishing sensitive scan data.
 title: "[exposure report]: "
 labels: ["exposure-report"]
 body:
   - type: markdown
     attributes:
       value: |
-        Do not paste tokens, private keys, `.env` files, cloud credentials, or proprietary logs.
+        Share only the minimum redacted details needed to describe scanner behavior. Do not paste or attach raw/full scanner output, file paths, tokens, private keys, `.env` files, cloud credentials, proprietary logs, or malware samples. Use the private security-reporting path in SECURITY.md when the report concerns a vulnerability in this project.
   - type: textarea
-    id: scanner-output
+    id: summary
     attributes:
-      label: Scanner output
-      description: Paste redacted scanner output or attach a redacted report summary.
-      render: text
+      label: Redacted summary
+      description: Describe the unexpected finding type, severity, and exit code without including paths or raw output.
     validations:
       required: true
   - type: textarea
@@ -25,7 +24,7 @@ body:
   - type: textarea
     id: notes
     attributes:
-      label: Notes
-      description: Include only redacted details.
+      label: Minimal reproduction notes
+      description: Include only synthetic or fully redacted details needed to reproduce the scanner behavior.
     validations:
       required: false

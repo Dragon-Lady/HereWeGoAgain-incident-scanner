@@ -4,6 +4,7 @@ const path = require("path");
 const os = require("os");
 const crypto = require("crypto");
 const { scanTarget } = require("../src/scanner");
+const { makeTempDir } = require("./helpers/temp");
 
 function write(filePath, content) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -39,7 +40,7 @@ const mistralHit = scanTarget(path.join(__dirname, "fixtures", "clean"), {
 });
 assert.strictEqual(mistralHit.risk, "no-known-indicators");
 
-const tmpRoot = fs.mkdtempSync(path.join(__dirname, "tmp-mistral-"));
+const tmpRoot = makeTempDir(path.join(__dirname, "tmp-mistral-"));
 try {
   fs.writeFileSync(
     path.join(tmpRoot, "package.json"),
@@ -54,7 +55,7 @@ try {
   fs.rmSync(tmpRoot, { recursive: true, force: true });
 }
 
-const tmpVsCodeAutorunRoot = fs.mkdtempSync(path.join(__dirname, "tmp-vscode-autorun-"));
+const tmpVsCodeAutorunRoot = makeTempDir(path.join(__dirname, "tmp-vscode-autorun-"));
 try {
   fs.mkdirSync(path.join(tmpVsCodeAutorunRoot, ".vscode"), { recursive: true });
   fs.writeFileSync(
@@ -83,7 +84,7 @@ try {
   fs.rmSync(tmpVsCodeAutorunRoot, { recursive: true, force: true });
 }
 
-const tmpPyRoot = fs.mkdtempSync(path.join(__dirname, "tmp-pypi-"));
+const tmpPyRoot = makeTempDir(path.join(__dirname, "tmp-pypi-"));
 try {
   fs.writeFileSync(path.join(tmpPyRoot, "requirements.txt"), "guardrails-ai==0.10.1\nlightning==2.6.3\ndurabletask==1.4.3\n# check.git-service.com/rope.pyz\n");
   const pypiCompromised = scanTarget(tmpPyRoot);
@@ -95,7 +96,7 @@ try {
   fs.rmSync(tmpPyRoot, { recursive: true, force: true });
 }
 
-const tmpUpdatedPyRoot = fs.mkdtempSync(path.join(__dirname, "tmp-pypi-updated-"));
+const tmpUpdatedPyRoot = makeTempDir(path.join(__dirname, "tmp-pypi-updated-"));
 try {
   fs.writeFileSync(path.join(tmpUpdatedPyRoot, "pgsql-monitor.service"), "[Service]\nExecStart=pgmonitor.py\n");
   fs.writeFileSync(
@@ -112,7 +113,7 @@ try {
   fs.rmSync(tmpUpdatedPyRoot, { recursive: true, force: true });
 }
 
-const tmpLangflowPyRoot = fs.mkdtempSync(path.join(__dirname, "tmp-langflow-pypi-"));
+const tmpLangflowPyRoot = makeTempDir(path.join(__dirname, "tmp-langflow-pypi-"));
 try {
   fs.writeFileSync(path.join(tmpLangflowPyRoot, "requirements.txt"), "langflow==1.9.0\n");
   fs.writeFileSync(path.join(tmpLangflowPyRoot, "uv.lock"), 'name = "langflow"\nversion = "1.8.4"\n');
@@ -125,7 +126,7 @@ try {
   fs.rmSync(tmpLangflowPyRoot, { recursive: true, force: true });
 }
 
-const tmpHadesPyRoot = fs.mkdtempSync(path.join(__dirname, "tmp-hades-pypi-"));
+const tmpHadesPyRoot = makeTempDir(path.join(__dirname, "tmp-hades-pypi-"));
 try {
   fs.writeFileSync(
     path.join(tmpHadesPyRoot, "requirements.txt"),
@@ -141,7 +142,7 @@ try {
   fs.rmSync(tmpHadesPyRoot, { recursive: true, force: true });
 }
 
-const tmpComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-composer-"));
+const tmpComposerRoot = makeTempDir(path.join(__dirname, "tmp-composer-"));
 try {
   fs.writeFileSync(
     path.join(tmpComposerRoot, "composer.lock"),
@@ -163,7 +164,7 @@ try {
   fs.rmSync(tmpComposerRoot, { recursive: true, force: true });
 }
 
-const tmpDcatComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-dcat-composer-"));
+const tmpDcatComposerRoot = makeTempDir(path.join(__dirname, "tmp-dcat-composer-"));
 try {
   fs.writeFileSync(
     path.join(tmpDcatComposerRoot, "composer.lock"),
@@ -188,7 +189,7 @@ try {
   fs.rmSync(tmpDcatComposerRoot, { recursive: true, force: true });
 }
 
-const tmpLivewireComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-livewire-composer-"));
+const tmpLivewireComposerRoot = makeTempDir(path.join(__dirname, "tmp-livewire-composer-"));
 try {
   fs.writeFileSync(
     path.join(tmpLivewireComposerRoot, "composer.lock"),
@@ -206,7 +207,7 @@ try {
   fs.rmSync(tmpLivewireComposerRoot, { recursive: true, force: true });
 }
 
-const tmpLivewireComposerReviewRoot = fs.mkdtempSync(path.join(__dirname, "tmp-livewire-composer-review-"));
+const tmpLivewireComposerReviewRoot = makeTempDir(path.join(__dirname, "tmp-livewire-composer-review-"));
 try {
   fs.writeFileSync(
     path.join(tmpLivewireComposerReviewRoot, "composer.json"),
@@ -223,7 +224,7 @@ try {
   fs.rmSync(tmpLivewireComposerReviewRoot, { recursive: true, force: true });
 }
 
-const tmpLaravelLangRoot = fs.mkdtempSync(path.join(__dirname, "tmp-laravel-lang-"));
+const tmpLaravelLangRoot = makeTempDir(path.join(__dirname, "tmp-laravel-lang-"));
 try {
   fs.writeFileSync(
     path.join(tmpLaravelLangRoot, "composer.lock"),
@@ -244,7 +245,7 @@ try {
   fs.rmSync(tmpLaravelLangRoot, { recursive: true, force: true });
 }
 
-const tmpLaravelLangBackdoorRoot = fs.mkdtempSync(path.join(__dirname, "tmp-laravel-lang-backdoor-"));
+const tmpLaravelLangBackdoorRoot = makeTempDir(path.join(__dirname, "tmp-laravel-lang-backdoor-"));
 try {
   fs.writeFileSync(
     path.join(tmpLaravelLangBackdoorRoot, "composer.lock"),
@@ -265,7 +266,7 @@ try {
   fs.rmSync(tmpLaravelLangBackdoorRoot, { recursive: true, force: true });
 }
 
-const tmpLaravelLangPayloadRoot = fs.mkdtempSync(path.join(__dirname, "tmp-laravel-lang-payload-"));
+const tmpLaravelLangPayloadRoot = makeTempDir(path.join(__dirname, "tmp-laravel-lang-payload-"));
 try {
   fs.mkdirSync(path.join(tmpLaravelLangPayloadRoot, "src"));
   fs.writeFileSync(
@@ -289,7 +290,7 @@ try {
   fs.rmSync(tmpLaravelLangPayloadRoot, { recursive: true, force: true });
 }
 
-const tmpStaticCloudflareClickFixRoot = fs.mkdtempSync(path.join(__dirname, "tmp-staticcloudflare-clickfix-"));
+const tmpStaticCloudflareClickFixRoot = makeTempDir(path.join(__dirname, "tmp-staticcloudflare-clickfix-"));
 try {
   fs.writeFileSync(
     path.join(tmpStaticCloudflareClickFixRoot, "compromised-page.html"),
@@ -308,7 +309,7 @@ try {
   fs.rmSync(tmpStaticCloudflareClickFixRoot, { recursive: true, force: true });
 }
 
-const tmpKb4ClickFixRoot = fs.mkdtempSync(path.join(__dirname, "tmp-kb4-clickfix-"));
+const tmpKb4ClickFixRoot = makeTempDir(path.join(__dirname, "tmp-kb4-clickfix-"));
 try {
   fs.writeFileSync(
     path.join(tmpKb4ClickFixRoot, "clickfix-triage.html"),
@@ -333,7 +334,7 @@ try {
   fs.rmSync(tmpKb4ClickFixRoot, { recursive: true, force: true });
 }
 
-const tmpShapedPluginRoot = fs.mkdtempSync(path.join(__dirname, "tmp-shapedplugin-"));
+const tmpShapedPluginRoot = makeTempDir(path.join(__dirname, "tmp-shapedplugin-"));
 try {
   fs.writeFileSync(
     path.join(tmpShapedPluginRoot, "shapedplugin-triage.html"),
@@ -357,7 +358,7 @@ try {
   fs.rmSync(tmpShapedPluginRoot, { recursive: true, force: true });
 }
 
-const tmpDevdojoComposerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-composer-"));
+const tmpDevdojoComposerRoot = makeTempDir(path.join(__dirname, "tmp-devdojo-composer-"));
 try {
   fs.writeFileSync(
     path.join(tmpDevdojoComposerRoot, "composer.lock"),
@@ -376,7 +377,7 @@ try {
   fs.rmSync(tmpDevdojoComposerRoot, { recursive: true, force: true });
 }
 
-const tmpSquawkRoot = fs.mkdtempSync(path.join(__dirname, "tmp-squawk-"));
+const tmpSquawkRoot = makeTempDir(path.join(__dirname, "tmp-squawk-"));
 try {
   fs.writeFileSync(
     path.join(tmpSquawkRoot, "package.json"),
@@ -389,7 +390,7 @@ try {
   fs.rmSync(tmpSquawkRoot, { recursive: true, force: true });
 }
 
-const tmpNodeIpcRoot = fs.mkdtempSync(path.join(__dirname, "tmp-node-ipc-"));
+const tmpNodeIpcRoot = makeTempDir(path.join(__dirname, "tmp-node-ipc-"));
 try {
   fs.writeFileSync(
     path.join(tmpNodeIpcRoot, "package.json"),
@@ -422,7 +423,7 @@ try {
   fs.rmSync(tmpNodeIpcRoot, { recursive: true, force: true });
 }
 
-const tmpMoikaRoot = fs.mkdtempSync(path.join(__dirname, "tmp-moika-"));
+const tmpMoikaRoot = makeTempDir(path.join(__dirname, "tmp-moika-"));
 try {
   fs.writeFileSync(
     path.join(tmpMoikaRoot, "package.json"),
@@ -443,7 +444,7 @@ try {
   fs.rmSync(tmpMoikaRoot, { recursive: true, force: true });
 }
 
-const tmpIronWormRoot = fs.mkdtempSync(path.join(__dirname, "tmp-ironworm-"));
+const tmpIronWormRoot = makeTempDir(path.join(__dirname, "tmp-ironworm-"));
 try {
   fs.writeFileSync(
     path.join(tmpIronWormRoot, "package.json"),
@@ -503,7 +504,7 @@ try {
   fs.rmSync(tmpIronWormRoot, { recursive: true, force: true });
 }
 
-const tmpTokenCollectorRoot = fs.mkdtempSync(path.join(__dirname, "tmp-token-collector-"));
+const tmpTokenCollectorRoot = makeTempDir(path.join(__dirname, "tmp-token-collector-"));
 try {
   fs.writeFileSync(
     path.join(tmpTokenCollectorRoot, "decoded-token-collector.js"),
@@ -532,7 +533,7 @@ try {
   fs.rmSync(tmpTokenCollectorRoot, { recursive: true, force: true });
 }
 
-const tmpAzureMiasmaSampleRoot = fs.mkdtempSync(path.join(__dirname, "tmp-azure-miasma-sample-"));
+const tmpAzureMiasmaSampleRoot = makeTempDir(path.join(__dirname, "tmp-azure-miasma-sample-"));
 try {
   fs.writeFileSync(
     path.join(tmpAzureMiasmaSampleRoot, "decoded-azure-miasma.js"),
@@ -554,7 +555,7 @@ try {
   fs.rmSync(tmpAzureMiasmaSampleRoot, { recursive: true, force: true });
 }
 
-const tmpHadesExfilRoot = fs.mkdtempSync(path.join(__dirname, "tmp-hades-exfil-"));
+const tmpHadesExfilRoot = makeTempDir(path.join(__dirname, "tmp-hades-exfil-"));
 try {
   fs.writeFileSync(
     path.join(tmpHadesExfilRoot, "decoded-hades-exfil.js"),
@@ -585,7 +586,7 @@ try {
   fs.rmSync(tmpHadesExfilRoot, { recursive: true, force: true });
 }
 
-const tmpAzureFalloutRoot = fs.mkdtempSync(path.join(__dirname, "tmp-azure-fallout-"));
+const tmpAzureFalloutRoot = makeTempDir(path.join(__dirname, "tmp-azure-fallout-"));
 try {
   fs.mkdirSync(path.join(tmpAzureFalloutRoot, ".claude"), { recursive: true });
   fs.mkdirSync(path.join(tmpAzureFalloutRoot, ".gemini"), { recursive: true });
@@ -678,7 +679,7 @@ try {
   fs.rmSync(tmpAzureFalloutRoot, { recursive: true, force: true });
 }
 
-const tmpUiPathRoot = fs.mkdtempSync(path.join(__dirname, "tmp-uipath-"));
+const tmpUiPathRoot = makeTempDir(path.join(__dirname, "tmp-uipath-"));
 try {
   fs.writeFileSync(
     path.join(tmpUiPathRoot, "package.json"),
@@ -692,7 +693,7 @@ try {
   fs.rmSync(tmpUiPathRoot, { recursive: true, force: true });
 }
 
-const tmpRedHatRoot = fs.mkdtempSync(path.join(__dirname, "tmp-redhat-"));
+const tmpRedHatRoot = makeTempDir(path.join(__dirname, "tmp-redhat-"));
 try {
   fs.writeFileSync(
     path.join(tmpRedHatRoot, "package.json"),
@@ -741,7 +742,7 @@ try {
   fs.rmSync(tmpRedHatRoot, { recursive: true, force: true });
 }
 
-const tmpRedHatBindingGypRoot = fs.mkdtempSync(path.join(__dirname, "tmp-redhat-binding-gyp-"));
+const tmpRedHatBindingGypRoot = makeTempDir(path.join(__dirname, "tmp-redhat-binding-gyp-"));
 try {
   fs.writeFileSync(
     path.join(tmpRedHatBindingGypRoot, "package.json"),
@@ -798,7 +799,7 @@ try {
   fs.rmSync(tmpRedHatBindingGypRoot, { recursive: true, force: true });
 }
 
-const tmpMiasmaSecondStageRoot = fs.mkdtempSync(path.join(__dirname, "tmp-miasma-second-stage-"));
+const tmpMiasmaSecondStageRoot = makeTempDir(path.join(__dirname, "tmp-miasma-second-stage-"));
 try {
   fs.mkdirSync(path.join(tmpMiasmaSecondStageRoot, ".github"), { recursive: true });
   fs.writeFileSync(
@@ -824,7 +825,7 @@ try {
   fs.rmSync(tmpMiasmaSecondStageRoot, { recursive: true, force: true });
 }
 
-const tmpMiasmaEditedWaveRoot = fs.mkdtempSync(path.join(__dirname, "tmp-miasma-edited-wave-"));
+const tmpMiasmaEditedWaveRoot = makeTempDir(path.join(__dirname, "tmp-miasma-edited-wave-"));
 try {
   fs.writeFileSync(
     path.join(tmpMiasmaEditedWaveRoot, "package.json"),
@@ -858,7 +859,7 @@ try {
   fs.rmSync(tmpMiasmaEditedWaveRoot, { recursive: true, force: true });
 }
 
-const tmpOxMiasmaHadesNpmRoot = fs.mkdtempSync(path.join(__dirname, "tmp-ox-miasma-hades-npm-"));
+const tmpOxMiasmaHadesNpmRoot = makeTempDir(path.join(__dirname, "tmp-ox-miasma-hades-npm-"));
 try {
   fs.writeFileSync(
     path.join(tmpOxMiasmaHadesNpmRoot, "package.json"),
@@ -931,7 +932,7 @@ try {
   fs.rmSync(tmpOxMiasmaHadesNpmRoot, { recursive: true, force: true });
 }
 
-const tmpCodexUiRoot = fs.mkdtempSync(path.join(__dirname, "tmp-codexui-"));
+const tmpCodexUiRoot = makeTempDir(path.join(__dirname, "tmp-codexui-"));
 try {
   fs.writeFileSync(
     path.join(tmpCodexUiRoot, "package.json"),
@@ -966,7 +967,7 @@ try {
   fs.rmSync(tmpCodexUiRoot, { recursive: true, force: true });
 }
 
-const tmpMalwareSlop2Root = fs.mkdtempSync(path.join(__dirname, "tmp-malware-slop2-"));
+const tmpMalwareSlop2Root = makeTempDir(path.join(__dirname, "tmp-malware-slop2-"));
 try {
   fs.writeFileSync(
     path.join(tmpMalwareSlop2Root, "package.json"),
@@ -1003,7 +1004,7 @@ try {
   fs.rmSync(tmpMalwareSlop2Root, { recursive: true, force: true });
 }
 
-const tmpGoogleSecretManagerPocRoot = fs.mkdtempSync(path.join(__dirname, "tmp-google-secret-manager-poc-"));
+const tmpGoogleSecretManagerPocRoot = makeTempDir(path.join(__dirname, "tmp-google-secret-manager-poc-"));
 try {
   fs.writeFileSync(
     path.join(tmpGoogleSecretManagerPocRoot, "package.json"),
@@ -1025,7 +1026,7 @@ try {
   fs.rmSync(tmpGoogleSecretManagerPocRoot, { recursive: true, force: true });
 }
 
-const tmpSupplyChainAttackCatalogRoot = fs.mkdtempSync(path.join(__dirname, "tmp-supplychainattack-catalog-"));
+const tmpSupplyChainAttackCatalogRoot = makeTempDir(path.join(__dirname, "tmp-supplychainattack-catalog-"));
 try {
   fs.writeFileSync(
     path.join(tmpSupplyChainAttackCatalogRoot, "package.json"),
@@ -1075,7 +1076,7 @@ try {
   fs.rmSync(tmpSupplyChainAttackCatalogRoot, { recursive: true, force: true });
 }
 
-const tmpChainVeilRoot = fs.mkdtempSync(path.join(__dirname, "tmp-chainveil-"));
+const tmpChainVeilRoot = makeTempDir(path.join(__dirname, "tmp-chainveil-"));
 try {
   fs.writeFileSync(
     path.join(tmpChainVeilRoot, "package.json"),
@@ -1105,7 +1106,7 @@ try {
   fs.rmSync(tmpChainVeilRoot, { recursive: true, force: true });
 }
 
-const tmpOtterCookieRoot = fs.mkdtempSync(path.join(__dirname, "tmp-ottercookie-"));
+const tmpOtterCookieRoot = makeTempDir(path.join(__dirname, "tmp-ottercookie-"));
 try {
   fs.writeFileSync(
     path.join(tmpOtterCookieRoot, "package.json"),
@@ -1145,7 +1146,7 @@ try {
   fs.rmSync(tmpOtterCookieRoot, { recursive: true, force: true });
 }
 
-const tmpEasyDayJsRoot = fs.mkdtempSync(path.join(__dirname, "tmp-easy-day-js-"));
+const tmpEasyDayJsRoot = makeTempDir(path.join(__dirname, "tmp-easy-day-js-"));
 try {
   fs.writeFileSync(
     path.join(tmpEasyDayJsRoot, "package.json"),
@@ -1189,7 +1190,7 @@ try {
   fs.rmSync(tmpEasyDayJsRoot, { recursive: true, force: true });
 }
 
-const tmpProcwireRoot = fs.mkdtempSync(path.join(__dirname, "tmp-procwire-"));
+const tmpProcwireRoot = makeTempDir(path.join(__dirname, "tmp-procwire-"));
 try {
   fs.writeFileSync(
     path.join(tmpProcwireRoot, "package.json"),
@@ -1235,7 +1236,7 @@ try {
   fs.rmSync(tmpProcwireRoot, { recursive: true, force: true });
 }
 
-const tmpPanOsRoot = fs.mkdtempSync(path.join(__dirname, "tmp-panos-"));
+const tmpPanOsRoot = makeTempDir(path.join(__dirname, "tmp-panos-"));
 try {
   fs.writeFileSync(
     path.join(tmpPanOsRoot, "edge-device-note.js"),
@@ -1253,7 +1254,7 @@ try {
   fs.rmSync(tmpPanOsRoot, { recursive: true, force: true });
 }
 
-const tmpApacheHttp2BombRoot = fs.mkdtempSync(path.join(__dirname, "tmp-apache-http2-bomb-"));
+const tmpApacheHttp2BombRoot = makeTempDir(path.join(__dirname, "tmp-apache-http2-bomb-"));
 try {
   fs.writeFileSync(
     path.join(tmpApacheHttp2BombRoot, "httpd.conf"),
@@ -1274,7 +1275,7 @@ try {
   fs.rmSync(tmpApacheHttp2BombRoot, { recursive: true, force: true });
 }
 
-const tmpVsCodeGithubDevRoot = fs.mkdtempSync(path.join(__dirname, "tmp-vscode-githubdev-"));
+const tmpVsCodeGithubDevRoot = makeTempDir(path.join(__dirname, "tmp-vscode-githubdev-"));
 try {
   fs.mkdirSync(path.join(tmpVsCodeGithubDevRoot, ".vscode"), { recursive: true });
   fs.writeFileSync(
@@ -1303,7 +1304,7 @@ try {
   fs.rmSync(tmpVsCodeGithubDevRoot, { recursive: true, force: true });
 }
 
-const tmpJetBrainsRoot = fs.mkdtempSync(path.join(__dirname, "tmp-jetbrains-"));
+const tmpJetBrainsRoot = makeTempDir(path.join(__dirname, "tmp-jetbrains-"));
 try {
   fs.mkdirSync(path.join(tmpJetBrainsRoot, ".vscode"), { recursive: true });
   fs.writeFileSync(
@@ -1337,7 +1338,7 @@ try {
   fs.rmSync(tmpJetBrainsRoot, { recursive: true, force: true });
 }
 
-const tmpAntvRoot = fs.mkdtempSync(path.join(__dirname, "tmp-antv-"));
+const tmpAntvRoot = makeTempDir(path.join(__dirname, "tmp-antv-"));
 try {
   fs.writeFileSync(
     path.join(tmpAntvRoot, "package.json"),
@@ -1351,7 +1352,7 @@ try {
   fs.rmSync(tmpAntvRoot, { recursive: true, force: true });
 }
 
-const tmpFumaRoot = fs.mkdtempSync(path.join(__dirname, "tmp-fuma-"));
+const tmpFumaRoot = makeTempDir(path.join(__dirname, "tmp-fuma-"));
 try {
   fs.writeFileSync(
     path.join(tmpFumaRoot, "package.json"),
@@ -1366,7 +1367,7 @@ try {
   fs.rmSync(tmpFumaRoot, { recursive: true, force: true });
 }
 
-const tmpArtTemplateRoot = fs.mkdtempSync(path.join(__dirname, "tmp-art-template-"));
+const tmpArtTemplateRoot = makeTempDir(path.join(__dirname, "tmp-art-template-"));
 try {
   fs.writeFileSync(
     path.join(tmpArtTemplateRoot, "package.json"),
@@ -1380,7 +1381,7 @@ try {
   fs.rmSync(tmpArtTemplateRoot, { recursive: true, force: true });
 }
 
-const tmpAntvPayloadRoot = fs.mkdtempSync(path.join(__dirname, "tmp-antv-payload-"));
+const tmpAntvPayloadRoot = makeTempDir(path.join(__dirname, "tmp-antv-payload-"));
 try {
   fs.writeFileSync(
     path.join(tmpAntvPayloadRoot, "package.json"),
@@ -1405,7 +1406,7 @@ try {
   fs.rmSync(tmpAntvPayloadRoot, { recursive: true, force: true });
 }
 
-const tmpDevdojoPayloadRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-payload-"));
+const tmpDevdojoPayloadRoot = makeTempDir(path.join(__dirname, "tmp-devdojo-payload-"));
 try {
   fs.writeFileSync(
     path.join(tmpDevdojoPayloadRoot, "package.json"),
@@ -1425,7 +1426,7 @@ try {
   fs.rmSync(tmpDevdojoPayloadRoot, { recursive: true, force: true });
 }
 
-const tmpConfigRoot = fs.mkdtempSync(path.join(__dirname, "tmp-config-"));
+const tmpConfigRoot = makeTempDir(path.join(__dirname, "tmp-config-"));
 try {
   fs.mkdirSync(path.join(tmpConfigRoot, ".claude"));
   fs.writeFileSync(
@@ -1439,7 +1440,7 @@ try {
   fs.rmSync(tmpConfigRoot, { recursive: true, force: true });
 }
 
-const tmpMegalodonWorkflowRoot = fs.mkdtempSync(path.join(__dirname, "tmp-megalodon-workflow-"));
+const tmpMegalodonWorkflowRoot = makeTempDir(path.join(__dirname, "tmp-megalodon-workflow-"));
 try {
   fs.mkdirSync(path.join(tmpMegalodonWorkflowRoot, ".github", "workflows"), { recursive: true });
   fs.writeFileSync(
@@ -1465,7 +1466,7 @@ try {
   fs.rmSync(tmpMegalodonWorkflowRoot, { recursive: true, force: true });
 }
 
-const tmpClaudeCodeActionRoot = fs.mkdtempSync(path.join(__dirname, "tmp-claude-code-action-"));
+const tmpClaudeCodeActionRoot = makeTempDir(path.join(__dirname, "tmp-claude-code-action-"));
 try {
   fs.mkdirSync(path.join(tmpClaudeCodeActionRoot, ".github", "workflows"), { recursive: true });
   fs.writeFileSync(
@@ -1508,7 +1509,7 @@ try {
   fs.rmSync(tmpClaudeCodeActionRoot, { recursive: true, force: true });
 }
 
-const tmpShaiHuludSshRoot = fs.mkdtempSync(path.join(__dirname, "tmp-shai-hulud-ssh-"));
+const tmpShaiHuludSshRoot = makeTempDir(path.join(__dirname, "tmp-shai-hulud-ssh-"));
 try {
   fs.writeFileSync(
     path.join(tmpShaiHuludSshRoot, "ssh-wave.js"),
@@ -1528,7 +1529,7 @@ try {
   fs.rmSync(tmpShaiHuludSshRoot, { recursive: true, force: true });
 }
 
-const tmpDevdojoWorkflowRoot = fs.mkdtempSync(path.join(__dirname, "tmp-devdojo-workflow-"));
+const tmpDevdojoWorkflowRoot = makeTempDir(path.join(__dirname, "tmp-devdojo-workflow-"));
 try {
   fs.mkdirSync(path.join(tmpDevdojoWorkflowRoot, ".github", "workflows"), { recursive: true });
   fs.writeFileSync(
@@ -1553,7 +1554,7 @@ try {
   fs.rmSync(tmpDevdojoWorkflowRoot, { recursive: true, force: true });
 }
 
-const tmpToolShadowRoot = fs.mkdtempSync(path.join(__dirname, "tmp-tool-shadow-"));
+const tmpToolShadowRoot = makeTempDir(path.join(__dirname, "tmp-tool-shadow-"));
 try {
   fs.mkdirSync(path.join(tmpToolShadowRoot, "hacking"));
   fs.writeFileSync(
@@ -1581,7 +1582,7 @@ try {
   fs.rmSync(tmpToolShadowRoot, { recursive: true, force: true });
 }
 
-const tmpBlueRabbitRoot = fs.mkdtempSync(path.join(__dirname, "tmp-bluerabbit-"));
+const tmpBlueRabbitRoot = makeTempDir(path.join(__dirname, "tmp-bluerabbit-"));
 try {
   fs.writeFileSync(
     path.join(tmpBlueRabbitRoot, "incident-note.sh"),
@@ -1606,7 +1607,7 @@ try {
   fs.rmSync(tmpBlueRabbitRoot, { recursive: true, force: true });
 }
 
-const tmpRecentSafeDepRoot = fs.mkdtempSync(path.join(__dirname, "tmp-recent-safedep-"));
+const tmpRecentSafeDepRoot = makeTempDir(path.join(__dirname, "tmp-recent-safedep-"));
 try {
   fs.writeFileSync(
     path.join(tmpRecentSafeDepRoot, "package.json"),
@@ -1633,7 +1634,7 @@ try {
   fs.rmSync(tmpRecentSafeDepRoot, { recursive: true, force: true });
 }
 
-const tmpAryStingerRoot = fs.mkdtempSync(path.join(__dirname, "tmp-arystinger-"));
+const tmpAryStingerRoot = makeTempDir(path.join(__dirname, "tmp-arystinger-"));
 try {
   fs.writeFileSync(
     path.join(tmpAryStingerRoot, "edge-router-note.sh"),
@@ -1655,7 +1656,7 @@ try {
   fs.rmSync(tmpAryStingerRoot, { recursive: true, force: true });
 }
 
-const tmpJulyCampaignRoot = fs.mkdtempSync(path.join(__dirname, "tmp-july-campaigns-"));
+const tmpJulyCampaignRoot = makeTempDir(path.join(__dirname, "tmp-july-campaigns-"));
 try {
   fs.writeFileSync(
     path.join(tmpJulyCampaignRoot, "package.json"),
@@ -1703,7 +1704,7 @@ assert(compromisedWithHash.findings.some((finding) => finding.type === "payload-
 
 
   // August 2026 keyv/cacheable (ChainDrop) exact versions + package-lock v3 path keys
-  const keyvRoot = fs.mkdtempSync(path.join(os.tmpdir(), "hwg-keyv-"));
+  const keyvRoot = makeTempDir(path.join(os.tmpdir(), "hwg-keyv-"));
   write(
     path.join(keyvRoot, "package.json"),
     JSON.stringify(
@@ -1752,7 +1753,7 @@ assert(compromisedWithHash.findings.some((finding) => finding.type === "payload-
 
   // July-pattern discipline: seed carriers are exact-version only. A safe keyv
   // resolve must not fire name-only campaign-package-review noise.
-  const keyvSafeRoot = fs.mkdtempSync(path.join(os.tmpdir(), "hwg-keyv-safe-"));
+  const keyvSafeRoot = makeTempDir(path.join(os.tmpdir(), "hwg-keyv-safe-"));
   write(
     path.join(keyvSafeRoot, "package.json"),
     JSON.stringify(

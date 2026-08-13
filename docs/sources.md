@@ -1,5 +1,9 @@
 # Sources
 
+`data/advisory.json` is the canonical machine-readable source catalog. This
+page supplies human-readable labels for every catalog entry; the maintenance
+test prevents the two views from drifting.
+
 - JFrog Security Research: https://research.jfrog.com/post/shai-hulud-here-we-go-again/
 - The Hacker News / JFrog PostCSS-lookalike Windows RAT summary: https://thehackernews.com/2026/06/malicious-npm-packages-pose-as-postcss.html
 - TanStack official postmortem: https://tanstack.com/blog/npm-supply-chain-compromise-postmortem
@@ -87,6 +91,14 @@
 - Socket PolinRider cross-ecosystem update: https://socket.dev/blog/polinrider-north-korea-linked-supply-chain-campaign-expands
 - Socket Operation Muck and Load Go/GitHub campaign: https://socket.dev/blog/malicious-go-module-exposes-github-malware-lure-network
 - Socket Braintree NuGet typosquat campaign: https://socket.dev/blog/braintree-nuget-typosquat-skims-credit-cards
+- Socket Laravel language-package compromise: https://socket.dev/blog/laravel-lang-compromise
+- Calif HTTP/2 denial-of-service research found by Codex: https://blog.calif.io/p/codex-discovered-a-hidden-http2-bomb
+- Apache mod_h2 v2.0.41 release: https://github.com/icing/mod_h2/releases/tag/v2.0.41
+- The Register HTTP/2 bomb coverage: https://www.theregister.com/security/2026/06/04/openais-codex-chains-decade-old-dos-techniques-into-http/2-bomb/5251377
+- GitHub Advisory Database GHSA-g6v5-9xpp-6hpx: https://github.com/advisories/GHSA-g6v5-9xpp-6hpx
+- Supply Chain Attack incident catalog, Google Cloud Secret Manager config POC: https://supplychainattack.org/incident/malware-in-google-cloud-secret-manager-config-poc-1fs99l
+- Panther OtterCookie npm campaign tracking: https://panther.com/blog/tracking-an-ottercookie-infostealer-campaign-across-npm
+- BleepingComputer malicious JetBrains Marketplace plugins: https://www.bleepingcomputer.com/news/security/malicious-jetbrains-marketplace-plugins-steal-ai-api-keys-from-developers/
 
 ## Out-of-Scope Related Public Intel
 

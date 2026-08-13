@@ -3,11 +3,10 @@
 Current public repo:
 https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner
 
-Initial release state:
+Current release state:
 
 - Branch: `main`
-- Initial commit: pending
-- Runtime: Node.js >= 18
+- Runtime: Node.js >= 22 (CI: maintained LTS lines 22 and 24)
 - Dependencies: none
 - Safety stance: read-only scanner, no package installs, no script execution, no malware removal claims
 

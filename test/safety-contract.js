@@ -5,10 +5,34 @@ const os = require("os");
 const path = require("path");
 const { scanTarget } = require("../src/scanner");
 const { buildRemediationPlan } = require("../src/remediation");
+const { makeTempDir } = require("./helpers/temp");
 
 const cli = path.join(__dirname, "..", "bin", "herewegoagain-incident-scanner.js");
-const root = fs.mkdtempSync(path.join(os.tmpdir(), "hwg-safety-contract-"));
+const root = makeTempDir(path.join(os.tmpdir(), "hwg-safety-contract-"));
 const monitorMarker = ["gh-token", "monitor"].join("-");
+
+function runCli(args) {
+  const outputRoot = makeTempDir("hwg-cli-output-");
+  const stdoutPath = path.join(outputRoot, "stdout.txt");
+  const stderrPath = path.join(outputRoot, "stderr.txt");
+  const stdoutFd = fs.openSync(stdoutPath, "w");
+  const stderrFd = fs.openSync(stderrPath, "w");
+  let result;
+
+  try {
+    result = childProcess.spawnSync(process.execPath, [cli, ...args], { // push-guard: ignore -- test-only CLI harness
+      stdio: ["ignore", stdoutFd, stderrFd]
+    });
+  } finally {
+    fs.closeSync(stdoutFd);
+    fs.closeSync(stderrFd);
+  }
+
+  result.stdout = fs.readFileSync(stdoutPath, "utf8");
+  result.stderr = fs.readFileSync(stderrPath, "utf8");
+  fs.rmSync(outputRoot, { recursive: true, force: true });
+  return result;
+}
 
 try {
   fs.writeFileSync(path.join(root, `${monitorMarker}.service`), "historical fixture\n");
@@ -34,7 +58,7 @@ try {
   assert.strictEqual(plan.hasDeadManSwitch, true);
   assert(!plan.items.some((item) => item.id === "monitor-kitty-persistence"), "cat.py alone must not trigger persistence/dead-man guidance");
 
-  const human = childProcess.spawnSync(process.execPath, [cli, root], { encoding: "utf8" });
+  const human = runCli([root]);
   assert.strictEqual(human.status, 4);
   assert(human.stdout.includes("Safe removal guidance:"));
   assert(human.stdout.includes("docs/recovery-playbook.md"));
@@ -42,12 +66,12 @@ try {
   assert(!human.stdout.includes("PRIVATE_BUILD_VALUE"));
 
   const retainedPath = path.join(root, "must-not-exist.json");
-  const reportAttempt = childProcess.spawnSync(process.execPath, [cli, root, "--report", retainedPath], { encoding: "utf8" });
+  const reportAttempt = runCli([root, "--report", retainedPath]);
   assert.strictEqual(reportAttempt.status, 1);
   assert(reportAttempt.stderr.includes("no-retention policy"));
   assert.strictEqual(fs.existsSync(retainedPath), false);
 
-  const largeRoot = fs.mkdtempSync(path.join(os.tmpdir(), "hwg-large-lock-"));
+  const largeRoot = makeTempDir(path.join(os.tmpdir(), "hwg-large-lock-"));
   try {
     fs.writeFileSync(path.join(largeRoot, "package-lock.json"), Buffer.alloc(10 * 1024 * 1024 + 1));
     const incomplete = scanTarget(largeRoot);

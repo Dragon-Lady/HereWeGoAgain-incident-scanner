@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const { scanTarget } = require("../src/scanner");
 const { buildRemediationPlan, loadRemediationData } = require("../src/remediation");
+const { makeTempDir } = require("./helpers/temp");
 
 const remediationData = loadRemediationData();
 assert(remediationData, "remediation data should load");
@@ -14,7 +15,7 @@ const TOKEN_MONITOR_MARKER = ["gh-token", "monitor"].join("-");
 
 // Dead-man's-switch findings must produce STOP items ordered before everything
 // else, and the token-monitor disarm must come before token rotation.
-const tmpDeadManRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-deadman-"));
+const tmpDeadManRoot = makeTempDir(path.join(__dirname, "tmp-remediation-deadman-"));
 try {
   fs.writeFileSync(path.join(tmpDeadManRoot, `${TOKEN_MONITOR_MARKER}.sh`), "#!/bin/sh\n");
   fs.writeFileSync(
@@ -53,7 +54,7 @@ try {
 }
 
 // Agent/editor persistence findings map to the ordered-manual config rule.
-const tmpConfigRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-config-"));
+const tmpConfigRoot = makeTempDir(path.join(__dirname, "tmp-remediation-config-"));
 try {
   fs.mkdirSync(path.join(tmpConfigRoot, ".claude"));
   fs.writeFileSync(
@@ -73,7 +74,7 @@ try {
 
 // Socket's easy-day-js / Mastra stage-2 indicators map to ordered manual
 // persistence guidance, not to the dead-man switch banner.
-const tmpEasyDayJsRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-easy-day-js-"));
+const tmpEasyDayJsRoot = makeTempDir(path.join(__dirname, "tmp-remediation-easy-day-js-"));
 try {
   fs.writeFileSync(
     path.join(tmpEasyDayJsRoot, "incident-notes.js"),
@@ -97,7 +98,7 @@ try {
 
 // SafeDep's procwire / routecraft Windows npm dropper indicators map to
 // ordered manual host-compromise guidance, not to the dead-man switch banner.
-const tmpProcwireRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-procwire-"));
+const tmpProcwireRoot = makeTempDir(path.join(__dirname, "tmp-remediation-procwire-"));
 try {
   fs.writeFileSync(
     path.join(tmpProcwireRoot, "worker.js"),
@@ -123,7 +124,7 @@ try {
 
 // Binary Defense's BLUERABBIT indicators map to ordered manual Windows host
 // compromise guidance, not package cleanup.
-const tmpBlueRabbitRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-bluerabbit-"));
+const tmpBlueRabbitRoot = makeTempDir(path.join(__dirname, "tmp-remediation-bluerabbit-"));
 try {
   fs.writeFileSync(
     path.join(tmpBlueRabbitRoot, "incident-notes.sh"),
@@ -150,7 +151,7 @@ try {
 }
 
 // A clean scan produces a plan with no items and the no-known-indicators steps.
-const tmpCleanRoot = fs.mkdtempSync(path.join(__dirname, "tmp-remediation-clean-"));
+const tmpCleanRoot = makeTempDir(path.join(__dirname, "tmp-remediation-clean-"));
 try {
   fs.writeFileSync(path.join(tmpCleanRoot, "README.md"), "hello\n");
   const report = scanTarget(tmpCleanRoot);

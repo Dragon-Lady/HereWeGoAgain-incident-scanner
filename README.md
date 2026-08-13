@@ -31,6 +31,8 @@ matching covers package-lock v2/v3 path keys and resolved tarball URLs.
 
 ## Run From Source
 
+Requires Node.js 22 or 24 (maintained LTS releases).
+
 ```sh
 git clone https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner
 cd HereWeGoAgain-incident-scanner
@@ -333,9 +335,10 @@ node ./bin/herewegoagain-incident-scanner.js /path/to/project
 Use `--json` to print a machine-readable report to stdout.
 
 Exit code `2` means likely exposure indicators were found. Exit code `3` means
-coverage was incomplete without a critical finding; unreadable targets,
-advisory-data fallbacks, and skipped oversized lockfiles are never reported as a
-clean scan.
+coverage was incomplete without a critical finding. Exit code `4` means
+sequence-sensitive persistence requires incident-response review. Unreadable
+targets, advisory-data fallbacks, and skipped oversized lockfiles are never
+reported as a clean scan.
 
 Human-readable output starts with a plain-language `STOP`, `PAUSE`, or clean-scan
 summary for non-specialist users, followed by exact technical findings for
