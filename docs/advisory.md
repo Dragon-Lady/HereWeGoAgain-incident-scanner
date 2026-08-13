@@ -241,7 +241,7 @@ branches for GitHub, npm, and RubyGems credentials, including the obfuscated
 field names `matches?.ghtoken`, `matches?.fgghtoken`, `matches?.npmtoken`, and
 `matches?.rubygemstoken`. This scanner keeps those strings as copied-code or
 decoded-artifact indicators.
-Moshe Siman Tov Bustan's June 5 Azure Miasma sample notes described hardcoded
+June 5 public Azure Miasma incident notes described hardcoded
 StepSecurity / Harden-Runner strings and domains in the payload, apparently to
 avoid detection when running in StepSecurity's Docker environment. The same
 notes described reused public keys and the same `firedalazer` GitHub commit
@@ -537,45 +537,49 @@ from a clean device and rebuild the affected host.
 
 ## August 2026 keyv / cacheable (ChainDrop / Shai-Hulud "Here We Go Again")
 
-**Ox Security** (2026-08-04; blog by Moshe Siman Tov Bustan; **Moshe Simon** / @MosheTov posted the findings on X with the Ox blog link) reported a Shai-Hulud campaign hitting npm at
-roughly **444 packages**, **1,600+ versions**, and **over 2 billion monthly
-downloads**. This is dated reporting, not proof that the campaign remains active
-today; Ox's package table is partial and should be refreshed before use.
+Independent original research published on 2026-08-04 documented a Shai-Hulud
+campaign affecting the keyv/cacheable npm ecosystem. Public inventories differ
+by collection time and method. This scanner's 2026-08-12 dated snapshot contains
+**2,236 exact package/version pairs across 444 packages**, each present in at
+least two of the Wiz, JFrog, and SafeDep inventories. The 101 pairs found in only
+one inventory were excluded. These are historical-confirmed package artifacts,
+not proof that the campaign or infrastructure remains active today.
 
 **Behavior (same family as prior waves):** credential-stealing worm logic,
-self-propagation through stolen npm accounts, **IDE/AI persistence** (Claude,
-VS Code, and related agent/editor hooks), **GitHub exfiltration** as C2, and a
+self-propagation through stolen npm accounts, **agent/editor persistence**,
+**source-control exfiltration** as C2, and a
 **dead-man switch** that can react when a stolen GitHub token is revoked.
 Payload entry commonly uses `preinstall` → `setup.mjs` / Bun, then
 `math_init.js` or `Math_Symbol.js`.
 
-**New Ox-highlighted signals:**
+**Additional reported signals:**
 - Extortion / production-crash threat string:
   `IfYouBlockThisAPIKeyItWillCrashTheLiveProductionServersOfAllThirdPartyClients`
 - Campaign RSA public encryption key published as an IOC (Ox: not yet
-  attributed; operator summary treats it as a possible **TeamPCP copycat**
+  attributed; the evidence supports only a possible **TeamPCP copycat**
   signal rather than confirmed TeamPCP attribution)
 - Campaign strings/files including `Shai-Hulud: Here We Go Again`,
   `Thebeautifulmarchoftime` / `thebeautifulmarchoftime`, `router_runtime.js`,
   and git pin
   `github:opensearch-project/opensearch-js#d446803f4c3bc116263faa3499a1d3f95b2825de`
 
-**Seed exact-version carriers** (peer-confirmed; not the full 444-package set):
-`keyv@6.0.0` and ten related jaredwray-family releases. Use Ox's table and the
-Wiz Research keyv packages CSV for broader inventory.
+**Exact-version coverage:** the scanner consumes a provenance-bearing campaign
+snapshot separate from the older mixed npm catalog. A package/version hit is a
+critical historical compromise indicator, but it is never sequence-sensitive
+and never proves that `gh-token-monitor` was installed or armed. Generic
+basenames, broad namespaces, infrastructure strings, and editor hooks remain
+review signals requiring context.
 
-**Ox recommended actions (operator-owned; this scanner is read-only):**
+**Operator-owned response (this scanner is read-only):**
 1. If the specific `gh-token-monitor` persistence is detected, stop and follow
    the recovery playbook under incident-response direction before revoking or
    rotating anything.
 2. After sequence-sensitive persistence is safely handled, rotate keys and
    enable 2FA from a clean device.
-3. Downgrade affected packages to known-safe versions.
-4. Search for infected GitHub accounts/repositories and revoke/remove them if
+3. Replace affected packages with known-safe versions verified against current
+   independent advisories.
+4. Search for affected source-control accounts/repositories and revoke/remove them if
    affected under the same incident-response order.
 
-Credits: **Ox Security**, Snyk, StepSecurity, Aikido, Wiz, JFrog, and npm
-Security. Primary Ox writeup:
+Independent incident research citation:
 https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/
-
-Also check **actions-warden** (PyPI read-only auditor for risky or injected GitHub Actions workflow config) when reviewing repos that may have had tokens stolen or CI tampered with: `actions-warden /path/to/repo`. https://github.com/Dragon-Lady/actions-warden · https://pypi.org/project/actions-warden/. Read-only only.

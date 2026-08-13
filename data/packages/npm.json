@@ -39,18 +39,6 @@
     "1.4.1",
     "1.4.2"
   ],
-  "@cacheable/memory": [
-    "2.2.1"
-  ],
-  "@cacheable/net": [
-    "2.1.1"
-  ],
-  "@cacheable/node-cache": [
-    "3.1.2"
-  ],
-  "@cacheable/utils": [
-    "2.5.1"
-  ],
   "@cap-js/db-service": [
     "2.10.1"
   ],
@@ -1846,15 +1834,6 @@
   "bytecraft": [
     "1.5.0"
   ],
-  "cache-manager": [
-    "7.2.10"
-  ],
-  "cacheable": [
-    "2.5.1"
-  ],
-  "cacheable-request": [
-    "13.0.20"
-  ],
   "calculate-helper": [
     "*"
   ],
@@ -1973,9 +1952,6 @@
   "easy-day-js": [
     "1.11.22"
   ],
-  "ecto": [
-    "5.0.1"
-  ],
   "effect-analyzer": [
     "0.3.1"
   ],
@@ -2052,12 +2028,6 @@
   "fetch-page-assets": [
     "1.2.9"
   ],
-  "file-entry-cache": [
-    "11.1.6"
-  ],
-  "flat-cache": [
-    "6.1.24"
-  ],
   "fpjson-lang": [
     "0.1.7"
   ],
@@ -2108,9 +2078,6 @@
     "8.17.0",
     "8.18.0",
     "8.20.0"
-  ],
-  "keyv": [
-    "6.0.0"
   ],
   "leo-auth": [
     "4.0.6"

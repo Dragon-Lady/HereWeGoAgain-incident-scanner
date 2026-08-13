@@ -23,31 +23,33 @@
       "title": "GitHub token dead-man's switch (gh-token-monitor persistence)",
       "riskClass": "stop-deadman",
       "evidence": {
-        "status": "historical-confirmed; current activity not established by this match",
-        "confidence": "high for the documented behavior, not for current campaign activity",
+        "status": "historical-confirmed capability; local installation or activation must be established",
+        "confidence": "high for documented behavior, not for current activity on this host",
         "observed": "2026-05-12",
-        "lastVerified": "2026-05-12",
-        "source": "https://research.jfrog.com/post/shai-hulud-here-we-go-again/"
+        "lastVerified": "2026-08-12",
+        "sources": [
+          "https://research.jfrog.com/post/shai-hulud-here-we-go-again/",
+          "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+          "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+          "https://safedep.io/keyv-npm-supply-chain-compromise/",
+          "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+        ]
       },
       "appliesTo": {
         "types": [
-          "payload-file",
-          "payload-reference",
-          "workflow-indicator",
-          "campaign-indicator",
-          "token-description-indicator"
+          "payload-file"
         ],
         "matchAny": [
           "gh-token-monitor"
         ]
       },
       "warning": [
-        "JFrog documented this persistence in May 2026 watching a GitHub token and reacting when it is revoked; a match does not establish that the infrastructure or campaign is currently active.",
+        "Independent incident research documented this persistence watching a GitHub token and reacting when it is revoked; a match does not establish that the infrastructure or campaign is currently active.",
+        "August analyses differed on activation: some observed or reconstructed operational behavior, while another found the capability embedded without an observed call site. Confirm local installation and service state before classifying it as armed.",
         "NOTIFY ONLY: Do not blindly delete or remove anything until further guidance from security teams.",
         "Do NOT revoke or rotate GitHub tokens from a possibly infected host.",
         "Do NOT delete monitor files while any related service may still be running, unless security directs you.",
-        "Ox Security documents production-crash extortion language if the stolen API key is blocked; still treat dead-man as notify-only until IR directs ordered disarm then rotate.",
-        "Credits: Ox Security and Moshe Simon (@MosheTov; X post \u2192 Ox blog), Wiz, Snyk, StepSecurity, Aikido, JFrog."
+        "Related incident research documents production-crash extortion language if a stolen API key is blocked; still treat dead-man findings as notify-only until incident response directs ordered disarm and then rotation."
       ],
       "steps": [
         "Notify security / incident response and preserve evidence (paths, unit status, timestamps). Do not run destructive cleanup yet.",
@@ -66,15 +68,21 @@
       ]
     },
     {
-      "id": "august-2026-ox-keyv-operator-actions",
-      "title": "August 2026 keyv/ChainDrop operator actions (Ox Security / Moshe Simon)",
+      "id": "august-2026-keyv-operator-actions",
+      "title": "August 2026 keyv/ChainDrop operator actions",
       "riskClass": "ordered-manual",
       "evidence": {
         "status": "historical campaign reporting; per-host dead-man presence requires separate evidence",
-        "confidence": "medium",
+        "confidence": "high for corroborated exact package/version artifacts; current activity and per-host persistence require separate evidence",
         "observed": "2026-08-04",
-        "lastVerified": "2026-08-05",
-        "source": "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/"
+        "lastVerified": "2026-08-12",
+        "sources": [
+          "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+          "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+          "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+          "https://safedep.io/keyv-npm-supply-chain-compromise/",
+          "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+        ]
       },
       "appliesTo": {
         "types": [
@@ -87,6 +95,7 @@
         ],
         "matchAny": [
           "keyv",
+          "August 2026 keyv/cacheable ChainDrop",
           "IfYouBlockThisAPIKeyItWillCrashTheLiveProductionServersOfAllThirdPartyClients",
           "math_init.js",
           "Math_Symbol.js",
@@ -97,25 +106,23 @@
         ]
       },
       "warning": [
-        "Ox Security (Moshe Simon / @MosheTov X post + Ox blog) reports ~444 packages / 1,600+ versions / 2B+ monthly downloads in this wave.",
-        "Ox relates the campaign to prior credential-stealing and persistence tradecraft; a broad text or package-name match alone does not prove an active dead-man switch.",
-        "New: production-crash extortion string if token blocked; campaign RSA public key (TeamPCP-copycat hypothesis; attribution unconfirmed).",
-        "This tool remains READ-ONLY. Dead-man paths are NOTIFY ONLY until security directs ordered response.",
-        "Credits: Ox Security and Moshe Simon (@MosheTov; X post \u2192 Ox blog), plus peer researchers Snyk, StepSecurity, Aikido, Wiz, JFrog.",
-        "Attribution: Moshe Simon (Moshe Siman Tov Bustan, @MosheTov) posted the Ox Security findings on X with the Ox blog link."
+        "Independent incident inventories disagree on their dated totals; this scanner includes 2,236 exact package/version pairs across 444 packages corroborated by at least two inventories retrieved 2026-08-12.",
+        "Package/version, broad text, namespace, infrastructure, and editor-hook matches do not prove an installed or armed dead-man switch.",
+        "The production-crash extortion string and campaign encryption key are historical incident signals; neither is a dead-man trigger by itself.",
+        "This tool remains read-only. Only exact local gh-token-monitor persistence artifacts are eligible for sequence-sensitive STOP guidance."
       ],
       "steps": [
         "Preserve evidence (lockfiles, package metadata, unit status, IDE config hooks) without deleting yet.",
         "If gh-token-monitor or other dead-man persistence is present, follow STOP-deadman rules first under IR direction before any token revoke.",
-        "From a separate clean device: rotate keys and enable 2FA on GitHub, npm, cloud, SSH, and related accounts (Ox recommended action 1).",
-        "Downgrade affected packages to known-safe versions; reinstall only after inventory against Ox package table / Wiz keyv CSV (Ox recommended action 2).",
-        "Search for infected GitHub accounts and repositories (including 'Shai-Hulud: Here We Go Again' description markers) and revoke/remove them if affected (Ox recommended action 3).",
+        "From a separate clean device: rotate keys and enable 2FA on source control, package registries, cloud, SSH, and related accounts.",
+        "Downgrade affected packages to known-safe versions; reinstall only after checking the scanner's dated corroborated inventory and current independent advisories.",
+        "Search for affected source-control accounts and repositories (including 'Shai-Hulud: Here We Go Again' description markers) and revoke/remove them only after any confirmed sequence-sensitive persistence is safely handled.",
         "Re-scan the tree with this read-only scanner after containment work completes."
       ],
       "doNotDo": [
         "Do not blindly delete files, services, or tokens without security-team guidance.",
         "Do not revoke GitHub tokens while dead-man monitor persistence may still be armed, unless IR directs the order.",
-        "Do not treat the eleven seed carriers as a complete package inventory\u2014consult Ox Security and Wiz CSV for scale."
+        "Do not treat package presence alone as evidence that a dead-man monitor is installed, active, or armed."
       ]
     },
     {
@@ -470,57 +477,6 @@
       ],
       "doNotDo": [
         "Do not delete anything in this category before verifying - these are review signals, not confirmed malware."
-      ]
-    },
-    {
-      "id": "review-actions-warden",
-      "title": "Review GitHub Actions workflows with actions-warden (read-only)",
-      "riskClass": "ordered-manual",
-      "appliesTo": {
-        "types": [
-          "payload-file",
-          "payload-reference",
-          "known-bad-version",
-          "known-bad-requested-version",
-          "known-bad-lockfile-version",
-          "known-bad-lockfile-package",
-          "workflow-encoded-exec",
-          "workflow-token-surface",
-          "workflow-indicator",
-          "campaign-indicator",
-          "token-description-indicator",
-          "miasma-agent-config-trigger",
-          "miasma-github-setup-payload",
-          "miasma-second-stage-shape"
-        ],
-        "matchAny": [
-          "gh-token-monitor",
-          "GITHUB_TOKEN",
-          "workflow",
-          ".github/workflows",
-          "Shai-Hulud: Here We Go Again",
-          "keyv",
-          "createPublicGithubExfilRepo",
-          "Dependabot Updates",
-          "codeql_analysis.yml"
-        ]
-      },
-      "warning": [
-        "After token theft or supply-chain compromise, attackers often inject GitHub Actions workflows.",
-        "actions-warden is a separate PyPI read-only auditor for risky or injected workflow config.",
-        "This remediation plan does not run actions-warden for you; you run it."
-      ],
-      "steps": [
-        "From a clean or contained review environment: pipx install actions-warden (or pip install actions-warden)",
-        "Run: actions-warden /path/to/repo",
-        "Optional: actions-warden /path/to/repo --json (stdout only)",
-        "Review any blocking findings before re-enabling CI, merging, or trusting the pipeline",
-        "Coordinate with security; do not blindly delete workflows without evidence preservation"
-      ],
-      "doNotDo": [
-        "Do not treat a clean actions-warden result as proof the pipeline is safe.",
-        "Do not execute untrusted workflow jobs while reviewing injection findings.",
-        "Do not skip actions-warden if GitHub tokens or publish rights may have been stolen."
       ]
     }
   ],

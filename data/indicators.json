@@ -61,25 +61,46 @@
       "status": "historical-confirmed",
       "confidence": "high",
       "observed": "2026-05-12",
-      "lastVerified": "2026-05-12",
+      "lastVerified": "2026-08-12",
       "retired": false,
-      "source": "https://research.jfrog.com/post/shai-hulud-here-we-go-again/"
+      "currentActivity": "unverified; local installation or activation must be established",
+      "sources": [
+        "https://research.jfrog.com/post/shai-hulud-here-we-go-again/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
     },
     "gh-token-monitor.sh": {
       "status": "historical-confirmed",
       "confidence": "high",
       "observed": "2026-05-12",
-      "lastVerified": "2026-05-12",
+      "lastVerified": "2026-08-12",
       "retired": false,
-      "source": "https://research.jfrog.com/post/shai-hulud-here-we-go-again/"
+      "currentActivity": "unverified; local installation or activation must be established",
+      "sources": [
+        "https://research.jfrog.com/post/shai-hulud-here-we-go-again/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
     },
     "com.user.gh-token-monitor.plist": {
       "status": "historical-confirmed",
       "confidence": "high",
       "observed": "2026-05-12",
-      "lastVerified": "2026-05-12",
+      "lastVerified": "2026-08-12",
       "retired": false,
-      "source": "https://research.jfrog.com/post/shai-hulud-here-we-go-again/"
+      "currentActivity": "unverified; local installation or activation must be established",
+      "sources": [
+        "https://research.jfrog.com/post/shai-hulud-here-we-go-again/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
     },
     "pgsql-monitor.service": {
       "status": "historical-persistence-unverified-currentness",
@@ -120,6 +141,320 @@
       "lastVerified": "2026-05-12",
       "retired": false,
       "source": "https://research.jfrog.com/post/shai-hulud-here-we-go-again/"
+    },
+    "setup.mjs": {
+      "status": "historical-confirmed-artifact; basename requires corroboration",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified",
+      "sources": [
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/"
+      ]
+    },
+    "Math_Symbol.js": {
+      "status": "historical-confirmed-artifact; basename requires corroboration",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified",
+      "sources": [
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/"
+      ]
+    },
+    "math_init.js": {
+      "status": "historical-confirmed-artifact; basename requires corroboration",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack"
+      ]
+    },
+    "tmp.dpkg_14527.lock": {
+      "status": "historical-confirmed-artifact; path context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified",
+      "sources": [
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "npm-cache.com": {
+      "status": "historical-confirmed-infrastructure",
+      "confidence": "high",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; do not contact for validation",
+      "sources": [
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/"
+      ]
+    },
+    "IfYouBlockThisAPIKeyItWillCrashTheLiveProductionServersOfAllThirdPartyClients": {
+      "status": "historical-confirmed-campaign-string",
+      "confidence": "high",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; string alone does not establish persistence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack"
+      ]
+    },
+    "Shai-Hulud: Here We Go Again": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "node setup.mjs": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "SNYK-JS-KEYV-18515941": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "Bun/1.3.13": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "router_runtime.js": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "Thebeautifulmarchoftime": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "Am1ThuFsx+rWD5RFI8A7B": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "github:opensearch-project/opensearch-js#d446803f4c3bc116263faa3499a1d3f95b2825de": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "opensearch-js#d446803f4c3bc116263faa3499a1d3f95b2825de": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "eth-mainnet.nodereal.io": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "eth-mainnet[.]nodereal[.]io": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "eth.llamarpc.com": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "eth[.]llamarpc[.]com": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "go.getblock.io": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "go[.]getblock[.]io": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
+    },
+    "0xE1f2395ee43e45A1556EC6438a88c31B83493103": {
+      "status": "historical-confirmed-incident-signal; context required",
+      "confidence": "medium",
+      "observed": "2026-08-04",
+      "lastVerified": "2026-08-12",
+      "retired": false,
+      "currentActivity": "unverified; indicator alone is review-only and not dead-man evidence",
+      "sources": [
+        "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/",
+        "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
+        "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+        "https://safedep.io/keyv-npm-supply-chain-compromise/",
+        "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+      ]
     }
   },
   "networkIndicators": [

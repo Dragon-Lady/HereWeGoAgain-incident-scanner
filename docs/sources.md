@@ -132,17 +132,23 @@ Cross-platform npm ecosystem compromise (not Linux-only). Applies to any
 npm-using OS, CI, or developer lane; these project scanners report matches in
 the scanned tree on the operator's platform.
 
-- **Ox Security** / **Moshe Simon** (Moshe Siman Tov Bustan, @MosheTov) — Moshe posted the
-  findings on X with the Ox blog link (~444 packages / 2B+ monthly downloads; IOCs;
-  recommended actions):
+- Independent incident research, August keyv/cacheable analysis:
   https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/
-- Ox Security TeamPCP copycats / Shai-Hulud clone context:
+- Independent incident research, TeamPCP copycats / Shai-Hulud clone context:
   https://www.ox.security/blog/new-actors-deploy-shai-hulud-clones-teampcp-copycats-are-here/
 - Snyk keyv npm supply-chain compromise analysis: https://snyk.io/blog/inside-keyv-npm-compromise-preinstall-malware-trusted-provenance-ide-hooks/
 - Snyk advisory SNYK-JS-KEYV-18515941: https://security.snyk.io/vuln/SNYK-JS-KEYV-18515941
 - Wiz keyv / cacheable npm supply-chain attack: https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack
 - Wiz Research IOCs (keyv packages CSV): https://github.com/wiz-sec-public/wiz-research-iocs/blob/main/reports/keyv-packages.csv
+- Wiz Research IOCs raw CSV used for reproducible snapshot verification: https://raw.githubusercontent.com/wiz-sec-public/wiz-research-iocs/main/reports/keyv-packages.csv
 - Aikido keyv / friends Shai-Hulud supply-chain attack: https://www.aikido.dev/blog/keyv-and-friends-compromised-in-npm-supply-chain-attack
 - JFrog Shai-Hulud August 2026 (keyv and 400+ packages): https://research.jfrog.com/post/shai-hulud-is-back-august/
+- SafeDep keyv/cacheable incident analysis and public package inventory: https://safedep.io/keyv-npm-supply-chain-compromise/
 - StepSecurity ChainDrop npm worm analysis: https://www.stepsecurity.io/blog/chaindrop-npm-worm
-- actions-warden (Dragon Lady PyPI read-only GitHub Actions workflow auditor): https://github.com/Dragon-Lady/actions-warden · https://pypi.org/project/actions-warden/
+
+The scanner's 2026-08-12 snapshot includes only exact npm package/version pairs
+present in at least two of the Wiz, JFrog, and SafeDep public inventories:
+2,236 pairs across 444 package names. Researchers' dated totals differ because
+their collection times and inclusion criteria differ. The snapshot excludes
+101 pairs seen in only one of those inventories and does not claim current
+campaign activity.

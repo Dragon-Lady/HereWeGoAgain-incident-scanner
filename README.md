@@ -12,22 +12,17 @@ versions, Paperclip2 and `polymarket-kit`, Rollup-polyfill lookalikes, and the
 reported Paysafe/Skrill/Neteller npm and PyPI typosquat versions.
 
 August 4, 2026 keyv / cacheable (ChainDrop / Shai-Hulud "Here We Go Again")
-coverage adds exact-version checks for the initial full-worm carriers
-`keyv@6.0.0` and ten related jaredwray-family releases, plus campaign network
-and text markers. **Ox Security** reports ~**444 packages**, **1,600+
-versions**, and **2B+ monthly downloads**, with the same credential theft,
-IDE/AI persistence, GitHub exfil, and dead-man switch tradecraft as prior
-waves, plus a production-crash extortion string and campaign RSA public key
-(TeamPCP-copycat hypothesis; attribution unconfirmed). Full inventory is
-partial—consult the Ox package table and Wiz CSV. This is a **cross-platform
-npm ecosystem** compromise—not a Linux-only issue. **Read-only / notify-only**
-on dead-man paths. Under incident-response direction, handle any confirmed
-sequence-sensitive persistence first; only then rotate keys from a clean device,
-downgrade packages, and search/revoke affected GitHub accounts.
-Credits: **Ox Security** and **Moshe Simon** (Moshe Siman Tov Bustan, @MosheTov; X post → Ox blog), plus Snyk, StepSecurity, Aikido, Wiz, and JFrog. Lockfile
-matching covers package-lock v2/v3 path keys and resolved tarball URLs.
-
-> Built and maintained by Dragon Lady - [github.com/Dragon-Lady](https://github.com/Dragon-Lady) - X: [@answerislove2](https://x.com/answerislove2)
+coverage includes a dated snapshot of **2,236 exact package/version pairs
+across 444 packages**, each corroborated by at least two independent original-
+research inventories retrieved on 2026-08-12. Four separately reported
+all-version malicious package names are also covered. The snapshot is
+historical evidence, not a claim that the campaign or its infrastructure is
+active today. It is a **cross-platform npm ecosystem** compromise—not a
+Linux-only issue. Package, namespace, infrastructure, editor-hook, or generic
+filename matches never establish an armed dead-man switch. Only exact local
+`gh-token-monitor` persistence artifacts receive sequence-sensitive STOP
+guidance. Lockfile matching covers package-lock v2/v3 path keys and resolved
+tarball URLs.
 
 ## Run From Source
 
@@ -219,7 +214,7 @@ June 5 operator-provided decoded payload snippets showed token collector
 handlers for GitHub, npm, and RubyGems token matches, including obfuscated
 fields such as `matches?.ghtoken`, `matches?.fgghtoken`, `matches?.npmtoken`,
 and `matches?.rubygemstoken`.
-Moshe Siman Tov Bustan's June 5 Azure Miasma sample notes described hardcoded
+June 5 public Azure Miasma incident notes described hardcoded
 StepSecurity / Harden-Runner domains used as Docker-environment detection
 evasion, reuse of public keys from other Miasma infections, and the same
 `firedalazer` GitHub commit-search payload chain.
@@ -597,10 +592,6 @@ kept as triage context, not a standalone clean/compromised decision.
 See [docs/recovery-playbook.md](docs/recovery-playbook.md).
 
 ## Related read-only tooling
-
-Complementary **read-only** tools in the same security kit:
-
-- **actions-warden** (PyPI, Dragon Lady) — read-only auditor for risky or injected GitHub Actions workflow config under `.github/workflows/`. After token theft, CI injection is a common next step. `pipx install actions-warden` then `actions-warden /path/to/repo`. Does not execute workflows or modify files. https://github.com/Dragon-Lady/actions-warden · https://pypi.org/project/actions-warden/
 
 ## Sources
 

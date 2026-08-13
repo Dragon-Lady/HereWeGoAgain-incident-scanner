@@ -33,6 +33,11 @@ const LIVEWIRE_FIXED = "3.6.4";
 const RECOVERY_GUIDANCE_URL = "https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner/blob/main/docs/recovery-playbook.md";
 const COVERAGE_FINDING_TYPES = new Set(["advisory-data-fallback", "target-unreadable", "directory-unreadable", "read-error", "parse-error", "large-lockfile-skipped"]);
 const TOKEN_MONITOR_MARKER = ["gh-token", "monitor"].join("-");
+const SEQUENCE_SENSITIVE_PERSISTENCE_FILES = new Set([
+  `${TOKEN_MONITOR_MARKER}.service`,
+  `${TOKEN_MONITOR_MARKER}.sh`,
+  `com.user.${TOKEN_MONITOR_MARKER}.plist`
+]);
 
 const DEFAULT_ADVISORY = {
   indicators: {
@@ -87,6 +92,10 @@ function loadSplitAdvisoryData(dataDir) {
     ...advisory,
     indicators: readJsonFile(path.join(dataDir, "indicators.json")),
     packages: readJsonFile(path.join(dataDir, "packages", "npm.json")),
+    packageCampaigns: [
+      readJsonFile(path.join(dataDir, "campaigns", "august-2026-chaindrop.json")),
+      readJsonFile(path.join(dataDir, "campaigns", "may-2026-teampcp-copycats.json"))
+    ],
     pypiPackages: readJsonFile(path.join(dataDir, "packages", "pypi.json")),
     composerPackages: readJsonFile(path.join(dataDir, "packages", "composer.json"))
   };
@@ -289,7 +298,8 @@ function scanPackageJson(filePath, advisory, findings) {
   scanManifestText(filePath, rawText, advisory, findings);
 
   if (manifest.name && manifest.version && versionIsListed(advisory.packages[manifest.name], manifest.version)) {
-    findings.push(finding("critical", "known-bad-version", filePath, `${manifest.name}@${manifest.version} is listed as compromised.`));
+    const evidence = packageEvidence(manifest.name, manifest.version, advisory);
+    findings.push(finding("critical", "known-bad-version", filePath, `${manifest.name}@${manifest.version} is listed as compromised.${packageEvidenceSuffix(evidence)}`, { evidence }));
   }
 
   const dependencySections = ["dependencies", "devDependencies", "optionalDependencies", "peerDependencies", "bundledDependencies"];
@@ -360,6 +370,7 @@ function normalizeAdvisory(raw) {
       ...(raw && typeof raw.indicators === "object" ? raw.indicators : {})
     },
     packages: {},
+    packageEvidence: {},
     pypiPackages: {},
     composerPackages: {}
   };
@@ -377,6 +388,22 @@ function normalizeAdvisory(raw) {
     for (const [name, versions] of Object.entries(raw)) {
       if (["indicators", "incident", "lastUpdated", "scope", "sources"].includes(name)) continue;
       addAdvisoryPackage(advisory.packages, name, versions);
+    }
+  }
+
+  if (raw && Array.isArray(raw.packageCampaigns)) {
+    for (const campaign of raw.packageCampaigns) {
+      if (!campaign || typeof campaign !== "object" || Array.isArray(campaign.packages)) continue;
+      const evidence = campaignPackageEvidence(campaign);
+      for (const [name, versions] of Object.entries(campaign.packages || {})) {
+        addAdvisoryPackage(advisory.packages, name, versions);
+        const normalizedVersions = Array.isArray(versions) ? versions : [versions];
+        for (const version of normalizedVersions) {
+          if (typeof version === "string" && version.length > 0) {
+            advisory.packageEvidence[packageEvidenceKey(name, version)] = evidence;
+          }
+        }
+      }
     }
   }
 
@@ -399,7 +426,36 @@ function addAdvisoryPackage(packages, name, versions) {
   if (typeof name !== "string" || name.length === 0) return;
   const normalizedVersions = Array.isArray(versions) ? versions : [versions];
   const cleanVersions = normalizedVersions.filter((version) => typeof version === "string" && version.length > 0);
-  if (cleanVersions.length > 0) packages[name] = cleanVersions;
+  if (cleanVersions.length > 0) {
+    packages[name] = [...new Set([...(packages[name] || []), ...cleanVersions])];
+  }
+}
+
+function campaignPackageEvidence(campaign) {
+  return {
+    campaign: campaign.campaign || "Unclassified package campaign",
+    status: campaign.status || "unverified-currentness",
+    confidence: campaign.confidence || "medium",
+    observed: campaign.observed || null,
+    lastVerified: campaign.lastVerified || null,
+    retired: Boolean(campaign.retired),
+    currentActivity: campaign.currentActivity || "unverified",
+    sources: Array.isArray(campaign.sources) ? campaign.sources : []
+  };
+}
+
+function packageEvidenceKey(name, version) {
+  return `${name}\u0000${version}`;
+}
+
+function packageEvidence(name, version, advisory) {
+  return advisory.packageEvidence?.[packageEvidenceKey(name, version)] ||
+    advisory.packageEvidence?.[packageEvidenceKey(name, "*")] || null;
+}
+
+function packageEvidenceSuffix(evidence) {
+  if (!evidence) return "";
+  return ` Campaign: ${evidence.campaign}. Evidence status: ${evidence.status}; current activity: ${evidence.currentActivity}.`;
 }
 
 function inspectDependencySpec(filePath, section, name, spec, advisory, findings) {
@@ -447,7 +503,8 @@ function inspectDependencySpec(filePath, section, name, spec, advisory, findings
   }
 
   if (versionIsListed(advisory.packages[name], spec)) {
-    findings.push(finding("critical", "known-bad-requested-version", filePath, `${section}.${name} requests compromised version ${spec}.`));
+    const evidence = packageEvidence(name, spec, advisory);
+    findings.push(finding("critical", "known-bad-requested-version", filePath, `${section}.${name} requests compromised version ${spec}.${packageEvidenceSuffix(evidence)}`, { evidence }));
   }
 }
 
@@ -506,13 +563,15 @@ function scanTextFile(filePath, advisory, findings) {
 
   for (const [pkg, versions] of Object.entries(advisory.packages)) {
     if (packageIsListedAllVersions(versions) && text.includes(pkg)) {
-      findings.push(finding("critical", "known-bad-lockfile-package", filePath, `Lockfile references ${pkg}, which is listed as compromised for all observed versions.`));
+      const evidence = packageEvidence(pkg, "*", advisory);
+      findings.push(finding("critical", "known-bad-lockfile-package", filePath, `Lockfile references ${pkg}, which is listed as compromised for all observed versions.${packageEvidenceSuffix(evidence)}`, { evidence }));
       continue;
     }
     for (const version of versions) {
       if (version === "*") continue;
       if (lockfileMentionsPackageVersion(text, pkg, version)) {
-        findings.push(finding("critical", "known-bad-lockfile-version", filePath, `Lockfile references ${pkg}@${version}.`));
+        const evidence = packageEvidence(pkg, version, advisory);
+        findings.push(finding("critical", "known-bad-lockfile-version", filePath, `Lockfile references ${pkg}@${version}.${packageEvidenceSuffix(evidence)}`, { evidence }));
       }
     }
   }
@@ -1220,6 +1279,8 @@ function indicatorEvidence(value, advisory) {
       observed: metadata[value].observed || null,
       lastVerified: metadata[value].lastVerified || null,
       source: metadata[value].source || null,
+      sources: Array.isArray(metadata[value].sources) ? metadata[value].sources : metadata[value].source ? [metadata[value].source] : [],
+      currentActivity: metadata[value].currentActivity || "unverified",
       retired: Boolean(metadata[value].retired)
     };
   }
@@ -1229,6 +1290,8 @@ function indicatorEvidence(value, advisory) {
     observed: null,
     lastVerified: null,
     source: null,
+    sources: [],
+    currentActivity: "unverified",
     retired: false
   };
 }
@@ -1247,8 +1310,9 @@ function indicatorSeverity(value, evidence) {
 }
 
 function safeRemovalGuidance(findings) {
-  const markerText = findings.map((item) => `${item.indicator || ""}\n${path.basename(item.path || "")}`).join("\n").toLowerCase();
-  const hasSequenceSensitivePersistence = markerText.includes(TOKEN_MONITOR_MARKER);
+  const hasSequenceSensitivePersistence = findings.some((item) =>
+    item.type === "payload-file" && SEQUENCE_SENSITIVE_PERSISTENCE_FILES.has(path.basename(item.path || "").toLowerCase())
+  );
   const hasPersistence = hasSequenceSensitivePersistence || findings.some((item) =>
     ["miasma-agent-config-trigger", "tool-config-payload-reference"].includes(item.type) ||
     /(?:pgsql|kitty)-monitor|pgmonitor\.py/.test(`${item.indicator || ""}\n${path.basename(item.path || "")}`.toLowerCase())

@@ -52,10 +52,6 @@ Rotate credentials from a separate trusted device:
 Audit for recently created tokens, suspicious repositories, unexpected Actions
 workflows, self-hosted runners, and unusual cloud API activity.
 
-Also run the read-only **actions-warden** PyPI tool against the repo for risky or injected GitHub Actions workflow config:
-`actions-warden /path/to/repo` (install: `pipx install actions-warden`). It does not execute workflows, contact GitHub, or modify files. See https://github.com/Dragon-Lady/actions-warden and https://pypi.org/project/actions-warden/.
-
-
 On Windows developer workstations, also review LSASS/logon-session telemetry for
 signs that a logon session was kept alive after user logoff. Microsoft/Windows
 security researchers have noted `LSASRV` ETW event `6182` as a delayed detection

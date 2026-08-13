@@ -127,11 +127,11 @@ review prompt even when the exact package/version is not yet encoded.
 - 2026-06-05: Operator-provided decoded payload screenshot showed token
   collector branches for GitHub, npm, and RubyGems credentials. Added
   high-signal obfuscated field and handler names as copied-code indicators.
-- 2026-06-05: Moshe Siman Tov Bustan posted Azure Miasma sample notes showing
+- 2026-06-05: Public Azure Miasma sample notes showed
   hardcoded StepSecurity / Harden-Runner strings and domains, an `AKIAFAKE`
   fake AWS key prefix, reused public-key context, and the same `firedalazer`
   commit-search payload chain. Added those as copied-code/sample indicators.
-- 2026-06-05: Additional screenshots shared through Moshe from heyosj.com
+- 2026-06-05: Additional public screenshots from heyosj.com
   showed `createPublicGithubExfilRepo`, Hades-themed public GitHub exfil repo
   creation through `/user/repos`, generated repo-name prefixes, and
   `envelope` / `key` artifacts. Added high-signal strings without copying full
@@ -186,4 +186,4 @@ review prompt even when the exact package/version is not yet encoded.
 - Add `--ignore-review-needed` if lifecycle script findings are too noisy.
 - Add examples for npm, pnpm, yarn, and monorepo scans.
 - Add a signed GitHub release once public feedback stabilizes.
-- 2026-08-05: Attribution update for August keyv/ChainDrop wave — Moshe Simon (Moshe Siman Tov Bustan, @MosheTov) posted the Ox Security findings on X with the Ox blog link. Credit Ox Security and Moshe Simon. Read-only tooling only.
+- 2026-08-12: ChainDrop coverage uses dated, independent original-research citations for auditability. Public wording remains vendor-neutral and does not imply ownership, endorsement, partnership, or a guarantee.

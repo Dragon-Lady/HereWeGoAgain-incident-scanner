@@ -177,6 +177,9 @@ function printRemediationPlan(plan) {
       console.log(`  evidence confidence: ${item.evidence.confidence || "unverified"}`);
       if (item.evidence.lastVerified) console.log(`  evidence last verified: ${item.evidence.lastVerified}`);
       if (item.evidence.source) console.log(`  evidence source: ${item.evidence.source}`);
+      if (Array.isArray(item.evidence.sources)) {
+        for (const source of item.evidence.sources) console.log(`  evidence source: ${source}`);
+      }
     }
     for (const matched of item.matchedFindings) {
       console.log(`  found: [${matched.severity}] ${matched.type} ${matched.path}`);

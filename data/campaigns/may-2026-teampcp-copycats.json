@@ -1,0 +1,28 @@
+{
+  "campaign": "May 2026 TeamPCP copycat npm packages",
+  "status": "historical-confirmed",
+  "confidence": "high for the four package names reported malicious across all observed versions; current activity not established",
+  "observed": "2026-05-17",
+  "lastVerified": "2026-08-12",
+  "retired": false,
+  "currentActivity": "unverified",
+  "deadManPolicy": "These package matches are compromise indicators, not evidence of an installed or armed dead-man switch.",
+  "inclusionRule": "All-version malicious npm packages identified in original incident research.",
+  "sources": [
+    "https://www.ox.security/blog/new-actors-deploy-shai-hulud-clones-teampcp-copycats-are-here/"
+  ],
+  "packages": {
+    "@deadcode09284814/axios-util": [
+      "*"
+    ],
+    "axois-utils": [
+      "*"
+    ],
+    "chalk-tempalte": [
+      "*"
+    ],
+    "color-style-utils": [
+      "*"
+    ]
+  }
+}
