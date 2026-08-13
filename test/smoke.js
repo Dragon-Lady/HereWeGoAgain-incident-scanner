@@ -13,7 +13,7 @@ function write(filePath, content) {
 
 const clean = scanTarget(path.join(__dirname, "fixtures", "clean"));
 assert.strictEqual(clean.risk, "review-needed");
-assert(clean.findings.some((finding) => finding.type === "active-campaign-namespace"));
+assert(clean.findings.some((finding) => finding.type === "campaign-scope-namespace-review"));
 
 const compromised = scanTarget(path.join(__dirname, "fixtures", "compromised"));
 assert.strictEqual(compromised.risk, "likely-exposed");
@@ -438,7 +438,7 @@ try {
   assert.strictEqual(moikaCompromised.risk, "likely-exposed");
   assert(moikaCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("@ccrm/external-integrations-api-axios")));
   assert(moikaCompromised.findings.some((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("@emcd-vue/auth")));
-  assert(moikaCompromised.findings.some((finding) => finding.type === "active-campaign-namespace" && finding.message.includes("@emcd-vue/auth")));
+  assert(moikaCompromised.findings.some((finding) => finding.type === "campaign-scope-namespace-review" && finding.message.includes("@emcd-vue/auth")));
 } finally {
   fs.rmSync(tmpMoikaRoot, { recursive: true, force: true });
 }
@@ -687,7 +687,7 @@ try {
   const uipathCompromised = scanTarget(tmpUiPathRoot);
   assert.strictEqual(uipathCompromised.risk, "likely-exposed");
   assert(uipathCompromised.findings.some((finding) => finding.type === "known-bad-requested-version"));
-  assert(uipathCompromised.findings.some((finding) => finding.type === "active-campaign-namespace"));
+  assert(uipathCompromised.findings.some((finding) => finding.type === "campaign-scope-namespace-review"));
 } finally {
   fs.rmSync(tmpUiPathRoot, { recursive: true, force: true });
 }
@@ -730,7 +730,7 @@ try {
   const redHatCompromised = scanTarget(tmpRedHatRoot);
   assert.strictEqual(redHatCompromised.risk, "likely-exposed");
   assert(redHatCompromised.findings.some((finding) => finding.type === "known-bad-requested-version"));
-  assert(redHatCompromised.findings.some((finding) => finding.type === "active-campaign-namespace"));
+  assert(redHatCompromised.findings.some((finding) => finding.type === "campaign-scope-namespace-review"));
   assert(redHatCompromised.findings.some((finding) => finding.type === "workflow-indicator" && finding.message.includes("OIDC_PACKAGES")));
   assert(redHatCompromised.findings.some((finding) => finding.type === "network-indicator" && finding.message.includes("api.anthropic.com")));
   assert(redHatCompromised.findings.some((finding) => finding.type === "campaign-indicator" && finding.message.includes("Miasma : The Spreading Blight")));
@@ -1345,8 +1345,8 @@ try {
   );
   const antvDevelopingCampaign = scanTarget(tmpAntvRoot);
   assert.strictEqual(antvDevelopingCampaign.risk, "review-needed");
-  assert(antvDevelopingCampaign.findings.some((finding) => finding.type === "active-campaign-namespace"));
-  assert(antvDevelopingCampaign.findings.some((finding) => finding.type === "active-campaign-package"));
+  assert(antvDevelopingCampaign.findings.some((finding) => finding.type === "campaign-scope-namespace-review"));
+  assert(antvDevelopingCampaign.findings.some((finding) => finding.type === "campaign-package-review"));
 } finally {
   fs.rmSync(tmpAntvRoot, { recursive: true, force: true });
 }
@@ -1359,7 +1359,7 @@ try {
   );
   const fumaReview = scanTarget(tmpFumaRoot);
   assert.strictEqual(fumaReview.risk, "review-needed");
-  assert(fumaReview.findings.some((finding) => finding.type === "active-campaign-package"));
+  assert(fumaReview.findings.some((finding) => finding.type === "campaign-package-review"));
   assert(fumaReview.findings.some((finding) => finding.type === "package-review-prompt" && finding.message.includes("pnpm version")));
   assert(!fumaReview.findings.some((finding) => finding.type === "known-bad-requested-version"));
 } finally {
@@ -1416,7 +1416,7 @@ try {
     }, null, 2)
   );
   const devdojoPayload = scanTarget(tmpDevdojoPayloadRoot);
-  assert.strictEqual(devdojoPayload.risk, "likely-exposed");
+  assert.strictEqual(devdojoPayload.risk, "possible-exposure");
   assert(devdojoPayload.findings.some((finding) => finding.type === "payload-reference"));
   assert(devdojoPayload.findings.some((finding) => finding.type === "network-indicator"));
   assert(devdojoPayload.findings.some((finding) => finding.type === "campaign-indicator"));
@@ -1433,7 +1433,7 @@ try {
     JSON.stringify({ hooks: { UserPromptSubmit: [{ hooks: [{ type: "command", command: "node router_init.js" }] }] } })
   );
   const configCompromised = scanTarget(tmpConfigRoot);
-  assert.strictEqual(configCompromised.risk, "likely-exposed");
+  assert.strictEqual(configCompromised.risk, "possible-exposure");
   assert(configCompromised.findings.some((finding) => finding.type === "tool-config-payload-reference"));
 } finally {
   fs.rmSync(tmpConfigRoot, { recursive: true, force: true });
@@ -1626,7 +1626,7 @@ try {
   const recentSafeDep = scanTarget(tmpRecentSafeDepRoot);
   assert.strictEqual(recentSafeDep.risk, "likely-exposed");
   assert(recentSafeDep.findings.some((finding) => finding.type === "known-bad-requested-version"));
-  assert(recentSafeDep.findings.some((finding) => finding.type === "active-campaign-package"));
+  assert(recentSafeDep.findings.some((finding) => finding.type === "campaign-package-review"));
   assert(recentSafeDep.findings.some((finding) => finding.type === "network-indicator"));
   assert(recentSafeDep.findings.some((finding) => finding.type === "campaign-indicator"));
 } finally {
@@ -1749,5 +1749,67 @@ assert(compromisedWithHash.findings.some((finding) => finding.type === "payload-
   assert(keyvReport.findings.some((f) => f.type === "network-indicator" && f.message.includes("npm-cache.com")));
   assert(keyvReport.findings.some((f) => f.type === "campaign-indicator" && f.message.includes("Math_Symbol.js")));
   fs.rmSync(keyvRoot, { recursive: true, force: true });
+
+  // July-pattern discipline: seed carriers are exact-version only. A safe keyv
+  // resolve must not fire name-only campaign-package-review noise.
+  const keyvSafeRoot = fs.mkdtempSync(path.join(os.tmpdir(), "hwg-keyv-safe-"));
+  write(
+    path.join(keyvSafeRoot, "package.json"),
+    JSON.stringify(
+      {
+        name: "keyv-safe-fixture",
+        dependencies: {
+          keyv: "5.5.0",
+          "flat-cache": "6.1.0",
+          cacheable: "2.4.0",
+          ecto: "4.0.0"
+        }
+      },
+      null,
+      2
+    )
+  );
+  write(
+    path.join(keyvSafeRoot, "package-lock.json"),
+    JSON.stringify(
+      {
+        name: "keyv-safe-fixture",
+        lockfileVersion: 3,
+        packages: {
+          "": {
+            name: "keyv-safe-fixture",
+            dependencies: {
+              keyv: "5.5.0",
+              "flat-cache": "6.1.0",
+              cacheable: "2.4.0",
+              ecto: "4.0.0"
+            }
+          },
+          "node_modules/keyv": {
+            version: "5.5.0",
+            resolved: "https://registry.npmjs.org/keyv/-/keyv-5.5.0.tgz"
+          },
+          "node_modules/flat-cache": {
+            version: "6.1.0",
+            resolved: "https://registry.npmjs.org/flat-cache/-/flat-cache-6.1.0.tgz"
+          },
+          "node_modules/cacheable": {
+            version: "2.4.0",
+            resolved: "https://registry.npmjs.org/cacheable/-/cacheable-2.4.0.tgz"
+          },
+          "node_modules/ecto": {
+            version: "4.0.0",
+            resolved: "https://registry.npmjs.org/ecto/-/ecto-4.0.0.tgz"
+          }
+        }
+      },
+      null,
+      2
+    )
+  );
+  const keyvSafeReport = scanTarget(keyvSafeRoot);
+  assert(!keyvSafeReport.findings.some((f) => f.type === "known-bad-lockfile-version"));
+  assert(!keyvSafeReport.findings.some((f) => f.type === "campaign-package-review"));
+  fs.rmSync(keyvSafeRoot, { recursive: true, force: true });
 
   console.log("smoke tests passed");

@@ -16,7 +16,7 @@ Initial release state:
 ```powershell
 cd C:\path\to\HereWeGoAgain-incident-scanner
 npm test
-node bin\herewegoagain-incident-scanner.js C:\path\to\project --report report.json
+node bin\herewegoagain-incident-scanner.js C:\path\to\project
 node bin\herewegoagain-incident-scanner.js C:\path\to\project --json
 ```
 
@@ -187,4 +187,4 @@ review prompt even when the exact package/version is not yet encoded.
 - Add `--ignore-review-needed` if lifecycle script findings are too noisy.
 - Add examples for npm, pnpm, yarn, and monorepo scans.
 - Add a signed GitHub release once public feedback stabilizes.
-
+- 2026-08-05: Attribution update for August keyv/ChainDrop wave — Moshe Simon (Moshe Siman Tov Bustan, @MosheTov) posted the Ox Security findings on X with the Ox blog link. Credit Ox Security and Moshe Simon. Read-only tooling only.

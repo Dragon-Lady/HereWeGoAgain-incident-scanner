@@ -13,15 +13,19 @@ reported Paysafe/Skrill/Neteller npm and PyPI typosquat versions.
 
 August 4, 2026 keyv / cacheable (ChainDrop / Shai-Hulud "Here We Go Again")
 coverage adds exact-version checks for the initial full-worm carriers
-`keyv@6.0.0` and ten related jaredwray-family releases (`flat-cache@6.1.24`,
-`file-entry-cache@11.1.6`, `cacheable-request@13.0.20`, `cacheable@2.5.1`,
-`@cacheable/memory@2.2.1`, `cache-manager@7.2.10`, `@cacheable/node-cache@3.1.2`,
-`@cacheable/utils@2.5.1`, `@cacheable/net@2.1.1`, `ecto@5.0.1`), plus campaign
-network markers. This is a **cross-platform npm ecosystem** compromise
-(registry installs, lockfiles, CI, and workspaces on Linux, macOS, Windows, and
-other npm-using lanes)—not a Linux-only issue. Indicators are credited to Snyk,
-StepSecurity, Aikido, Wiz, and JFrog. Lockfile matching covers package-lock
-v2/v3 path keys and resolved tarball URLs.
+`keyv@6.0.0` and ten related jaredwray-family releases, plus campaign network
+and text markers. **Ox Security** reports ~**444 packages**, **1,600+
+versions**, and **2B+ monthly downloads**, with the same credential theft,
+IDE/AI persistence, GitHub exfil, and dead-man switch tradecraft as prior
+waves, plus a production-crash extortion string and campaign RSA public key
+(TeamPCP-copycat hypothesis; attribution unconfirmed). Full inventory is
+partial—consult the Ox package table and Wiz CSV. This is a **cross-platform
+npm ecosystem** compromise—not a Linux-only issue. **Read-only / notify-only**
+on dead-man paths. Under incident-response direction, handle any confirmed
+sequence-sensitive persistence first; only then rotate keys from a clean device,
+downgrade packages, and search/revoke affected GitHub accounts.
+Credits: **Ox Security** and **Moshe Simon** (Moshe Siman Tov Bustan, @MosheTov; X post → Ox blog), plus Snyk, StepSecurity, Aikido, Wiz, and JFrog. Lockfile
+matching covers package-lock v2/v3 path keys and resolved tarball URLs.
 
 > Built and maintained by Dragon Lady - [github.com/Dragon-Lady](https://github.com/Dragon-Lady) - X: [@answerislove2](https://x.com/answerislove2)
 
@@ -38,7 +42,6 @@ Run against a local project:
 ```sh
 node bin/herewegoagain-incident-scanner.js /path/to/project
 node bin/herewegoagain-incident-scanner.js /path/to/project --json
-node bin/herewegoagain-incident-scanner.js /path/to/project --report report.json
 node bin/herewegoagain-incident-scanner.js /path/to/project --remediation-plan
 ```
 
@@ -52,12 +55,9 @@ package registries, or transmit scan results.
 ## Privacy
 
 This scanner does not provide a hosted service, send telemetry to the
-maintainers, or upload scan results. It does not contact a server while
-scanning. Results are printed to the terminal or written only to the local path
-an operator explicitly provides with `--report`.
-
-Any output files are created in the operator's local environment unless the
-operator separately chooses to share them.
+maintainers, upload scan results, or retain findings. It does not contact a
+server while scanning. Human-readable and JSON results are written to stdout
+only. The `--report` file-writing option is disabled by policy.
 
 Do not paste secrets, tokens, private keys, `.env` files, or full private logs
 into issues or public reports. If a finding suggests credential exposure,
@@ -323,16 +323,19 @@ device becomes unstable immediately after this update.
 ## Quick Start
 
 ```powershell
-node .\bin\herewegoagain-incident-scanner.js C:\path\to\project --report report.json
+node .\bin\herewegoagain-incident-scanner.js C:\path\to\project
 ```
 
 ```bash
-node ./bin/herewegoagain-incident-scanner.js /path/to/project --report report.json
+node ./bin/herewegoagain-incident-scanner.js /path/to/project
 ```
 
 Use `--json` to print a machine-readable report to stdout.
 
-Exit code `2` means likely exposure indicators were found.
+Exit code `2` means likely exposure indicators were found. Exit code `3` means
+coverage was incomplete without a critical finding; unreadable targets,
+advisory-data fallbacks, and skipped oversized lockfiles are never reported as a
+clean scan.
 
 Human-readable output starts with a plain-language `STOP`, `PAUSE`, or clean-scan
 summary for non-specialist users, followed by exact technical findings for
@@ -349,8 +352,8 @@ step. The operator reviews and runs every command themselves.
 Plan items are grouped and ordered by handling class:
 
 - `STOP - DO NOT REMOVE ANYTHING YET` - findings that match persistence
-  reported to include a dead-man's switch (for example `gh-token-monitor` or
-  `pgsql-monitor`). These print first, with the disarm sequence ordered before
+  specifically documented to include a dead-man's switch (`gh-token-monitor`).
+  These print first, with the disarm sequence ordered before
   any credential rotation, because revoking tokens or deleting files in the
   wrong order is reported to trigger the switch and damage the machine.
 - `CAUTION - ORDER MATTERS` - cleanup where sequence is load-bearing: isolate
@@ -360,8 +363,10 @@ Plan items are grouped and ordered by handling class:
   such as campaign-adjacent package checks and patch-priority items.
 
 Each item lists the exact findings that triggered it, warnings, numbered steps,
-and explicit `DO NOT` lines. With `--json` or `--report`, the same plan is
-included in the report as a `remediationPlan` object. Rules live in
+and explicit `DO NOT` lines. With `--json --remediation-plan`, the same plan is
+included in stdout as a `remediationPlan` object. Default human and JSON output
+always includes `safeRemovalGuidance` and the recovery-playbook destination.
+Rules live in
 `data/remediation.json` and are derived from
 [docs/recovery-playbook.md](docs/recovery-playbook.md) and the cited vendor
 reporting; a finding type with no rule simply produces no plan item.
@@ -587,6 +592,12 @@ and a reported Israel/Iran location check with randomized file deletion. This is
 kept as triage context, not a standalone clean/compromised decision.
 
 See [docs/recovery-playbook.md](docs/recovery-playbook.md).
+
+## Related read-only tooling
+
+Complementary **read-only** tools in the same security kit:
+
+- **actions-warden** (PyPI, Dragon Lady) — read-only auditor for risky or injected GitHub Actions workflow config under `.github/workflows/`. After token theft, CI injection is a common next step. `pipx install actions-warden` then `actions-warden /path/to/repo`. Does not execute workflows or modify files. https://github.com/Dragon-Lady/actions-warden · https://pypi.org/project/actions-warden/
 
 ## Sources
 

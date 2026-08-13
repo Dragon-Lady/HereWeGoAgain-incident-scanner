@@ -12,7 +12,8 @@ have installed compromised packages during the incident window.
 ## 2. Contain
 
 - If payload execution is possible, disconnect the host from the network.
-- Preserve lockfiles, package manifests, install logs, and scanner reports.
+- Review lockfiles, package manifests, and install logs without asking this
+  scanner to retain findings; its terminal and JSON output are stdout-only.
 - For Linux hosts exposed to the updated PyPI payload, preserve shell history,
   service-unit state, `/tmp/transformers.pyz` metadata if present, and any
   evidence of `/tmp`, home-directory, or timezone checks before rebuilding.
@@ -24,7 +25,7 @@ have installed compromised packages during the incident window.
 - Avoid copying `node_modules`, build caches, unknown scripts, shell profiles, or
   editor extension state into a recovery environment.
 
-## 3. Rotate From A Clean Machine
+## 3. Get Safe-Removal Direction, Then Rotate From A Clean Machine
 
 Before revoking GitHub tokens, verify and remove the dead-man switch persistence
 described by JFrog:
@@ -50,6 +51,10 @@ Rotate credentials from a separate trusted device:
 
 Audit for recently created tokens, suspicious repositories, unexpected Actions
 workflows, self-hosted runners, and unusual cloud API activity.
+
+Also run the read-only **actions-warden** PyPI tool against the repo for risky or injected GitHub Actions workflow config:
+`actions-warden /path/to/repo` (install: `pipx install actions-warden`). It does not execute workflows, contact GitHub, or modify files. See https://github.com/Dragon-Lady/actions-warden and https://pypi.org/project/actions-warden/.
+
 
 On Windows developer workstations, also review LSASS/logon-session telemetry for
 signs that a logon session was kept alive after user logoff. Microsoft/Windows

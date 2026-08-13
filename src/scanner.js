@@ -30,6 +30,9 @@ const LANGFLOW_WEBHOOK_FIXED = "1.9.1";
 const LANGFLOW_PYTHON_REPL_FIXED = "1.9.4";
 const LIVEWIRE_AFFECTED_MIN = "3.0.0";
 const LIVEWIRE_FIXED = "3.6.4";
+const RECOVERY_GUIDANCE_URL = "https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner/blob/main/docs/recovery-playbook.md";
+const COVERAGE_FINDING_TYPES = new Set(["advisory-data-fallback", "target-unreadable", "directory-unreadable", "read-error", "parse-error", "large-lockfile-skipped"]);
+const TOKEN_MONITOR_MARKER = ["gh-token", "monitor"].join("-");
 
 const DEFAULT_ADVISORY = {
   indicators: {
@@ -63,11 +66,18 @@ function loadAdvisoryData() {
     const legacyPath = path.join(dataDir, "affected-packages.json");
     try {
       const raw = JSON.parse(fs.readFileSync(legacyPath, "utf8"));
-      return normalizeAdvisory(raw);
+      const advisory = normalizeAdvisory(raw);
+      advisory.loadWarnings = ["Primary advisory data could not be loaded; legacy advisory data was used."];
+      advisory.usingFallback = true;
+      return advisory;
     } catch (legacyError) {
-      if (error.code === "ENOENT" || legacyError.code === "ENOENT") return DEFAULT_ADVISORY;
+      // Fall through to the built-in minimal dataset. A scan using it must never
+      // be presented as complete or reassuringly clean.
     }
-    return DEFAULT_ADVISORY;
+    const advisory = normalizeAdvisory(DEFAULT_ADVISORY);
+    advisory.loadWarnings = ["Advisory data could not be loaded; the built-in minimal fallback was used."];
+    advisory.usingFallback = true;
+    return advisory;
   }
 }
 
@@ -93,12 +103,22 @@ function scanTarget(targetPath, options = {}) {
   const findings = [];
   const seen = { files: 0, manifests: 0, lockfiles: 0 };
 
+  for (const warning of advisory.loadWarnings || []) {
+    findings.push(finding("medium", "advisory-data-fallback", root, warning));
+  }
+
   walk(root, (filePath, dirent) => {
     seen.files += 1;
     const base = dirent.name;
 
     if (payloadFiles.has(base)) {
-      findings.push(finding("critical", "payload-file", filePath, `Known incident payload filename present: ${base}`));
+      findings.push(finding(
+        "medium",
+        "payload-file",
+        filePath,
+        `Filename matches a historical payload candidate (${base}); filename alone is not proof of malware or an active campaign.`,
+        { indicator: base, evidence: indicatorEvidence(base, advisory) }
+      ));
       scanPayloadHash(filePath, base, advisory, findings);
     }
 
@@ -167,15 +187,27 @@ function scanTarget(targetPath, options = {}) {
     if (isPhpSourceFile(filePath)) {
       scanPhpSourceFile(filePath, advisory, findings);
     }
-  });
+  }, findings);
 
   const dedupedFindings = dedupeFindings(findings);
   const risk = riskLevel(dedupedFindings);
+  const coverageIssues = dedupedFindings.filter((item) => COVERAGE_FINDING_TYPES.has(item.type));
+  const coverageComplete = coverageIssues.length === 0;
   return {
     tool: "herewegoagain-incident-scanner",
     scannedAt: new Date().toISOString(),
     target: root,
     risk,
+    advisory: {
+      incident: advisory.incident || "Shai-Hulud supply-chain indicators",
+      lastUpdated: advisory.lastUpdated || null,
+      usingFallback: Boolean(advisory.usingFallback)
+    },
+    coverage: {
+      complete: coverageComplete,
+      status: coverageComplete ? "complete-for-supported-files" : "incomplete",
+      issues: coverageIssues.map(({ severity, type, path: issuePath, message }) => ({ severity, type, path: issuePath, message }))
+    },
     summary: {
       filesScanned: seen.files,
       packageManifestsScanned: seen.manifests,
@@ -183,15 +215,17 @@ function scanTarget(targetPath, options = {}) {
       findings: dedupedFindings.length
     },
     findings: dedupedFindings,
-    guidance: guidanceForRisk(risk)
+    guidance: guidanceForRisk(risk),
+    safeRemovalGuidance: safeRemovalGuidance(dedupedFindings)
   };
 }
 
-function walk(root, onFile) {
+function walk(root, onFile, findings) {
   let rootStat;
   try {
     rootStat = fs.statSync(root);
   } catch (error) {
+    findings.push(finding("medium", "target-unreadable", root, "Scan target does not exist or could not be read; no clean conclusion is possible."));
     return;
   }
 
@@ -207,6 +241,7 @@ function walk(root, onFile) {
     try {
       entries = fs.readdirSync(current, { withFileTypes: true });
     } catch (error) {
+      findings.push(finding("medium", "directory-unreadable", current, "Directory could not be read and was skipped; scan coverage is incomplete."));
       continue;
     }
 
@@ -230,7 +265,7 @@ function scanPayloadHash(filePath, fileName, advisory, findings) {
   try {
     data = fs.readFileSync(filePath);
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not hash payload candidate: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read payload candidate for hashing; scan coverage is incomplete."));
     return;
   }
 
@@ -247,7 +282,7 @@ function scanPackageJson(filePath, advisory, findings) {
     rawText = fs.readFileSync(filePath, "utf8");
     manifest = JSON.parse(rawText);
   } catch (error) {
-    findings.push(finding("low", "parse-error", filePath, `Could not parse package.json: ${error.message}`));
+    findings.push(finding("medium", "parse-error", filePath, "Could not parse package.json; dependency coverage is incomplete."));
     return;
   }
 
@@ -272,7 +307,7 @@ function scanPackageJson(filePath, advisory, findings) {
     if (typeof scripts[scriptName] === "string") {
       const scriptBody = scripts[scriptName];
       const severity = scriptName === "prepare" && /bun\s+run|router_|tanstack_/i.test(scriptBody) ? "high" : "medium";
-      findings.push(finding(severity, "lifecycle-script", filePath, `Lifecycle script "${scriptName}" is present: ${scriptBody}`));
+      findings.push(finding(severity, "lifecycle-script", filePath, `Lifecycle script "${scriptName}" is present (body withheld; ${Buffer.byteLength(scriptBody, "utf8")} bytes).`));
     }
   }
 }
@@ -282,7 +317,7 @@ function scanManifestText(filePath, text, advisory, findings) {
 
   for (const payload of indicators.payloadFiles) {
     if (text.includes(payload)) {
-      findings.push(finding("critical", "payload-reference", filePath, `Manifest references ${payload}.`));
+      findings.push(finding("medium", "payload-reference", filePath, `Manifest references historical payload candidate ${payload}; corroboration is required.`, { indicator: payload, evidence: indicatorEvidence(payload, advisory) }));
     }
   }
 
@@ -294,7 +329,7 @@ function scanNodeGypManifest(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read binding.gyp: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read binding.gyp; scan coverage is incomplete."));
     return;
   }
 
@@ -309,13 +344,17 @@ function scanNodeGypManifest(filePath, advisory, findings) {
       suspicious ? "high" : "medium",
       suspicious ? "binding-gyp-command-execution" : "binding-gyp-command-expansion",
       filePath,
-      `binding.gyp contains node-gyp command expansion ${expansion.slice(0, 180)}${expansion.length > 180 ? "..." : ""}`
+      `binding.gyp contains ${suspicious ? "suspicious " : ""}node-gyp command expansion (content withheld; ${Buffer.byteLength(expansion, "utf8")} bytes).`
     ));
   }
 }
 
 function normalizeAdvisory(raw) {
   const advisory = {
+    incident: raw && typeof raw.incident === "string" ? raw.incident : undefined,
+    lastUpdated: raw && typeof raw.lastUpdated === "string" ? raw.lastUpdated : undefined,
+    scope: raw && typeof raw.scope === "object" ? raw.scope : undefined,
+    sources: raw && Array.isArray(raw.sources) ? raw.sources : [],
     indicators: {
       ...DEFAULT_ADVISORY.indicators,
       ...(raw && typeof raw.indicators === "object" ? raw.indicators : {})
@@ -336,7 +375,7 @@ function normalizeAdvisory(raw) {
     }
   } else if (raw && typeof raw === "object") {
     for (const [name, versions] of Object.entries(raw)) {
-      if (name === "indicators") continue;
+      if (["indicators", "incident", "lastUpdated", "scope", "sources"].includes(name)) continue;
       addAdvisoryPackage(advisory.packages, name, versions);
     }
   }
@@ -395,11 +434,11 @@ function inspectDependencySpec(filePath, section, name, spec, advisory, findings
   }
 
   if (matchesActiveNamespace(name, advisory)) {
-    findings.push(finding("medium", "active-campaign-namespace", filePath, `${section}.${name} is in a namespace reported in the active campaign; verify the exact version.`));
+    findings.push(finding("medium", "campaign-scope-namespace-review", filePath, `${section}.${name} matches a historical or unverified campaign namespace; verify the exact version and current advisory status.`));
   }
 
   if (matchesActivePackage(name, advisory)) {
-    findings.push(finding("medium", "active-campaign-package", filePath, `${section}.${name} is a package reported in the active campaign; verify the exact version.`));
+    findings.push(finding("medium", "campaign-package-review", filePath, `${section}.${name} matches historical or unverified campaign scope; package name alone is not an active-compromise finding.`));
   }
 
   const reviewPrompt = packageReviewPrompt(name, advisory);
@@ -417,10 +456,11 @@ function scanTextFile(filePath, advisory, findings) {
   try {
     stat = fs.statSync(filePath);
   } catch (error) {
+    findings.push(finding("medium", "read-error", filePath, "Could not inspect lockfile size; lockfile coverage is incomplete."));
     return;
   }
   if (stat.size > DEFAULT_MAX_FILE_BYTES) {
-    findings.push(finding("low", "large-lockfile-skipped", filePath, `Skipped lockfile over ${DEFAULT_MAX_FILE_BYTES} bytes.`));
+    findings.push(finding("medium", "large-lockfile-skipped", filePath, `Skipped lockfile over ${DEFAULT_MAX_FILE_BYTES} bytes; dependency coverage is incomplete.`));
     return;
   }
 
@@ -428,14 +468,14 @@ function scanTextFile(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read lockfile: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read lockfile; dependency coverage is incomplete."));
     return;
   }
 
   const indicators = advisory.indicators;
   for (const payload of indicators.payloadFiles) {
     if (text.includes(payload)) {
-      findings.push(finding("critical", "payload-reference", filePath, `Lockfile references ${payload}.`));
+      findings.push(finding("medium", "payload-reference", filePath, `Lockfile references historical payload candidate ${payload}; corroboration is required.`, { indicator: payload, evidence: indicatorEvidence(payload, advisory) }));
     }
   }
 
@@ -479,13 +519,13 @@ function scanTextFile(filePath, advisory, findings) {
 
   for (const namespace of advisory.indicators.activeNamespaces || []) {
     if (typeof namespace === "string" && namespace.length > 0 && text.includes(namespace)) {
-      findings.push(finding("medium", "active-campaign-namespace", filePath, `Lockfile references namespace reported in the active campaign: ${namespace}`));
+      findings.push(finding("medium", "campaign-scope-namespace-review", filePath, `Lockfile references historical or unverified campaign namespace ${namespace}; verify exact versions and current advisory status.`));
     }
   }
 
   for (const pkg of advisory.indicators.activePackages || []) {
     if (typeof pkg === "string" && pkg.length > 0 && text.includes(pkg)) {
-      findings.push(finding("medium", "active-campaign-package", filePath, `Lockfile references package reported in the active campaign: ${pkg}`));
+      findings.push(finding("medium", "campaign-package-review", filePath, `Lockfile references historical or unverified campaign package ${pkg}; name alone is not an active-compromise finding.`));
     }
   }
 
@@ -501,7 +541,7 @@ function scanPythonDependencyFile(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read Python dependency file: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read Python dependency file; dependency coverage is incomplete."));
     return;
   }
 
@@ -536,7 +576,7 @@ function scanComposerDependencyFile(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read Composer dependency file: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read Composer dependency file; dependency coverage is incomplete."));
     return;
   }
 
@@ -639,7 +679,7 @@ function scanApacheHttpdFile(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read Apache httpd file: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read Apache httpd file; scan coverage is incomplete."));
     return;
   }
 
@@ -700,14 +740,21 @@ function scanToolConfigFile(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read tool config file: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read tool config file; persistence coverage is incomplete."));
     return;
   }
 
   const indicators = advisory.indicators;
+  const hasAutoExecutionContext = /\b(hooks?|command|runOn|folderOpen)\b/i.test(text);
   for (const payload of indicators.payloadFiles || []) {
     if (text.includes(payload)) {
-      findings.push(finding("critical", "tool-config-payload-reference", filePath, `Tool config references ${payload}.`));
+      findings.push(finding(
+        hasAutoExecutionContext ? "high" : "medium",
+        "tool-config-payload-reference",
+        filePath,
+        `Tool config references historical payload candidate ${payload}${hasAutoExecutionContext ? " with auto-execution context" : ""}; review before treating it as compromise.`,
+        { indicator: payload, evidence: indicatorEvidence(payload, advisory), corroboratedByContext: hasAutoExecutionContext }
+      ));
     }
   }
 
@@ -746,7 +793,7 @@ function scanWorkflowFile(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read workflow file: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read workflow file; workflow coverage is incomplete."));
     return;
   }
 
@@ -826,7 +873,7 @@ function scanJavaScriptSourceFile(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read JavaScript source file: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read JavaScript source file; scan coverage is incomplete."));
     return;
   }
 
@@ -840,7 +887,7 @@ function scanWebSourceFile(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read web source file: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read web source file; scan coverage is incomplete."));
     return;
   }
 
@@ -852,7 +899,7 @@ function scanNotebookSourceFile(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read notebook file: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read notebook file; scan coverage is incomplete."));
     return;
   }
 
@@ -864,7 +911,7 @@ function scanPhpSourceFile(filePath, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read PHP source file: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read PHP source file; scan coverage is incomplete."));
     return;
   }
 
@@ -876,7 +923,7 @@ function scanShellSourceFile(filePath, base, advisory, findings) {
   try {
     text = fs.readFileSync(filePath, "utf8");
   } catch (error) {
-    findings.push(finding("low", "read-error", filePath, `Could not read shell/tool candidate file: ${error.message}`));
+    findings.push(finding("medium", "read-error", filePath, "Could not read shell/tool candidate file; scan coverage is incomplete."));
     return;
   }
 
@@ -905,7 +952,15 @@ function scanIndicatorStrings(filePath, text, advisory, findings, sourceLabel) {
     for (const value of values) {
       if (typeof value !== "string" || value.length === 0) continue;
       if (text.includes(value)) {
-        findings.push(finding("high", type, filePath, `${sourceLabel} references incident indicator: ${value}`));
+        const evidence = indicatorEvidence(value, advisory);
+        const severity = indicatorSeverity(value, evidence);
+        findings.push(finding(
+          severity,
+          type,
+          filePath,
+          `${sourceLabel} matches advisory indicator ${value} (${evidence.status}; confidence ${evidence.confidence}). Corroborate before treating it as current or active.`,
+          { indicator: value, evidence }
+        ));
       }
     }
   }
@@ -1146,12 +1201,70 @@ function packageIsListedAllVersions(versions) {
   return Array.isArray(versions) && versions.includes("*");
 }
 
-function finding(severity, type, filePath, message) {
+function finding(severity, type, filePath, message, details = {}) {
   return {
     severity,
     type,
     path: filePath,
-    message
+    message,
+    ...details
+  };
+}
+
+function indicatorEvidence(value, advisory) {
+  const metadata = advisory.indicators?.indicatorMetadata;
+  if (metadata && typeof metadata[value] === "object" && metadata[value] !== null) {
+    return {
+      status: metadata[value].status || "unverified-currentness",
+      confidence: metadata[value].confidence || "medium",
+      observed: metadata[value].observed || null,
+      lastVerified: metadata[value].lastVerified || null,
+      source: metadata[value].source || null,
+      retired: Boolean(metadata[value].retired)
+    };
+  }
+  return {
+    status: "unclassified-currentness",
+    confidence: isWeakIndicator(value) ? "low" : "medium",
+    observed: null,
+    lastVerified: null,
+    source: null,
+    retired: false
+  };
+}
+
+function isWeakIndicator(value) {
+  const genericFileName = !/[\\/\s:]/.test(value) && /\.(?:js|cjs|mjs|py|json|service|plist|exe|dll|woff2|zip|txt|lock)$/i.test(value);
+  const genericConfigPath = /^\.(?:github|vscode|claude|cursor|gemini)\//i.test(value);
+  return value.length < 12 || /^[A-Za-z0-9_-]+$/.test(value) || /^\/[A-Za-z0-9/_.-]{1,10}$/.test(value) || genericFileName || genericConfigPath;
+}
+
+function indicatorSeverity(value, evidence) {
+  if (evidence.retired) return "low";
+  if (evidence.status.startsWith("historical")) return "medium";
+  if (evidence.status === "current-confirmed" && evidence.confidence === "high" && !isWeakIndicator(value)) return "high";
+  return isWeakIndicator(value) || evidence.confidence === "low" ? "medium" : "high";
+}
+
+function safeRemovalGuidance(findings) {
+  const markerText = findings.map((item) => `${item.indicator || ""}\n${path.basename(item.path || "")}`).join("\n").toLowerCase();
+  const hasSequenceSensitivePersistence = markerText.includes(TOKEN_MONITOR_MARKER);
+  const hasPersistence = hasSequenceSensitivePersistence || findings.some((item) =>
+    ["miasma-agent-config-trigger", "tool-config-payload-reference"].includes(item.type) ||
+    /(?:pgsql|kitty)-monitor|pgmonitor\.py/.test(`${item.indicator || ""}\n${path.basename(item.path || "")}`.toLowerCase())
+  );
+
+  return {
+    required: hasPersistence,
+    sequenceSensitive: hasSequenceSensitivePersistence,
+    firstAction: hasSequenceSensitivePersistence
+      ? "Pause and contact incident response. Do not revoke or rotate credentials until the suspected monitor has been safely assessed and disarmed in the documented order."
+      : hasPersistence
+        ? "Pause and review the persistence finding with incident response before changing or removing files, services, or credentials."
+        : "Review findings before making changes. This scanner does not remove, quarantine, disable, or modify anything.",
+    instructionDestination: RECOVERY_GUIDANCE_URL,
+    localDocumentation: "docs/recovery-playbook.md",
+    retention: "The scanner does not save findings; console and JSON output are stdout-only."
   };
 }
 
@@ -1182,7 +1295,8 @@ function guidanceForRisk(risk) {
       "Stop installs, builds, and dev servers in the affected environment.",
       "If payload execution is possible, isolate the host from the network before cleanup.",
       "Do not revoke tokens from the suspected infected host first.",
-      "Rotate GitHub, npm, cloud, Vault, Kubernetes, SSH, and CI secrets from a clean machine.",
+      "Follow safeRemovalGuidance and the linked recovery playbook before any credential rotation.",
+      "Only after sequence-sensitive persistence is safely handled, rotate exposed credentials from a clean machine.",
       "Treat confirmed execution or credential access as a host compromise and rebuild from a clean baseline."
     ];
   }

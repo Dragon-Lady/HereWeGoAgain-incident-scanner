@@ -170,7 +170,7 @@ const KNOWN_FINDING_TYPES = new Set([
   "known-bad-version", "known-bad-requested-version", "known-bad-lockfile-version",
   "known-bad-lockfile-package", "known-bad-pypi-version", "known-bad-composer-version",
   "malicious-dependency-name", "malicious-dependency-spec", "github-dependency",
-  "active-campaign-namespace", "active-campaign-package", "package-review-prompt",
+  "campaign-scope-namespace-review", "campaign-package-review", "package-review-prompt",
   "composer-package-review-prompt", "composer-plugin-capability", "laravel-lang-autoload-backdoor",
   "lifecycle-script", "large-lockfile-skipped", "network-indicator", "workflow-indicator",
   "campaign-indicator", "token-description-indicator", "tool-config-payload-reference",

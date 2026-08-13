@@ -120,6 +120,12 @@ Cross-platform npm ecosystem compromise (not Linux-only). Applies to any
 npm-using OS, CI, or developer lane; these project scanners report matches in
 the scanned tree on the operator's platform.
 
+- **Ox Security** / **Moshe Simon** (Moshe Siman Tov Bustan, @MosheTov) — Moshe posted the
+  findings on X with the Ox blog link (~444 packages / 2B+ monthly downloads; IOCs;
+  recommended actions):
+  https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/
+- Ox Security TeamPCP copycats / Shai-Hulud clone context:
+  https://www.ox.security/blog/new-actors-deploy-shai-hulud-clones-teampcp-copycats-are-here/
 - Snyk keyv npm supply-chain compromise analysis: https://snyk.io/blog/inside-keyv-npm-compromise-preinstall-malware-trusted-provenance-ide-hooks/
 - Snyk advisory SNYK-JS-KEYV-18515941: https://security.snyk.io/vuln/SNYK-JS-KEYV-18515941
 - Wiz keyv / cacheable npm supply-chain attack: https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack
@@ -127,3 +133,4 @@ the scanned tree on the operator's platform.
 - Aikido keyv / friends Shai-Hulud supply-chain attack: https://www.aikido.dev/blog/keyv-and-friends-compromised-in-npm-supply-chain-attack
 - JFrog Shai-Hulud August 2026 (keyv and 400+ packages): https://research.jfrog.com/post/shai-hulud-is-back-august/
 - StepSecurity ChainDrop npm worm analysis: https://www.stepsecurity.io/blog/chaindrop-npm-worm
+- actions-warden (Dragon Lady PyPI read-only GitHub Actions workflow auditor): https://github.com/Dragon-Lady/actions-warden · https://pypi.org/project/actions-warden/

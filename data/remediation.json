@@ -3,7 +3,7 @@
     "This remediation plan is advisory text generated from read-only scan findings.",
     "This tool changed nothing on your machine and will not run any of these steps.",
     "Read every step before running it. You are the operator; commands run by you.",
-    "Rotate credentials only from a separate, clean device - never from this host.",
+    "If sequence-sensitive persistence is present, follow the STOP guidance before any credential rotation; rotate only later from a separate clean device.",
     "If you are unsure at any point, stop and get incident-response help before continuing."
   ],
   "deadManBanner": [
@@ -11,84 +11,175 @@
     "One or more findings match persistence that is reported to include a",
     "DEAD-MAN'S SWITCH. If you remove files or revoke credentials in the wrong",
     "order, the switch can fire and damage this machine.",
-    "Do the STOP items below first, in the exact order shown, before any other",
-    "cleanup and before rotating any tokens."
+    "NOTIFY ONLY / READ-ONLY GUIDANCE: Do not blindly delete, disable, or remove",
+    "any files, services, or tokens until further guidance from security teams.",
+    "Preserve evidence. Coordinate ordered response with incident responders.",
+    "When security authorizes action, follow STOP items below in exact order",
+    "before other cleanup and before rotating any tokens."
   ],
   "rules": [
     {
       "id": "deadman-gh-token-monitor",
       "title": "GitHub token dead-man's switch (gh-token-monitor persistence)",
       "riskClass": "stop-deadman",
+      "evidence": {
+        "status": "historical-confirmed; current activity not established by this match",
+        "confidence": "high for the documented behavior, not for current campaign activity",
+        "observed": "2026-05-12",
+        "lastVerified": "2026-05-12",
+        "source": "https://research.jfrog.com/post/shai-hulud-here-we-go-again/"
+      },
       "appliesTo": {
-        "matchAny": ["gh-token-monitor"]
+        "types": [
+          "payload-file",
+          "payload-reference",
+          "workflow-indicator",
+          "campaign-indicator",
+          "token-description-indicator"
+        ],
+        "matchAny": [
+          "gh-token-monitor"
+        ]
       },
       "warning": [
-        "This persistence is reported (JFrog) to watch your GitHub token and react when it is revoked.",
-        "Do NOT revoke or rotate GitHub tokens until the monitor below is stopped and removed.",
-        "Do NOT delete the monitor files while the service is still running."
+        "JFrog documented this persistence in May 2026 watching a GitHub token and reacting when it is revoked; a match does not establish that the infrastructure or campaign is currently active.",
+        "NOTIFY ONLY: Do not blindly delete or remove anything until further guidance from security teams.",
+        "Do NOT revoke or rotate GitHub tokens from a possibly infected host.",
+        "Do NOT delete monitor files while any related service may still be running, unless security directs you.",
+        "Ox Security documents production-crash extortion language if the stolen API key is blocked; still treat dead-man as notify-only until IR directs ordered disarm then rotate.",
+        "Credits: Ox Security and Moshe Simon (@MosheTov; X post \u2192 Ox blog), Wiz, Snyk, StepSecurity, Aikido, JFrog."
       ],
       "steps": [
-        "Linux: systemctl --user stop gh-token-monitor.service",
-        "Linux: systemctl --user disable gh-token-monitor.service",
-        "Linux: remove ~/.config/systemd/user/gh-token-monitor.service",
-        "Linux: remove ~/.local/bin/gh-token-monitor.sh",
-        "Linux: remove the ~/.config/gh-token-monitor/ directory",
-        "macOS: launchctl unload ~/Library/LaunchAgents/com.user.gh-token-monitor.plist",
-        "macOS: remove that plist, ~/.local/bin/gh-token-monitor.sh, and ~/.config/gh-token-monitor/",
-        "Verify nothing similar restarted: systemctl --user list-units | grep -i monitor",
-        "ONLY AFTER the steps above: rotate GitHub tokens from a separate clean device"
+        "Notify security / incident response and preserve evidence (paths, unit status, timestamps). Do not run destructive cleanup yet.",
+        "When security authorizes ordered response, Linux: systemctl --user stop gh-token-monitor.service",
+        "When security authorizes: systemctl --user disable gh-token-monitor.service",
+        "When security authorizes: remove ~/.config/systemd/user/gh-token-monitor.service (after stop)",
+        "When security authorizes: remove ~/.local/bin/gh-token-monitor.sh and ~/.config/gh-token-monitor/",
+        "When security authorizes: macOS unload/remove com.user.gh-token-monitor.plist and related paths",
+        "When security authorizes and monitor is confirmed stopped: rotate GitHub tokens from a separate clean device",
+        "Rebuild or reimage high-value CI runners if install-time execution is confirmed"
       ],
       "doNotDo": [
-        "Do not revoke GitHub tokens before the monitor is stopped and removed.",
-        "Do not run cleanup from another account or host that shares these tokens until rotation is done."
+        "Do not blindly delete files, services, or tokens without security-team guidance.",
+        "Do not revoke GitHub tokens before the monitor is confirmed stopped under IR direction.",
+        "Do not run cleanup from another account or host that shares these tokens until rotation is done from a clean machine."
       ]
     },
     {
-      "id": "deadman-pgsql-monitor",
-      "title": "PyPI payload dead-man's switch (pgsql-monitor / pgmonitor persistence)",
-      "riskClass": "stop-deadman",
+      "id": "august-2026-ox-keyv-operator-actions",
+      "title": "August 2026 keyv/ChainDrop operator actions (Ox Security / Moshe Simon)",
+      "riskClass": "ordered-manual",
+      "evidence": {
+        "status": "historical campaign reporting; per-host dead-man presence requires separate evidence",
+        "confidence": "medium",
+        "observed": "2026-08-04",
+        "lastVerified": "2026-08-05",
+        "source": "https://www.ox.security/blog/a-new-infostealer-worm-hits-npm-affecting-keyv-and-cacheable/"
+      },
       "appliesTo": {
-        "matchAny": ["pgmonitor", "pgsql-monitor"]
+        "types": [
+          "known-bad-version",
+          "known-bad-requested-version",
+          "known-bad-lockfile-version",
+          "known-bad-lockfile-package",
+          "campaign-indicator",
+          "payload-reference"
+        ],
+        "matchAny": [
+          "keyv",
+          "IfYouBlockThisAPIKeyItWillCrashTheLiveProductionServersOfAllThirdPartyClients",
+          "math_init.js",
+          "Math_Symbol.js",
+          "Shai-Hulud: Here We Go Again",
+          "august-2026-keyv",
+          "SNYK-JS-KEYV-18515941",
+          "opensearch-js#d446803f4c3bc116263faa3499a1d3f95b2825de"
+        ]
       },
       "warning": [
-        "The updated PyPI payload installs monitor-style persistence reported to act as a dead-man's switch.",
-        "Do NOT rotate credentials or delete payload files until this service is stopped and removed."
+        "Ox Security (Moshe Simon / @MosheTov X post + Ox blog) reports ~444 packages / 1,600+ versions / 2B+ monthly downloads in this wave.",
+        "Ox relates the campaign to prior credential-stealing and persistence tradecraft; a broad text or package-name match alone does not prove an active dead-man switch.",
+        "New: production-crash extortion string if token blocked; campaign RSA public key (TeamPCP-copycat hypothesis; attribution unconfirmed).",
+        "This tool remains READ-ONLY. Dead-man paths are NOTIFY ONLY until security directs ordered response.",
+        "Credits: Ox Security and Moshe Simon (@MosheTov; X post \u2192 Ox blog), plus peer researchers Snyk, StepSecurity, Aikido, Wiz, JFrog.",
+        "Attribution: Moshe Simon (Moshe Siman Tov Bustan, @MosheTov) posted the Ox Security findings on X with the Ox blog link."
       ],
       "steps": [
-        "Linux: systemctl --user stop pgsql-monitor.service",
-        "Linux: systemctl --user disable pgsql-monitor.service",
-        "Linux: remove ~/.config/systemd/user/pgsql-monitor.service",
-        "Linux: remove /etc/systemd/system/pgsql-monitor.service if present",
-        "Linux: remove ~/.local/bin/pgmonitor.py",
-        "Linux: remove /usr/bin/pgmonitor.py if present",
-        "Preserve shell history, service-unit state, and /tmp/transformers.pyz metadata before rebuilding",
-        "ONLY AFTER the steps above: rotate credentials from a separate clean device"
+        "Preserve evidence (lockfiles, package metadata, unit status, IDE config hooks) without deleting yet.",
+        "If gh-token-monitor or other dead-man persistence is present, follow STOP-deadman rules first under IR direction before any token revoke.",
+        "From a separate clean device: rotate keys and enable 2FA on GitHub, npm, cloud, SSH, and related accounts (Ox recommended action 1).",
+        "Downgrade affected packages to known-safe versions; reinstall only after inventory against Ox package table / Wiz keyv CSV (Ox recommended action 2).",
+        "Search for infected GitHub accounts and repositories (including 'Shai-Hulud: Here We Go Again' description markers) and revoke/remove them if affected (Ox recommended action 3).",
+        "Re-scan the tree with this read-only scanner after containment work completes."
       ],
       "doNotDo": [
-        "Do not rotate credentials before this persistence is stopped and removed.",
-        "Do not delete evidence files before preserving copies of their metadata for triage."
+        "Do not blindly delete files, services, or tokens without security-team guidance.",
+        "Do not revoke GitHub tokens while dead-man monitor persistence may still be armed, unless IR directs the order.",
+        "Do not treat the eleven seed carriers as a complete package inventory\u2014consult Ox Security and Wiz CSV for scale."
+      ]
+    },
+    {
+      "id": "persistence-pgsql-monitor",
+      "title": "Historical PyPI monitor persistence (pgsql-monitor / pgmonitor)",
+      "riskClass": "ordered-manual",
+      "evidence": {
+        "status": "historical persistence; dead-man behavior and current activity unverified",
+        "confidence": "medium",
+        "observed": "2026-05-12",
+        "lastVerified": "2026-05-12",
+        "source": "https://research.jfrog.com/post/shai-hulud-here-we-go-again/"
+      },
+      "appliesTo": {
+        "matchAny": [
+          "pgmonitor",
+          "pgsql-monitor"
+        ]
+      },
+      "warning": [
+        "The reported PyPI payload installed monitor-style persistence. Available evidence does not establish this entry as an active dead-man switch.",
+        "Treat a match as sequence-sensitive persistence review: contact incident response before changing the service, files, or credentials."
+      ],
+      "steps": [
+        "Follow docs/recovery-playbook.md with incident response; this scanner performs no removal.",
+        "Have incident response verify whether the service exists, what it launches, and whether it is active before authorizing changes.",
+        "If removal is authorized, stop/disable persistence before removing its unit or payload files.",
+        "Only after persistence is safely handled should exposed credentials be rotated from a separate clean device."
+      ],
+      "doNotDo": [
+        "Do not classify pgmonitor/pgsql-monitor as an active dead-man switch from the name alone.",
+        "Do not rotate credentials or delete evidence before incident response determines the safe order."
       ]
     },
     {
       "id": "monitor-kitty-persistence",
       "title": "Monitor-style persistence (kitty-monitor / cat.py)",
-      "riskClass": "stop-deadman",
+      "riskClass": "ordered-manual",
+      "evidence": {
+        "status": "historical persistence; dead-man behavior and current activity unverified",
+        "confidence": "medium",
+        "observed": "2026-06-04",
+        "lastVerified": "2026-06-04",
+        "source": "https://www.ox.security/blog/600000-monthly-downloads-affected-miasma-supply-chain-attack-is-back-on-npm/"
+      },
       "appliesTo": {
-        "matchAny": ["kitty-monitor", "cat.py"]
+        "matchAny": [
+          "kitty-monitor.service",
+          "com.user.kitty-monitor.plist"
+        ]
       },
       "warning": [
-        "This is monitor-style persistence from the same campaign family as the known dead-man's switches.",
-        "Out of caution, treat it with the same ordering: disarm first, rotate credentials after."
+        "This is a historical monitor-style persistence indicator. The evidence does not establish kitty-monitor as a dead-man switch.",
+        "A generic cat.py basename does not trigger this rule; require the specific service/plist artifact and review context."
       ],
       "steps": [
-        "Linux: systemctl --user stop kitty-monitor.service, then systemctl --user disable kitty-monitor.service",
-        "Linux: remove ~/.config/systemd/user/kitty-monitor.service and any cat.py it points at",
-        "macOS: launchctl unload ~/Library/LaunchAgents/com.user.kitty-monitor.plist, then remove the plist",
-        "Verify no monitor-style units remain: systemctl --user list-units | grep -i monitor",
-        "ONLY AFTER the steps above: rotate credentials from a separate clean device"
+        "Follow docs/recovery-playbook.md with incident response; this scanner performs no removal.",
+        "Have incident response verify the service/plist target and active state before authorizing changes.",
+        "If removal is authorized, unload or stop persistence before removing the unit, plist, or referenced payload.",
+        "Only after persistence is safely handled should exposed credentials be rotated from a separate clean device."
       ],
       "doNotDo": [
-        "Do not rotate credentials before this persistence is stopped and removed."
+        "Do not treat cat.py alone as malware or an active dead-man switch.",
+        "Do not rotate credentials or delete files before incident response determines the safe order."
       ]
     },
     {
@@ -96,7 +187,10 @@
       "title": "AI-agent / editor config persistence (.claude, .vscode, .cursor, .gemini)",
       "riskClass": "ordered-manual",
       "appliesTo": {
-        "types": ["miasma-agent-config-trigger", "tool-config-payload-reference"]
+        "types": [
+          "miasma-agent-config-trigger",
+          "tool-config-payload-reference"
+        ]
       },
       "warning": [
         "This persistence fires when an AI agent or editor opens the folder.",
@@ -140,7 +234,7 @@
       ],
       "steps": [
         "Stop package installs, builds, dev servers, and Node processes tied to the affected project",
-        "Preserve the scanner JSON report, lockfiles, install logs, suspicious NodePackages directories, .pkg_history, .pkg_logs, and browser-hist-* artifacts before deletion",
+        "Review lockfiles, install logs, suspicious NodePackages directories, .pkg_history, .pkg_logs, and browser-hist-* artifacts before deletion",
         "Windows: remove the NvmProtocal Run-key entry only after exporting the key and preserving C:\\ProgramData\\NodePackages\\protocal.cjs plus config.json metadata",
         "macOS: launchctl unload ~/Library/LaunchAgents/com.nvm.protocal.plist if present, then preserve and remove the plist and ~/Library/NodePackages/protocal.cjs",
         "Linux: systemctl --user stop nvmconf.service, then systemctl --user disable nvmconf.service if present",
@@ -183,7 +277,7 @@
       ],
       "steps": [
         "Stop npm installs, builds, tests, dev servers, and editor tasks in the affected project",
-        "Preserve package.json, lockfiles, npm logs, node_modules evidence, and the scanner JSON report",
+        "Review package.json, lockfiles, npm logs, and node_modules evidence before cleanup",
         "On Windows, inspect %LOCALAPPDATA%\\Temp, %TEMP%, and %TMP% for recent msedge_update_*.exe, chrome_installer_*.exe, dotnet_host_*.exe, onedrive_setup_*.exe, or teams_update_*.exe files",
         "Preserve file paths, hashes, timestamps, Zone.Identifier alternate data stream state, and process/network evidence before removal",
         "Check for outbound access to files.catbox.moe, especially /j4loim.chk and the Microsoft-Delivery-Optimization/10.0 user-agent",
@@ -225,7 +319,7 @@
       "steps": [
         "Stop normal user activity, installs, builds, and automation on the affected Windows host",
         "If execution is suspected, isolate the host from the network while preserving volatile evidence where incident-response policy allows",
-        "Preserve the scanner JSON report plus scheduled-task, registry, process, service, network, and file-system evidence before cleanup",
+        "Review scheduled-task, registry, process, service, network, and file-system evidence before cleanup",
         "Review the scheduled task named OneDrive Update, especially tasks created with hidden/immediate/startup behavior or AllowStartIfOnBatteries",
         "Review HKCU\\Software\\OneDrive\\Environment and recovery-suppression registry values such as AutoReboot, NoAutoRebootWithLoggedOnUsers, MaintenanceDisabled, and AlwaysAutoRebootAtScheduledTime",
         "Search for .candy encrypted files, High-Alert wallpaper changes, GUID-named staging directories, and evidence of RabbitMQ/AMQP, Redis, or S3-compatible MinIO exfiltration",
@@ -261,7 +355,7 @@
       "steps": [
         "Stop package installs, builds, test runners, and dev servers in this project",
         "If payload execution is possible, disconnect this host from the network",
-        "Preserve lockfiles, package manifests, install logs, and this scanner's report (--report)",
+        "Review lockfiles, package manifests, and install logs before cleanup",
         "Preserve the flagged files' metadata (path, size, timestamps, hash) before removal",
         "Check ~/.ssh/authorized_keys and known_hosts if SSH-propagation findings are present, and triage downstream hosts this machine can reach",
         "If any dead-man's-switch items appear above, complete them before removing payload files",
@@ -355,8 +449,8 @@
       "riskClass": "safe-manual",
       "appliesTo": {
         "types": [
-          "active-campaign-namespace",
-          "active-campaign-package",
+          "campaign-scope-namespace-review",
+          "campaign-package-review",
           "package-review-prompt",
           "composer-package-review-prompt",
           "github-dependency",
@@ -377,18 +471,69 @@
       "doNotDo": [
         "Do not delete anything in this category before verifying - these are review signals, not confirmed malware."
       ]
+    },
+    {
+      "id": "review-actions-warden",
+      "title": "Review GitHub Actions workflows with actions-warden (read-only)",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "types": [
+          "payload-file",
+          "payload-reference",
+          "known-bad-version",
+          "known-bad-requested-version",
+          "known-bad-lockfile-version",
+          "known-bad-lockfile-package",
+          "workflow-encoded-exec",
+          "workflow-token-surface",
+          "workflow-indicator",
+          "campaign-indicator",
+          "token-description-indicator",
+          "miasma-agent-config-trigger",
+          "miasma-github-setup-payload",
+          "miasma-second-stage-shape"
+        ],
+        "matchAny": [
+          "gh-token-monitor",
+          "GITHUB_TOKEN",
+          "workflow",
+          ".github/workflows",
+          "Shai-Hulud: Here We Go Again",
+          "keyv",
+          "createPublicGithubExfilRepo",
+          "Dependabot Updates",
+          "codeql_analysis.yml"
+        ]
+      },
+      "warning": [
+        "After token theft or supply-chain compromise, attackers often inject GitHub Actions workflows.",
+        "actions-warden is a separate PyPI read-only auditor for risky or injected workflow config.",
+        "This remediation plan does not run actions-warden for you; you run it."
+      ],
+      "steps": [
+        "From a clean or contained review environment: pipx install actions-warden (or pip install actions-warden)",
+        "Run: actions-warden /path/to/repo",
+        "Optional: actions-warden /path/to/repo --json (stdout only)",
+        "Review any blocking findings before re-enabling CI, merging, or trusting the pipeline",
+        "Coordinate with security; do not blindly delete workflows without evidence preservation"
+      ],
+      "doNotDo": [
+        "Do not treat a clean actions-warden result as proof the pipeline is safe.",
+        "Do not execute untrusted workflow jobs while reviewing injection findings.",
+        "Do not skip actions-warden if GitHub tokens or publish rights may have been stolen."
+      ]
     }
   ],
   "generalStepsByRisk": {
     "likely-exposed": [
       "Work through the items above in the order printed: STOP items first, then CAUTION, then REVIEW.",
-      "Keep a copy of the JSON report (--report) as your incident record.",
+      "This scanner does not save or retain findings; JSON is stdout-only.",
       "After cleanup, re-run this scanner; a clean result means these indicators are gone, not that the host is proven clean.",
       "If payload execution is confirmed, rebuild from a clean baseline rather than trusting spot cleanup."
     ],
     "possible-exposure": [
       "Work through the items above before running further installs or builds.",
-      "Keep a copy of the JSON report (--report) for your records.",
+      "This scanner does not save or retain findings; JSON is stdout-only.",
       "Re-run this scanner after addressing the findings."
     ],
     "review-needed": [

@@ -38,6 +38,7 @@ function buildRemediationPlan(report, remediationData) {
       warning: Array.isArray(rule.warning) ? rule.warning : [],
       steps: Array.isArray(rule.steps) ? rule.steps : [],
       doNotDo: Array.isArray(rule.doNotDo) ? rule.doNotDo : [],
+      evidence: rule.evidence && typeof rule.evidence === "object" ? rule.evidence : null,
       matchedFindings: matchedFindings.map((item) => ({
         severity: item.severity,
         type: item.type,
@@ -71,7 +72,7 @@ function ruleMatchesFinding(rule, finding) {
   if (hasTypeFilter && !applies.types.includes(finding.type)) return false;
 
   if (hasMarkerFilter) {
-    const haystack = `${finding.message || ""}\n${finding.path || ""}`.toLowerCase();
+    const haystack = `${finding.message || ""}\n${path.basename(finding.path || "")}\n${finding.indicator || ""}`.toLowerCase();
     return applies.matchAny.some(
       (marker) => typeof marker === "string" && marker.length > 0 && haystack.includes(marker.toLowerCase())
     );
