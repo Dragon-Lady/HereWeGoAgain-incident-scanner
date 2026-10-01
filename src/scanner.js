@@ -94,7 +94,8 @@ function loadSplitAdvisoryData(dataDir) {
     packages: readJsonFile(path.join(dataDir, "packages", "npm.json")),
     packageCampaigns: [
       readJsonFile(path.join(dataDir, "campaigns", "august-2026-chaindrop.json")),
-      readJsonFile(path.join(dataDir, "campaigns", "may-2026-teampcp-copycats.json"))
+      readJsonFile(path.join(dataDir, "campaigns", "may-2026-teampcp-copycats.json")),
+      readJsonFile(path.join(dataDir, "campaigns", "2026-08-30-trinitite.json"))
     ],
     pypiPackages: readJsonFile(path.join(dataDir, "packages", "pypi.json")),
     composerPackages: readJsonFile(path.join(dataDir, "packages", "composer.json"))

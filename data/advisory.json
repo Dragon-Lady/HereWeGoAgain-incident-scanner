@@ -8,6 +8,7 @@
   },
   "sources": [
     "https://research.jfrog.com/post/shai-hulud-here-we-go-again/",
+    "https://research.jfrog.com/post/shai-hulud-trinitite/",
     "https://tanstack.com/blog/npm-supply-chain-compromise-postmortem",
     "https://github.com/advisories/GHSA-g7cv-rxg3-hmpx",
     "https://github.com/TanStack/router/issues/7383",

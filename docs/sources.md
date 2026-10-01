@@ -5,6 +5,7 @@ page supplies human-readable labels for every catalog entry; the maintenance
 test prevents the two views from drifting.
 
 - JFrog Security Research: https://research.jfrog.com/post/shai-hulud-here-we-go-again/
+- JFrog Trinitite: https://research.jfrog.com/post/shai-hulud-trinitite/
 - The Hacker News / JFrog PostCSS-lookalike Windows RAT summary: https://thehackernews.com/2026/06/malicious-npm-packages-pose-as-postcss.html
 - TanStack official postmortem: https://tanstack.com/blog/npm-supply-chain-compromise-postmortem
 - GitHub Security Advisory GHSA-g7cv-rxg3-hmpx / CVE-2026-45321: https://github.com/advisories/GHSA-g7cv-rxg3-hmpx

@@ -68,6 +68,48 @@
       ]
     },
     {
+      "id": "trinitite-openapi-react-query-codegen",
+      "title": "Trinitite malicious @7nohe/openapi-react-query-codegen",
+      "riskClass": "ordered-manual",
+      "evidence": {
+        "status": "historical-confirmed package versions; local monitor installation is separate evidence",
+        "confidence": "high for the JFrog version list, not for current activity on this host",
+        "observed": "2026-08-30",
+        "lastVerified": "2026-10-01",
+        "sources": [
+          "https://research.jfrog.com/post/shai-hulud-trinitite/"
+        ]
+      },
+      "appliesTo": {
+        "matchAny": [
+          "@7nohe/openapi-react-query-codegen",
+          "systemd-detect-fash",
+          "sysvinit-detect-fash",
+          "3FWCvzduYZg.js",
+          "is_it_this_simple.js"
+        ]
+      },
+      "warning": [
+        "JFrog Trinitite. A package match is not proof the monitor is installed.",
+        "Isolate the machine and stop installs, builds, and dev servers.",
+        "Do not revoke GitHub tokens until monitor persistence is confirmed gone.",
+        "Valid provenance is not a clean bill.",
+        "NOTIFY ONLY: this tool does not delete files or revoke tokens."
+      ],
+      "steps": [
+        "Isolate the machine and stop installs, builds, and dev servers in this project.",
+        "Pin @7nohe/openapi-react-query-codegen to the last safe line for the series you were on: 0.5.3, 1.6.2, 2.2.0, or 3.0.2.",
+        "Do not revoke GitHub tokens until any monitor persistence is confirmed gone.",
+        "After that persistence is confirmed gone, rotate credentials from a separate clean machine.",
+        "Treat confirmed execution as host compromise and follow incident response. This scanner stays notify-only."
+      ],
+      "doNotDo": [
+        "Do not revoke GitHub tokens while monitor persistence may still be present.",
+        "Do not treat a valid provenance attestation as proof the version is clean.",
+        "Do not run the package or its install scripts to confirm the finding."
+      ]
+    },
+    {
       "id": "august-2026-keyv-operator-actions",
       "title": "August 2026 keyv/ChainDrop operator actions",
       "riskClass": "ordered-manual",

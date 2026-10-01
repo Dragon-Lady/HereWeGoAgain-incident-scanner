@@ -1,0 +1,28 @@
+{
+  "campaign": "JFrog Trinitite @7nohe/openapi-react-query-codegen",
+  "status": "historical-confirmed",
+  "confidence": "high for the exact malicious versions named by JFrog; current host activity is not established by a package match",
+  "observed": "2026-08-30",
+  "lastVerified": "2026-10-01",
+  "retired": false,
+  "currentActivity": "unverified",
+  "deadManPolicy": "A package or indicator match is not evidence that monitor persistence is installed. Do not revoke GitHub tokens until that persistence is confirmed gone.",
+  "inclusionRule": "Exact malicious versions named in the JFrog Trinitite report. Last safe lines are 0.5.3, 1.6.2, 2.2.0, and 3.0.2 and are not listed.",
+  "sources": [
+    "https://research.jfrog.com/post/shai-hulud-trinitite/"
+  ],
+  "packages": {
+    "@7nohe/openapi-react-query-codegen": [
+      "0.5.4",
+      "0.5.5",
+      "1.6.3",
+      "1.6.4",
+      "2.2.1",
+      "2.2.2",
+      "3.0.3",
+      "3.0.4",
+      "0.0.0-365d4eb738d3146583431948d3ba6e27a32556be",
+      "0.0.0-ec7876d6c917dad516ba69bbfafc948b834bf0ab"
+    ]
+  }
+}

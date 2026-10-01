@@ -1813,4 +1813,25 @@ assert(compromisedWithHash.findings.some((finding) => finding.type === "payload-
   assert(!keyvSafeReport.findings.some((f) => f.type === "campaign-package-review"));
   fs.rmSync(keyvSafeRoot, { recursive: true, force: true });
 
+  const trinititeRoot = makeTempDir("hwg-trinitite-");
+  try {
+    write(path.join(trinititeRoot, "package.json"), JSON.stringify({
+      dependencies: { "@7nohe/openapi-react-query-codegen": "1.6.3" }
+    }));
+    write(path.join(trinititeRoot, "note.js"), "systemd-detect-fash\n");
+    const trinititeReport = scanTarget(trinititeRoot);
+    assert.strictEqual(trinititeReport.risk, "likely-exposed");
+    const versionFinding = trinititeReport.findings.find((finding) => finding.type === "known-bad-requested-version" && finding.message.includes("@7nohe/openapi-react-query-codegen"));
+    assert(versionFinding, "trinitite version should be flagged");
+    assert(versionFinding.evidence && versionFinding.evidence.campaign.includes("Trinitite"));
+    assert(trinititeReport.findings.some((finding) => finding.message.includes("systemd-detect-fash")));
+    const plan = require("../src/remediation").buildRemediationPlan(trinititeReport);
+    const trinititeItem = plan.items.find((item) => item.id === "trinitite-openapi-react-query-codegen");
+    assert(trinititeItem, "trinitite remediation rule should match");
+    assert(trinititeItem.steps.some((step) => /monitor persistence is confirmed gone/i.test(step)));
+    assert.strictEqual(plan.hasDeadManSwitch, false);
+  } finally {
+    fs.rmSync(trinititeRoot, { recursive: true, force: true });
+  }
+
   console.log("smoke tests passed");
