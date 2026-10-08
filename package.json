@@ -1,6 +1,6 @@
 {
   "name": "herewegoagain-incident-scanner",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Read-only CLI scanner for Shai-Hulud: Here We Go Again npm, PyPI, and Composer indicators.",
   "license": "MIT",
   "type": "commonjs",
