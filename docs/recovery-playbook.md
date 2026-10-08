@@ -117,3 +117,14 @@ payload filenames, network indicators, or campaign marker strings. Do not assume
 
 This project cannot prove a machine is clean. A clean scan only means the known
 indicators checked by this version were not observed.
+
+## Tensorlake response order (2026-10-08)
+
+For exact Tensorlake 0.5.144 or matching payload evidence, establish whether
+execution occurred. If it may have, preserve evidence and ask incident
+responders to assess and safely disarm token-monitor persistence before
+revoking credentials from any device. A clean device alone does not prevent
+remote revocation from being noticed by a running monitor. Rotate afterward
+from a clean device. Do not test token revocation or run downloaded samples.
+A candidate monitor pathname is not proof of an armed switch. The scanner
+only reports evidence and guidance; see [the dated advisory](advisory.md#tensorlake-response-update--2026-10-08).

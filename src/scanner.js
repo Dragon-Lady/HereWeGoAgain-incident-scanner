@@ -1,4 +1,5 @@
 const fs = require("fs");
+const tensorlake = require("./tensorlake");
 const path = require("path");
 const crypto = require("crypto");
 
@@ -31,7 +32,7 @@ const LANGFLOW_PYTHON_REPL_FIXED = "1.9.4";
 const LIVEWIRE_AFFECTED_MIN = "3.0.0";
 const LIVEWIRE_FIXED = "3.6.4";
 const RECOVERY_GUIDANCE_URL = "https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner/blob/main/docs/recovery-playbook.md";
-const COVERAGE_FINDING_TYPES = new Set(["advisory-data-fallback", "target-unreadable", "directory-unreadable", "read-error", "parse-error", "large-lockfile-skipped"]);
+const COVERAGE_FINDING_TYPES = new Set(["tensorlake-coverage-incomplete", "advisory-data-fallback", "target-unreadable", "directory-unreadable", "read-error", "parse-error", "large-lockfile-skipped"]);
 const TOKEN_MONITOR_MARKER = ["gh-token", "monitor"].join("-");
 const SEQUENCE_SENSITIVE_PERSISTENCE_FILES = new Set([
   `${TOKEN_MONITOR_MARKER}.service`,
@@ -120,6 +121,7 @@ function scanTarget(targetPath, options = {}) {
   walk(root, (filePath, dirent) => {
     seen.files += 1;
     const base = dirent.name;
+    findings.push(...tensorlake.inspectFile(filePath));
 
     if (payloadFiles.has(base)) {
       findings.push(finding(
@@ -291,6 +293,7 @@ function scanPackageJson(filePath, advisory, findings) {
   try {
     rawText = fs.readFileSync(filePath, "utf8");
     manifest = JSON.parse(rawText);
+    if (!manifest || typeof manifest !== "object" || Array.isArray(manifest)) throw new Error("Invalid package metadata");
   } catch (error) {
     findings.push(finding("medium", "parse-error", filePath, "Could not parse package.json; dependency coverage is incomplete."));
     return;
@@ -1311,8 +1314,9 @@ function indicatorSeverity(value, evidence) {
 }
 
 function safeRemovalGuidance(findings) {
+  const incidentGuidance = tensorlake.safeRemovalGuidance(findings);
   const hasSequenceSensitivePersistence = findings.some((item) =>
-    item.type === "payload-file" && SEQUENCE_SENSITIVE_PERSISTENCE_FILES.has(path.basename(item.path || "").toLowerCase())
+    item.type === "token-monitor-artifact" || (item.type === "payload-file" && SEQUENCE_SENSITIVE_PERSISTENCE_FILES.has(path.basename(item.path || "").toLowerCase()))
   );
   const hasPersistence = hasSequenceSensitivePersistence || findings.some((item) =>
     ["miasma-agent-config-trigger", "tool-config-payload-reference"].includes(item.type) ||
@@ -1320,13 +1324,14 @@ function safeRemovalGuidance(findings) {
   );
 
   return {
-    required: hasPersistence,
+    required: hasPersistence || incidentGuidance.required,
+    activation: "not-assessed",
     sequenceSensitive: hasSequenceSensitivePersistence,
     firstAction: hasSequenceSensitivePersistence
-      ? "Pause and contact incident response. Do not revoke or rotate credentials until the suspected monitor has been safely assessed and disarmed in the documented order."
+      ? "Pause and contact incident response. Do not revoke or rotate credentials from any device until the suspected monitor has been safely assessed and disarmed in the documented order."
       : hasPersistence
         ? "Pause and review the persistence finding with incident response before changing or removing files, services, or credentials."
-        : "Review findings before making changes. This scanner does not remove, quarantine, disable, or modify anything.",
+        : incidentGuidance.required ? incidentGuidance.firstAction : "Review findings before making changes. This scanner does not remove, quarantine, disable, or modify anything.",
     instructionDestination: RECOVERY_GUIDANCE_URL,
     localDocumentation: "docs/recovery-playbook.md",
     retention: "The scanner does not save findings; console and JSON output are stdout-only."

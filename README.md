@@ -1,5 +1,10 @@
 # Here We Go Again Incident Scanner
 
+October 8 update: exact Tensorlake 0.5.144 package/payload checks and ordered
+token-monitor warnings are in the default scan. See the
+[dated evidence, limitations and inert test instructions](docs/advisory.md#tensorlake-response-update--2026-10-08).
+
+
 Read-only exposure scanner and recovery guidance for the May 2026
 `Shai-Hulud: Here We Go Again` npm/PyPI supply-chain incident and related
 Mini Shai-Hulud npm/PyPI/Composer indicators.

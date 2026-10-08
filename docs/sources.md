@@ -153,3 +153,10 @@ present in at least two of the Wiz, JFrog, and SafeDep public inventories:
 their collection times and inclusion criteria differ. The snapshot excludes
 101 pairs seen in only one of those inventories and does not claim current
 campaign activity.
+
+## Tensorlake, checked 2026-10-08
+
+- Discovery: https://x.com/MosheTov/status/2108048212724425206
+- Technical analysis: https://www.stepsecurity.io/blog/tensorlake-npm-compromised-hostage-token-worm
+- Source revision: https://github.com/tensorlakeai/tensorlake/tree/6386121c561e74fec143a138d5cc3d3bbabdfe8c/typescript
+- Upstream report (not a maintainer confirmation): https://github.com/tensorlakeai/tensorlake/issues/1014

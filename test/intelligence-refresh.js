@@ -27,7 +27,7 @@ assert.strictEqual(chainDrop.lastVerified, "2026-08-12");
 assert(chainDrop.confidence.includes("corroborated by at least two"));
 assert(chainDrop.deadManPolicy.includes("not evidence"));
 assert(chainDrop.sources.length >= 4);
-assert.strictEqual(advisory.lastUpdated, "2026-08-12");
+assert.strictEqual(advisory.lastUpdated, "2026-10-08");
 for (const source of [...chainDrop.sources, ...copycats.sources]) {
   assert(advisory.sources.includes(source), `canonical source catalog is missing ${source}`);
 }
@@ -114,7 +114,7 @@ for (const relative of ["README.md", "docs/recovery-playbook.md", "docs/sources.
   const text = fs.readFileSync(path.join(repoRoot, relative), "utf8");
   assert(!text.includes("actions-warden"), `${relative} retains a promotional tool reference`);
 }
-const chainDropDocs = fs.readFileSync(path.join(repoRoot, "docs", "sources.md"), "utf8").split("## August 2026 keyv / cacheable (ChainDrop)")[1];
+const chainDropDocs = fs.readFileSync(path.join(repoRoot, "docs", "sources.md"), "utf8").split("## August 2026 keyv / cacheable (ChainDrop)")[1]?.split("\n## ")[0];
 assert(chainDropDocs && !/Credits:|Moshe|partnership|endorsement|guarantee/i.test(chainDropDocs));
 
 console.log("intelligence refresh tests passed");

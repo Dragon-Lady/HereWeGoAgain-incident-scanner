@@ -28,8 +28,8 @@ function main(argv) {
     }
   }
 
-  if (report.risk === "likely-exposed") return 2;
   if (report.safeRemovalGuidance.sequenceSensitive) return 4;
+  if (report.risk === "likely-exposed") return 2;
   return report.coverage.complete ? 0 : 3;
 }
 

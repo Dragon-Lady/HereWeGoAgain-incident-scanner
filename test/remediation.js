@@ -167,6 +167,7 @@ try {
 
 // Every rule references only finding types the scanner can emit, or uses markers.
 const KNOWN_FINDING_TYPES = new Set([
+  "token-monitor-artifact", "tensorlake-exact-version", "tensorlake-payload-hash",
   "payload-file", "payload-hash", "payload-reference", "read-error", "parse-error",
   "known-bad-version", "known-bad-requested-version", "known-bad-lockfile-version",
   "known-bad-lockfile-package", "known-bad-pypi-version", "known-bad-composer-version",

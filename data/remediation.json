@@ -26,18 +26,20 @@
         "status": "historical-confirmed capability; local installation or activation must be established",
         "confidence": "high for documented behavior, not for current activity on this host",
         "observed": "2026-05-12",
-        "lastVerified": "2026-08-12",
+        "lastVerified": "2026-10-08",
         "sources": [
           "https://research.jfrog.com/post/shai-hulud-here-we-go-again/",
           "https://www.wiz.io/blog/keyv-and-cacheable-npm-supply-chain-attack",
           "https://research.jfrog.com/post/shai-hulud-is-back-august/",
           "https://safedep.io/keyv-npm-supply-chain-compromise/",
-          "https://www.stepsecurity.io/blog/chaindrop-npm-worm"
+          "https://www.stepsecurity.io/blog/chaindrop-npm-worm",
+          "https://www.stepsecurity.io/blog/tensorlake-npm-compromised-hostage-token-worm"
         ]
       },
       "appliesTo": {
         "types": [
-          "payload-file"
+          "payload-file",
+          "token-monitor-artifact"
         ],
         "matchAny": [
           "gh-token-monitor"
@@ -45,6 +47,7 @@
       },
       "warning": [
         "Independent incident research documented this persistence watching a GitHub token and reacting when it is revoked; a match does not establish that the infrastructure or campaign is currently active.",
+        "October 2026 Tensorlake research reports renewed deployment of this monitor. Local execution and activation are not established by a package or filename match. Do not revoke its token from ANY device before incident response confirms safe disarm.",
         "August analyses differed on activation: some observed or reconstructed operational behavior, while another found the capability embedded without an observed call site. Confirm local installation and service state before classifying it as armed.",
         "NOTIFY ONLY: Do not blindly delete or remove anything until further guidance from security teams.",
         "Do NOT revoke or rotate GitHub tokens from a possibly infected host.",
@@ -65,6 +68,28 @@
         "Do not blindly delete files, services, or tokens without security-team guidance.",
         "Do not revoke GitHub tokens before the monitor is confirmed stopped under IR direction.",
         "Do not run cleanup from another account or host that shares these tokens until rotation is done from a clean machine."
+      ]
+    },
+    {
+      "id": "tensorlake-october-2026",
+      "title": "Tensorlake October 2026 package or payload evidence",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "types": [
+          "tensorlake-exact-version",
+          "tensorlake-payload-hash"
+        ]
+      },
+      "warning": [
+        "A package or payload match is not proof that a dead-man switch is installed or armed. If execution occurred, response order matters."
+      ],
+      "steps": [
+        "Do not install, import, build, or open untrusted editor tasks. Preserve evidence.",
+        "Use incident response to assess and safely disarm token-monitor persistence before revoking any credentials, including from another device.",
+        "Rotate exposed credentials afterward from a clean device; rebuild compromised environments."
+      ],
+      "doNotDo": [
+        "Do not run samples, remove evidence automatically, or use token validity checks to test for compromise."
       ]
     },
     {
