@@ -12,6 +12,17 @@ const dependencyFields = [
   "bundledDependencies", "bundleDependencies", "overrides", "resolutions", "workspaces",
 ];
 const manifestGitRule = "workflow.npm_v12_git_dependency";
+const reviewedScripts = {
+  scan: "node bin/herewegoagain-incident-scanner.js",
+  smoke: "node bin/herewegoagain-incident-scanner.js --help",
+  test: [
+    "node --check bin/herewegoagain-incident-scanner.js", "node --check src/scanner.js",
+    "node --check src/remediation.js", "node test/smoke.js", "node test/remediation.js",
+    "node test/safety-contract.js", "node test/maintenance.js", "node test/intelligence-refresh.js",
+    "node --check src/tensorlake.js", "node test/tensorlake.js",
+  ].join(" && "),
+  "package:check": "npm pack --dry-run --ignore-scripts",
+};
 
 function assertMetadataExceptionSafe(manifest, policy) {
   const allowed = policy.split(/\r?\n/).some((line) => {
@@ -22,6 +33,15 @@ function assertMetadataExceptionSafe(manifest, policy) {
   for (const field of dependencyFields) {
     assert(!Object.hasOwn(manifest, field),
       `Remove or re-scope the package.json Git-source exception before adding ${field}`);
+  }
+  // Script changes require re-review instead of guessing which commands fetch Git.
+  if (Object.hasOwn(manifest, "scripts")) {
+    assert(manifest.scripts && typeof manifest.scripts === "object" && !Array.isArray(manifest.scripts),
+      "Remove or re-scope the package.json Git-source exception before changing scripts");
+    for (const [name, command] of Object.entries(manifest.scripts)) {
+      assert(Object.hasOwn(reviewedScripts, name) && command === reviewedScripts[name],
+        `Remove or re-scope the package.json Git-source exception before changing script ${name}`);
+    }
   }
   // Only these three descriptive URL fields were reviewed for the exception.
   const remaining = { ...manifest };
@@ -48,6 +68,15 @@ const projectMetadata = {
   bugs: { url: "https://github.com/example/project/issues" },
 };
 assert.doesNotThrow(() => assertMetadataExceptionSafe(projectMetadata, metadataPolicy));
+assert.doesNotThrow(() => assertMetadataExceptionSafe({ scripts: reviewedScripts }, metadataPolicy));
+for (const [name, command] of Object.entries(reviewedScripts)) {
+  const candidate = { scripts: { ...reviewedScripts, [name]: `${command} && echo changed` } };
+  assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /changing script/);
+  assert.doesNotThrow(() => assertMetadataExceptionSafe(candidate, ""));
+}
+for (const scripts of [null, [], "node example.js"]) {
+  assert.throws(() => assertMetadataExceptionSafe({ scripts }, metadataPolicy), /changing scripts/);
+}
 for (const script of ["preinstall", "install", "postinstall", "prepare", "prepublishOnly", "custom"]) {
   for (const source of [
     "git+https://example.invalid/repository.git", "git://example.invalid/repository.git",
@@ -55,9 +84,11 @@ for (const script of ["preinstall", "install", "postinstall", "prepare", "prepub
     "git+file:///example/repository.git", "GIT+SSH://git@example.invalid/repository.git",
     "github:example/project", "gitlab:example/project", "bitbucket:example/project",
     "git@github.com:example/project.git", "HTTPS://GITHUB.COM/example/project.git",
+    "gist:101a11beef", "git@gitlab.com:example/project.git",
+    "https://gitlab.com/example/project.git", "example/project",
   ]) {
     const candidate = { ...projectMetadata, scripts: { [script]: `npm install ${source}` } };
-    assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /outside project metadata/);
+    assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /changing script/);
     assert.doesNotThrow(() => assertMetadataExceptionSafe(candidate, ""));
   }
 }
