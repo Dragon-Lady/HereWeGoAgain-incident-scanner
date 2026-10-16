@@ -6,8 +6,7 @@ data/indicators.json workflow.trinitite_payload_marker
 data/remediation.json workflow.trinitite_payload_marker
 
 # Homepage, repository, and issues URLs; this manifest has no dependencies.
-# test/maintenance.js rejects dependency declarations and Git sources outside
-# homepage, repository.url, and bugs.url while this rule is allowed.
-# Scripts must match the explicit reviewed-command baseline in that test.
-# Remove or re-scope before adding dependencies, workspaces, or changing scripts.
+# test/maintenance.js binds this exception to the exact reviewed parsed manifest.
+# CI runs it directly before npm scripts. Any manifest edit requires re-review;
+# remove this exception if a hit is no longer descriptive project metadata.
 package.json workflow.npm_v12_git_dependency

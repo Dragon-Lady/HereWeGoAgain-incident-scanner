@@ -7,22 +7,10 @@ const path = require("path");
 const repoRoot = path.join(__dirname, "..");
 const tempHelper = path.join(__dirname, "helpers", "temp.js");
 
-const dependencyFields = [
-  "dependencies", "devDependencies", "optionalDependencies", "peerDependencies",
-  "bundledDependencies", "bundleDependencies", "overrides", "resolutions", "workspaces",
-];
 const manifestGitRule = "workflow.npm_v12_git_dependency";
-const reviewedScripts = {
-  scan: "node bin/herewegoagain-incident-scanner.js",
-  smoke: "node bin/herewegoagain-incident-scanner.js --help",
-  test: [
-    "node --check bin/herewegoagain-incident-scanner.js", "node --check src/scanner.js",
-    "node --check src/remediation.js", "node test/smoke.js", "node test/remediation.js",
-    "node test/safety-contract.js", "node test/maintenance.js", "node test/intelligence-refresh.js",
-    "node --check src/tensorlake.js", "node test/tensorlake.js",
-  ].join(" && "),
-  "package:check": "npm pack --dry-run --ignore-scripts",
-};
+// Re-review all package hits before refreshing this baseline; remove the exception
+// if any hit is an executable Git fetch or a dependency rather than project metadata.
+const reviewedManifestDigest = "293fbbf36afd2acd972db60ed8ba59f15f074af552037091ee9aedc031096a93";
 
 function assertMetadataExceptionSafe(manifest, policy) {
   const allowed = policy.split(/\r?\n/).some((line) => {
@@ -30,76 +18,56 @@ function assertMetadataExceptionSafe(manifest, policy) {
     return file === "package.json" && rules.join(",").split(",").includes(manifestGitRule);
   });
   if (!allowed) return;
-  for (const field of dependencyFields) {
-    assert(!Object.hasOwn(manifest, field),
-      `Remove or re-scope the package.json Git-source exception before adding ${field}`);
-  }
-  // Script changes require re-review instead of guessing which commands fetch Git.
-  if (Object.hasOwn(manifest, "scripts")) {
-    assert(manifest.scripts && typeof manifest.scripts === "object" && !Array.isArray(manifest.scripts),
-      "Remove or re-scope the package.json Git-source exception before changing scripts");
-    for (const [name, command] of Object.entries(manifest.scripts)) {
-      assert(Object.hasOwn(reviewedScripts, name) && command === reviewedScripts[name],
-        `Remove or re-scope the package.json Git-source exception before changing script ${name}`);
-    }
-  }
-  // Only these three descriptive URL fields were reviewed for the exception.
-  const remaining = { ...manifest };
-  if (typeof remaining.homepage === "string") delete remaining.homepage;
-  for (const field of ["repository", "bugs"]) {
-    if (remaining[field] && typeof remaining[field] === "object" && !Array.isArray(remaining[field])) {
-      remaining[field] = { ...remaining[field] };
-      if (typeof remaining[field].url === "string") delete remaining[field].url;
-    }
-  }
-  assert(!/(?:git(?:\+[a-z][a-z0-9.-]*)?|github|gitlab|bitbucket):|github\.com[:/]/i.test(JSON.stringify(remaining)),
-    "Remove or re-scope the package.json Git-source exception before adding Git sources outside project metadata");
+  const digest = require("crypto").createHash("sha256").update(JSON.stringify(manifest)).digest("hex");
+  assert.strictEqual(digest, reviewedManifestDigest,
+    "Manifest changed: remove or re-review the package.json Git-source exception");
 }
 
+const manifest = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8"));
 const metadataPolicy = `package.json ${manifestGitRule}`;
-for (const field of dependencyFields) {
-  const candidate = { [field]: { fixture: "git+https://example.invalid/repository.git" } };
-  assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /Remove or re-scope/);
+assertMetadataExceptionSafe(manifest, fs.readFileSync(path.join(repoRoot, ".push-guard-allow"), "utf8"));
+assert.doesNotThrow(() => assertMetadataExceptionSafe(structuredClone(manifest), metadataPolicy));
+
+function assertManifestChangeRejected(mutate) {
+  const candidate = structuredClone(manifest);
+  mutate(candidate);
+  assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /Manifest changed/);
   assert.doesNotThrow(() => assertMetadataExceptionSafe(candidate, ""));
 }
-const projectMetadata = {
-  homepage: "https://github.com/example/project#readme",
-  repository: { type: "git", url: "git+https://github.com/example/project.git" },
-  bugs: { url: "https://github.com/example/project/issues" },
-};
-assert.doesNotThrow(() => assertMetadataExceptionSafe(projectMetadata, metadataPolicy));
-assert.doesNotThrow(() => assertMetadataExceptionSafe({ scripts: reviewedScripts }, metadataPolicy));
-for (const [name, command] of Object.entries(reviewedScripts)) {
-  const candidate = { scripts: { ...reviewedScripts, [name]: `${command} && echo changed` } };
-  assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /changing script/);
-  assert.doesNotThrow(() => assertMetadataExceptionSafe(candidate, ""));
+
+for (const field of [
+  "dependencies", "devDependencies", "optionalDependencies", "peerDependencies",
+  "bundledDependencies", "bundleDependencies", "overrides", "resolutions", "workspaces",
+]) {
+  assertManifestChangeRejected((candidate) => { candidate[field] = { fixture: "example/project" }; });
 }
-for (const scripts of [null, [], "node example.js"]) {
-  assert.throws(() => assertMetadataExceptionSafe({ scripts }, metadataPolicy), /changing scripts/);
+for (const name of Object.keys(manifest.scripts)) {
+  assertManifestChangeRejected((candidate) => { delete candidate.scripts[name]; });
+  assertManifestChangeRejected((candidate) => { candidate.scripts[name] += " && echo changed"; });
 }
-for (const script of ["preinstall", "install", "postinstall", "prepare", "prepublishOnly", "custom"]) {
-  for (const source of [
-    "git+https://example.invalid/repository.git", "git://example.invalid/repository.git",
-    "git+http://example.invalid/repository.git", "git+ssh://git@example.invalid/repository.git",
-    "git+file:///example/repository.git", "GIT+SSH://git@example.invalid/repository.git",
-    "github:example/project", "gitlab:example/project", "bitbucket:example/project",
-    "git@github.com:example/project.git", "HTTPS://GITHUB.COM/example/project.git",
-    "gist:101a11beef", "git@gitlab.com:example/project.git",
-    "https://gitlab.com/example/project.git", "example/project",
-  ]) {
-    const candidate = { ...projectMetadata, scripts: { [script]: `npm install ${source}` } };
-    assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /changing script/);
-    assert.doesNotThrow(() => assertMetadataExceptionSafe(candidate, ""));
+assertManifestChangeRejected((candidate) => { delete candidate.scripts; });
+for (const scripts of [null, [], {}, "node example.js"]) {
+  assertManifestChangeRejected((candidate) => { candidate.scripts = scripts; });
+}
+for (const source of [
+  "git+https://example.invalid/repository.git", "git://example.invalid/repository.git",
+  "git+http://example.invalid/repository.git", "git+ssh://git@example.invalid/repository.git",
+  "git+file:///example/repository.git", "GIT+SSH://git@example.invalid/repository.git",
+  "github:example/project", "gitlab:example/project", "bitbucket:example/project",
+  "git@github.com:example/project.git", "HTTPS://GITHUB.COM/example/project.git",
+  "gist:101a11beef", "git@gitlab.com:example/project.git",
+  "https://gitlab.com/example/project.git", "https://bitbucket.org/example/project.git",
+  "example/project",
+]) {
+  for (const script of ["preinstall", "install", "postinstall", "prepare", "prepublishOnly", "custom"]) {
+    assertManifestChangeRejected((candidate) => { candidate.scripts[script] = "npm install " + source; });
+  }
+  for (const field of ["config", "repository", "bugs", "homepage"]) {
+    assertManifestChangeRejected((candidate) => { candidate[field] = { extra: source }; });
   }
 }
-for (const field of ["config", "repository", "bugs", "homepage"]) {
-  const candidate = { ...projectMetadata, [field]: { extra: "github:example/project" } };
-  assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /outside project metadata/);
-}
-assertMetadataExceptionSafe(
-  JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")),
-  fs.readFileSync(path.join(repoRoot, ".push-guard-allow"), "utf8")
-);
+assertManifestChangeRejected((candidate) => { candidate.version = "0.0.0"; });
+assertManifestChangeRejected((candidate) => { candidate.homepage = "https://example.invalid/updated"; });
 
 const failureScript = [
   'const fs = require("fs");',
