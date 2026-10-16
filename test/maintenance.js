@@ -32,7 +32,7 @@ function assertMetadataExceptionSafe(manifest, policy) {
       if (typeof remaining[field].url === "string") delete remaining[field].url;
     }
   }
-  assert(!/(?:git(?:\+https?)?|github|gitlab|bitbucket):|github\.com[:/]/i.test(JSON.stringify(remaining)),
+  assert(!/(?:git(?:\+[a-z][a-z0-9.-]*)?|github|gitlab|bitbucket):|github\.com[:/]/i.test(JSON.stringify(remaining)),
     "Remove or re-scope the package.json Git-source exception before adding Git sources outside project metadata");
 }
 
@@ -51,6 +51,8 @@ assert.doesNotThrow(() => assertMetadataExceptionSafe(projectMetadata, metadataP
 for (const script of ["preinstall", "install", "postinstall", "prepare", "prepublishOnly", "custom"]) {
   for (const source of [
     "git+https://example.invalid/repository.git", "git://example.invalid/repository.git",
+    "git+http://example.invalid/repository.git", "git+ssh://git@example.invalid/repository.git",
+    "git+file:///example/repository.git", "GIT+SSH://git@example.invalid/repository.git",
     "github:example/project", "gitlab:example/project", "bitbucket:example/project",
     "git@github.com:example/project.git", "HTTPS://GITHUB.COM/example/project.git",
   ]) {
