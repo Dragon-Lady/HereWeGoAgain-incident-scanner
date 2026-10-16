@@ -1,9 +1,6 @@
 # Reviewed package-scan exceptions: exact files and workflow rules only.
 # Secret and private-term findings remain non-allowable.
 
-# Detector constants and diagnostic descriptions, not an execution path.
-src/scanner.js workflow.ssh_fanout_exec,workflow.shai_hulud_ssh_tmp,workflow.shai_hulud_ai_loader
-
 # Literal indicators used for detection and referral-only recovery guidance.
 data/indicators.json workflow.trinitite_payload_marker
 data/remediation.json workflow.trinitite_payload_marker
