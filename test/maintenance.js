@@ -23,6 +23,17 @@ function assertMetadataExceptionSafe(manifest, policy) {
     assert(!Object.hasOwn(manifest, field),
       `Remove or re-scope the package.json Git-source exception before adding ${field}`);
   }
+  // Only these three descriptive URL fields were reviewed for the exception.
+  const remaining = { ...manifest };
+  if (typeof remaining.homepage === "string") delete remaining.homepage;
+  for (const field of ["repository", "bugs"]) {
+    if (remaining[field] && typeof remaining[field] === "object" && !Array.isArray(remaining[field])) {
+      remaining[field] = { ...remaining[field] };
+      if (typeof remaining[field].url === "string") delete remaining[field].url;
+    }
+  }
+  assert(!/(?:git(?:\+https?)?|github|gitlab|bitbucket):|github\.com[:/]/i.test(JSON.stringify(remaining)),
+    "Remove or re-scope the package.json Git-source exception before adding Git sources outside project metadata");
 }
 
 const metadataPolicy = `package.json ${manifestGitRule}`;
@@ -30,6 +41,27 @@ for (const field of dependencyFields) {
   const candidate = { [field]: { fixture: "git+https://example.invalid/repository.git" } };
   assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /Remove or re-scope/);
   assert.doesNotThrow(() => assertMetadataExceptionSafe(candidate, ""));
+}
+const projectMetadata = {
+  homepage: "https://github.com/example/project#readme",
+  repository: { type: "git", url: "git+https://github.com/example/project.git" },
+  bugs: { url: "https://github.com/example/project/issues" },
+};
+assert.doesNotThrow(() => assertMetadataExceptionSafe(projectMetadata, metadataPolicy));
+for (const script of ["preinstall", "install", "postinstall", "prepare", "prepublishOnly", "custom"]) {
+  for (const source of [
+    "git+https://example.invalid/repository.git", "git://example.invalid/repository.git",
+    "github:example/project", "gitlab:example/project", "bitbucket:example/project",
+    "git@github.com:example/project.git", "HTTPS://GITHUB.COM/example/project.git",
+  ]) {
+    const candidate = { ...projectMetadata, scripts: { [script]: `npm install ${source}` } };
+    assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /outside project metadata/);
+    assert.doesNotThrow(() => assertMetadataExceptionSafe(candidate, ""));
+  }
+}
+for (const field of ["config", "repository", "bugs", "homepage"]) {
+  const candidate = { ...projectMetadata, [field]: { extra: "github:example/project" } };
+  assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /outside project metadata/);
 }
 assertMetadataExceptionSafe(
   JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")),
