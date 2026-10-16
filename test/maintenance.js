@@ -7,6 +7,35 @@ const path = require("path");
 const repoRoot = path.join(__dirname, "..");
 const tempHelper = path.join(__dirname, "helpers", "temp.js");
 
+const dependencyFields = [
+  "dependencies", "devDependencies", "optionalDependencies", "peerDependencies",
+  "bundledDependencies", "bundleDependencies", "overrides", "resolutions", "workspaces",
+];
+const manifestGitRule = "workflow.npm_v12_git_dependency";
+
+function assertMetadataExceptionSafe(manifest, policy) {
+  const allowed = policy.split(/\r?\n/).some((line) => {
+    const [file, ...rules] = line.split("#", 1)[0].trim().split(/\s+/);
+    return file === "package.json" && rules.join(",").split(",").includes(manifestGitRule);
+  });
+  if (!allowed) return;
+  for (const field of dependencyFields) {
+    assert(!Object.hasOwn(manifest, field),
+      `Remove or re-scope the package.json Git-source exception before adding ${field}`);
+  }
+}
+
+const metadataPolicy = `package.json ${manifestGitRule}`;
+for (const field of dependencyFields) {
+  const candidate = { [field]: { fixture: "git+https://example.invalid/repository.git" } };
+  assert.throws(() => assertMetadataExceptionSafe(candidate, metadataPolicy), /Remove or re-scope/);
+  assert.doesNotThrow(() => assertMetadataExceptionSafe(candidate, ""));
+}
+assertMetadataExceptionSafe(
+  JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")),
+  fs.readFileSync(path.join(repoRoot, ".push-guard-allow"), "utf8")
+);
+
 const failureScript = [
   'const fs = require("fs");',
   `const { makeTempDir } = require(${JSON.stringify(tempHelper)});`,

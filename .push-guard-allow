@@ -9,5 +9,6 @@ data/indicators.json workflow.trinitite_payload_marker
 data/remediation.json workflow.trinitite_payload_marker
 
 # Homepage, repository, and issues URLs; this manifest has no dependencies.
-# Re-review this exception if dependency declarations are added.
+# test/maintenance.js rejects dependency declarations while this rule is allowed.
+# Remove or re-scope this exception before adding dependencies or workspaces.
 package.json workflow.npm_v12_git_dependency
