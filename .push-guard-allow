@@ -1,0 +1,13 @@
+# Reviewed package-scan exceptions: exact files and workflow rules only.
+# Secret and private-term findings remain non-allowable.
+
+# Detector constants and diagnostic descriptions, not an execution path.
+src/scanner.js workflow.ssh_fanout_exec,workflow.shai_hulud_ssh_tmp,workflow.shai_hulud_ai_loader
+
+# Literal indicators used for detection and referral-only recovery guidance.
+data/indicators.json workflow.trinitite_payload_marker
+data/remediation.json workflow.trinitite_payload_marker
+
+# Homepage, repository, and issues URLs; this manifest has no dependencies.
+# Re-review this exception if dependency declarations are added.
+package.json workflow.npm_v12_git_dependency
