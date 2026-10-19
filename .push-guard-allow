@@ -13,7 +13,6 @@ package.json workflow.npm_v12_git_dependency
 
 # Reviewed 0.4.3 migration: detector text, inert fixtures and local test harnesses.
 # Preserve existing policy restrictions; credentials and private terms cannot be allowed.
-src/scanner.js workflow.shai_hulud_ai_loader,workflow.shai_hulud_ssh_tmp,workflow.ssh_fanout_exec
 test/fixtures/compromised/package.json workflow.npm_v12_git_dependency
 test/intelligence-refresh.js workflow.dprk_socketio_node_exec
 test/maintenance.js workflow.dprk_socketio_node_exec
