@@ -10,3 +10,12 @@ data/remediation.json workflow.trinitite_payload_marker
 # CI runs it directly before npm scripts. Any manifest edit requires re-review;
 # remove this exception if a hit is no longer descriptive project metadata.
 package.json workflow.npm_v12_git_dependency
+
+# Reviewed 0.4.3 migration: detector text, inert fixtures and local test harnesses.
+# Preserve existing policy restrictions; credentials and private terms cannot be allowed.
+src/scanner.js workflow.shai_hulud_ai_loader,workflow.shai_hulud_ssh_tmp,workflow.ssh_fanout_exec
+test/fixtures/compromised/package.json workflow.npm_v12_git_dependency
+test/intelligence-refresh.js workflow.dprk_socketio_node_exec
+test/maintenance.js workflow.dprk_socketio_node_exec
+test/safety-contract.js workflow.dprk_socketio_node_exec
+test/smoke.js workflow.dprk_socketio_node_exec,workflow.hades_anthropic_camouflage,workflow.hades_github_exfil_marker,workflow.hades_pypi_bun_sentinel,workflow.ottercookie_npm_package,workflow.ottercookie_ssh_backdoor_shape,workflow.ottercookie_vercel_c2,workflow.shai_hulud_ai_loader,workflow.shai_hulud_ssh_shape,workflow.shai_hulud_ssh_tmp,workflow.ssh_fanout_exec
