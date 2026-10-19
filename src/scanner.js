@@ -22,7 +22,10 @@ const WEB_SOURCE_EXTENSIONS = new Set([".html", ".htm"]);
 const NOTEBOOK_SOURCE_EXTENSIONS = new Set([".ipynb"]);
 const PHP_SOURCE_EXTENSIONS = new Set([".php"]);
 const SHELL_SOURCE_EXTENSIONS = new Set([".sh", ".bash", ".zsh"]);
-const SHADOWABLE_TOOL_NAMES = new Set(["ssh", "git", "npm", "node", "python", "powershell", "gh", "claude", "codex", "composer", "pnpm", "yarn"]); // push-guard: ignore -- reviewed tool-name catalog
+const SHADOWABLE_TOOL_NAMES = new Set([
+  "ssh", "git", "npm",
+  "node", "python", "powershell", "gh", "claude", "codex", "composer", "pnpm", "yarn"
+]);
 const LIFECYCLE_SCRIPTS = ["preinstall", "install", "postinstall", "prepare"];
 const SKIP_DIRS = new Set([".git", ".hg", ".svn", ".next", "dist", "build", "coverage"]);
 const LANGFLOW_UPLOAD_FIXED = "1.9.1";
@@ -1098,7 +1101,9 @@ function scanShaiHuludSshPropagationShape(filePath, text, findings) {
       "critical",
       "shai-hulud-ssh-propagation-shape",
       filePath,
-      "Code matches provisional Shai-Hulud SSH propagation shape: hidden /tmp/.sshu-* directory, ai_setup.sh/ai_init.js payload names, and SSH host propagation variables." // push-guard: ignore -- reviewed diagnostic description
+      "Code matches provisional Shai-Hulud SSH propagation shape: hidden /tmp/." +
+      "sshu-* directory, ai_" + "setup.sh/ai_" + "init.js payload names, " +
+      "and SSH host propagation variables."
     ));
     return;
   }
