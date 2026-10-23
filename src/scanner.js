@@ -1322,7 +1322,7 @@ function indicatorSeverity(value, evidence) {
 
 function safeRemovalGuidance(findings) {
   const current = october23.safeRemovalGuidance(findings, {});
-  if (current.required) return {...current, localDocumentation: "docs/october23.md"};
+  if (current.required) return {...current, localDocumentation: "docs/october23.md", retention: "The scanner does not save findings; console and JSON output are stdout-only."};
   const incidentGuidance = tensorlake.safeRemovalGuidance(findings);
   const hasSequenceSensitivePersistence = findings.some((item) =>
     item.type === "token-monitor-artifact" || (item.type === "payload-file" && SEQUENCE_SENSITIVE_PERSISTENCE_FILES.has(path.basename(item.path || "").toLowerCase()))
