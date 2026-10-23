@@ -1,5 +1,6 @@
 const fs = require("fs");
 const tensorlake = require("./tensorlake");
+const october23 = require("./october23");
 const path = require("path");
 const crypto = require("crypto");
 
@@ -35,7 +36,7 @@ const LANGFLOW_PYTHON_REPL_FIXED = "1.9.4";
 const LIVEWIRE_AFFECTED_MIN = "3.0.0";
 const LIVEWIRE_FIXED = "3.6.4";
 const RECOVERY_GUIDANCE_URL = "https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner/blob/main/docs/recovery-playbook.md";
-const COVERAGE_FINDING_TYPES = new Set(["tensorlake-coverage-incomplete", "advisory-data-fallback", "target-unreadable", "directory-unreadable", "read-error", "parse-error", "large-lockfile-skipped"]);
+const COVERAGE_FINDING_TYPES = new Set(["october23-coverage-incomplete", "tensorlake-coverage-incomplete", "advisory-data-fallback", "target-unreadable", "directory-unreadable", "read-error", "parse-error", "large-lockfile-skipped"]);
 const TOKEN_MONITOR_MARKER = ["gh-token", "monitor"].join("-");
 const SEQUENCE_SENSITIVE_PERSISTENCE_FILES = new Set([
   `${TOKEN_MONITOR_MARKER}.service`,
@@ -125,6 +126,7 @@ function scanTarget(targetPath, options = {}) {
     seen.files += 1;
     const base = dirent.name;
     findings.push(...tensorlake.inspectFile(filePath));
+    findings.push(...october23.inspectFile(filePath, { root }));
 
     if (payloadFiles.has(base)) {
       findings.push(finding(
@@ -230,7 +232,7 @@ function scanTarget(targetPath, options = {}) {
       findings: dedupedFindings.length
     },
     findings: dedupedFindings,
-    guidance: guidanceForRisk(risk),
+    guidance: october23.safeRemovalGuidance(dedupedFindings, {}).required ? [october23.ORDER] : guidanceForRisk(risk),
     safeRemovalGuidance: safeRemovalGuidance(dedupedFindings)
   };
 }
@@ -1319,6 +1321,8 @@ function indicatorSeverity(value, evidence) {
 }
 
 function safeRemovalGuidance(findings) {
+  const current = october23.safeRemovalGuidance(findings, {});
+  if (current.required) return {...current, localDocumentation: "docs/october23.md", retention: "The scanner does not save findings; console and JSON output are stdout-only."};
   const incidentGuidance = tensorlake.safeRemovalGuidance(findings);
   const hasSequenceSensitivePersistence = findings.some((item) =>
     item.type === "token-monitor-artifact" || (item.type === "payload-file" && SEQUENCE_SENSITIVE_PERSISTENCE_FILES.has(path.basename(item.path || "").toLowerCase()))

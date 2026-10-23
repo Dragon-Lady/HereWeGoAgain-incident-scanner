@@ -164,3 +164,12 @@ campaign activity.
 - The Hacker News X post and illustration: https://x.com/TheHackersNews/status/2108074255011455084
 - Source revision: https://github.com/tensorlakeai/tensorlake/tree/6386121c561e74fec143a138d5cc3d3bbabdfe8c/typescript
 - Upstream report (not a maintainer confirmation): https://github.com/tensorlakeai/tensorlake/issues/1014
+
+## October 23, 2026 refresh
+
+See [coverage and response order](october23.md). Sources rechecked 2026-10-23:
+
+- https://safedep.io/testmetest-npm-worm-miasma-variant/
+- https://docs.litellm.ai/blog/security-incident-oct-21-2026
+- https://safedep.io/hugo-paper-mevn-cli-forged-commit-preinstall-dropper/
+- https://nodejs.org/en/blog/vulnerability/october-2026-security-releases

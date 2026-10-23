@@ -19,6 +19,34 @@
   ],
   "rules": [
     {
+      "id": "testmetest-ordered-response",
+      "title": "Possible testmetest token-revocation wiper: assess before changing credentials",
+      "riskClass": "stop-deadman",
+      "appliesTo": {
+        "types": [
+          "testmetest-exact-version",
+          "testmetest-gyp-loader-review",
+          "testmetest-persistence-review"
+        ]
+      },
+      "warning": [
+        "Matches do not prove execution or an armed wiper. Do not revoke or rotate credentials from any device until incident response assesses and safely disarms possible persistence."
+      ],
+      "steps": [
+        "Preserve evidence and obtain incident-response help.",
+        "Assess and safely stop the suspected wiper before credential revocation or cleanup.",
+        "After containment, rotate exposed credentials from a clean device and rebuild affected environments."
+      ],
+      "doNotDo": [
+        "Do not execute packages, blindly delete files, or revoke tokens before assessing the wiper."
+      ],
+      "evidence": {
+        "source": "https://safedep.io/testmetest-npm-worm-miasma-variant/",
+        "lastVerified": "2026-10-23",
+        "activation": "not-assessed"
+      }
+    },
+    {
       "id": "deadman-gh-token-monitor",
       "title": "GitHub token dead-man's switch (gh-token-monitor persistence)",
       "riskClass": "stop-deadman",

@@ -65,6 +65,19 @@ try {
   assert(human.stdout.indexOf("Do not revoke or rotate") < human.stdout.indexOf("Instructions:"));
   assert(!human.stdout.includes("PRIVATE_BUILD_VALUE"));
 
+  const testmetestRoot = makeTempDir("hwg-testmetest-retention-");
+  try {
+    fs.writeFileSync(path.join(testmetestRoot,"package.json"),JSON.stringify({dependencies:{"event-emitter-testmetest":"1.0.7"}}));
+    for (const flags of [[], ["--remediation-plan"]]) {
+      const rendered=runCli([testmetestRoot,...flags]);
+      assert.strictEqual(rendered.status,4);
+      assert(!rendered.stdout.includes("- undefined"));
+      assert(rendered.stdout.includes("console and JSON output are stdout-only"));
+      assert(rendered.stdout.includes("before revoking or rotating"));
+    }
+    assert.strictEqual(typeof scanTarget(testmetestRoot).safeRemovalGuidance.retention,"string");
+  } finally {fs.rmSync(testmetestRoot,{recursive:true,force:true});}
+
   const retainedPath = path.join(root, "must-not-exist.json");
   const reportAttempt = runCli([root, "--report", retainedPath]);
   assert.strictEqual(reportAttempt.status, 1);
