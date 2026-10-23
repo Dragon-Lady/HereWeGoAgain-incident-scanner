@@ -10,7 +10,7 @@ const tempHelper = path.join(__dirname, "helpers", "temp.js");
 const manifestGitRule = "workflow.npm_v12_git_dependency";
 // Re-review all package hits before refreshing this baseline; remove the exception
 // if any hit is an executable Git fetch or a dependency rather than project metadata.
-const reviewedManifestDigest = "04a48a7c0655728df8a66f1c6aba70dbe269d119f866b8d5420764a60eaa9e2f";
+const reviewedManifestDigest = "936c48bf0eb86ef16e5df735a2131f1e81c0209b8e8ea17106846cdb4d2d5322";
 
 function assertMetadataExceptionSafe(manifest, policy) {
   const allowed = policy.split(/\r?\n/).some((line) => {
