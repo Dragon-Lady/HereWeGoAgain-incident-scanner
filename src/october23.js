@@ -57,10 +57,10 @@ function read(file, root) {
     return buffer.toString("utf8");
   } finally { fs.closeSync(fd); }
 }
-function npmMatches(text, base) {
+function npmMatches(text, base, packages=BAD_NPM) {
   const matches = new Set();
-  const add = (name, version) => { if (Object.hasOwn(BAD_NPM, name) && BAD_NPM[name].includes(version)) matches.add(`${name}@${version}`); };
-  const alias = value => { if (typeof value !== "string") return; const m = value.match(/^npm:([^@]+)@([^\s]+)$/); if (m) add(m[1], m[2]); };
+  const add = (name, version) => { if (Object.hasOwn(packages, name) && packages[name].includes(version)) matches.add(`${name}@${version}`); };
+  const alias = value => { if (typeof value !== "string") return; const m = value.match(/^npm:((?:@[^/\s]+\/)?[^@\s]+)@([^\s]+)$/); if (m) add(m[1], m[2]); };
   if (base.endsWith(".json")) {
     const data = JSON.parse(text);
     if (!data || typeof data !== "object" || Array.isArray(data)) throw Error("metadata");
@@ -69,7 +69,7 @@ function npmMatches(text, base) {
       for (const [name, value] of Object.entries(data[section] || {})) { add(name,value); alias(value); }
     }
     for (const [key, value] of Object.entries(data.packages || {})) {
-      const name = value?.name || key.match(/(?:^|\/)node_modules\/([^/]+)$/)?.[1];
+      const name = value?.name || key.match(/(?:^|\/)node_modules\/((?:@[^/]+\/)?[^/]+)$/)?.[1];
       add(name, value?.version); alias(value?.version);
     }
     const pending = [data.dependencies]; let count = 0;
@@ -82,12 +82,12 @@ function npmMatches(text, base) {
     }
     if (pending.length) throw Error("budget");
   } else {
-    for (const [name, versions] of Object.entries(BAD_NPM)) for (const version of versions) {
+    for (const [name, versions] of Object.entries(packages)) for (const version of versions) {
       const n=escape(name), v=escape(version);
       if (base === "pnpm-lock.yaml" && new RegExp(`^\\s*['"]?\\/?${n}(?:@|/)${v}(?:\\([^\\r\\n]*\\))?['"]?:\\s*(?:\\{\\})?\\s*$`, "m").test(text)) add(name,version);
       if (base === "yarn.lock") for (const block of text.split(/(?=^\S)/m)) {
         const key = block.split(/\r?\n/,1)[0];
-        if (new RegExp(`(?:^|,\\s*)["']?(?:${n}@|[^@,\\s"']+@npm:${n}@)`).test(key) && new RegExp(`^\\s+version\\s*:?[ \\t]+["']?${v}["']?\\s*$`,"m").test(block)) add(name,version);
+        if (new RegExp(`(?:^|,\\s*)["']?(?:${n}@|(?:@[^/,\\s"']+/)?[^@/,\\s"']+@npm:${n}@)`).test(key) && new RegExp(`^\\s+version\\s*:?[ \\t]+["']?${v}["']?\\s*$`,"m").test(block)) add(name,version);
       }
     }
   }

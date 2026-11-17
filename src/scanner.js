@@ -38,6 +38,8 @@ const LIVEWIRE_FIXED = "3.6.4";
 const RECOVERY_GUIDANCE_URL = "https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner/blob/main/docs/recovery-playbook.md";
 const COVERAGE_FINDING_TYPES = new Set(["october23-coverage-incomplete", "tensorlake-coverage-incomplete", "advisory-data-fallback", "target-unreadable", "directory-unreadable", "read-error", "parse-error", "large-lockfile-skipped"]);
 const TOKEN_MONITOR_MARKER = ["gh-token", "monitor"].join("-");
+const WPP_PACKAGES = new Set(["@wppconnect-team/wppconnect", "@wppconnect/server"]);
+const WPP_GUIDANCE = "WPPConnect: do not import the package or start the server. The reported payload runs on import/start, so --ignore-scripts does not prevent it. Preserve evidence and seek incident-response help; a metadata match does not prove execution or theft. Follow any separately detected sequence-sensitive persistence guidance first. If it ran, contain the environment and revoke exposed credentials and WhatsApp sessions from a trusted device. No wiper behavior is inferred from this package match.";
 const SEQUENCE_SENSITIVE_PERSISTENCE_FILES = new Set([
   `${TOKEN_MONITOR_MARKER}.service`,
   `${TOKEN_MONITOR_MARKER}.sh`,
@@ -100,7 +102,8 @@ function loadSplitAdvisoryData(dataDir) {
     packageCampaigns: [
       readJsonFile(path.join(dataDir, "campaigns", "august-2026-chaindrop.json")),
       readJsonFile(path.join(dataDir, "campaigns", "may-2026-teampcp-copycats.json")),
-      readJsonFile(path.join(dataDir, "campaigns", "2026-08-30-trinitite.json"))
+      readJsonFile(path.join(dataDir, "campaigns", "2026-08-30-trinitite.json")),
+      readJsonFile(path.join(dataDir, "campaigns", "2026-11-16-wppconnect.json"))
     ],
     pypiPackages: readJsonFile(path.join(dataDir, "packages", "pypi.json")),
     composerPackages: readJsonFile(path.join(dataDir, "packages", "composer.json"))
@@ -232,7 +235,9 @@ function scanTarget(targetPath, options = {}) {
       findings: dedupedFindings.length
     },
     findings: dedupedFindings,
-    guidance: october23.safeRemovalGuidance(dedupedFindings, {}).required ? [october23.ORDER] : guidanceForRisk(risk),
+    guidance: october23.safeRemovalGuidance(dedupedFindings, {}).required ? [october23.ORDER] : [
+      ...(dedupedFindings.some(isWppFinding) ? [WPP_GUIDANCE] : []), ...guidanceForRisk(risk)
+    ],
     safeRemovalGuidance: safeRemovalGuidance(dedupedFindings)
   };
 }
@@ -449,6 +454,7 @@ function campaignPackageEvidence(campaign) {
     lastVerified: campaign.lastVerified || null,
     retired: Boolean(campaign.retired),
     currentActivity: campaign.currentActivity || "unverified",
+    ...(campaign.executionTrigger ? { executionTrigger: campaign.executionTrigger } : {}),
     sources: Array.isArray(campaign.sources) ? campaign.sources : []
   };
 }
@@ -469,6 +475,14 @@ function packageEvidenceSuffix(evidence) {
 
 function inspectDependencySpec(filePath, section, name, spec, advisory, findings) {
   const indicators = advisory.indicators;
+
+  // Preserve npm alias identity; an exact alias is not a version range.
+  const alias = spec.match(/^npm:((?:@[^/\s]+\/)?[^@\s]+)@([^\s]+)$/);
+  if (alias && WPP_PACKAGES.has(alias[1]) && versionIsListed(advisory.packages[alias[1]], alias[2])) {
+    const evidence = packageEvidence(alias[1], alias[2], advisory);
+    findings.push(finding("critical", "known-bad-requested-version", filePath,
+      `${section} contains an npm alias requesting ${alias[1]}@${alias[2]}.${packageEvidenceSuffix(evidence)}`, { evidence }));
+  }
 
   if (name === indicators.maliciousOptionalDependencyName) {
     findings.push(finding("critical", "malicious-dependency-name", filePath, `${section} contains ${name}.`));
@@ -578,7 +592,14 @@ function scanTextFile(filePath, advisory, findings) {
     }
     for (const version of versions) {
       if (version === "*") continue;
-      if (lockfileMentionsPackageVersion(text, pkg, version)) {
+      let exactMatch;
+      if (WPP_PACKAGES.has(pkg)) {
+        // New campaign pairs require package-scoped metadata, never a nearby
+        // version in a description, URL, comment or another dependency.
+        try { exactMatch = october23.npmMatches(text, path.basename(filePath), { [pkg]: versions }).includes(`${pkg}@${version}`); }
+        catch (_) { exactMatch = false; } // The default October reader reports malformed metadata as incomplete.
+      } else exactMatch = lockfileMentionsPackageVersion(text, pkg, version);
+      if (exactMatch) {
         const evidence = packageEvidence(pkg, version, advisory);
         findings.push(finding("critical", "known-bad-lockfile-version", filePath, `Lockfile references ${pkg}@${version}.${packageEvidenceSuffix(evidence)}`, { evidence }));
       }
@@ -1320,6 +1341,10 @@ function indicatorSeverity(value, evidence) {
   return isWeakIndicator(value) || evidence.confidence === "low" ? "medium" : "high";
 }
 
+function isWppFinding(item) {
+  return item.evidence?.executionTrigger === "import-or-start";
+}
+
 function safeRemovalGuidance(findings) {
   const current = october23.safeRemovalGuidance(findings, {});
   if (current.required) return {...current, localDocumentation: "docs/october23.md", retention: "The scanner does not save findings; console and JSON output are stdout-only."};
@@ -1331,16 +1356,17 @@ function safeRemovalGuidance(findings) {
     ["miasma-agent-config-trigger", "tool-config-payload-reference"].includes(item.type) ||
     /(?:pgsql|kitty)-monitor|pgmonitor\.py/.test(`${item.indicator || ""}\n${path.basename(item.path || "")}`.toLowerCase())
   );
+  const hasWpp = findings.some(isWppFinding);
 
   return {
-    required: hasPersistence || incidentGuidance.required,
+    required: hasPersistence || incidentGuidance.required || hasWpp,
     activation: "not-assessed",
     sequenceSensitive: hasSequenceSensitivePersistence,
     firstAction: hasSequenceSensitivePersistence
       ? "Pause and contact incident response. Do not revoke or rotate credentials from any device until the suspected monitor has been safely assessed and disarmed in the documented order."
       : hasPersistence
         ? "Pause and review the persistence finding with incident response before changing or removing files, services, or credentials."
-        : incidentGuidance.required ? incidentGuidance.firstAction : "Review findings before making changes. This scanner does not remove, quarantine, disable, or modify anything.",
+        : incidentGuidance.required ? incidentGuidance.firstAction : hasWpp ? WPP_GUIDANCE : "Review findings before making changes. This scanner does not remove, quarantine, disable, or modify anything.",
     instructionDestination: RECOVERY_GUIDANCE_URL,
     localDocumentation: "docs/recovery-playbook.md",
     retention: "The scanner does not save findings; console and JSON output are stdout-only."

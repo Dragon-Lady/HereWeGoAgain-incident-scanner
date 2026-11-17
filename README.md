@@ -1,5 +1,10 @@
 # Here We Go Again Incident Scanner
 
+November 17 update: exact WPPConnect package/version checks now identify the
+corroborated malicious releases and explain their **import/start** trigger.
+Blocking install scripts does not stop that payload. See
+[the dated coverage and response limits](docs/advisory.md#wppconnect-response-update--2026-11-17).
+
 October 8 update: exact Tensorlake 0.5.144 package/payload checks and ordered
 token-monitor warnings are in the default scan. See the
 [dated evidence, limitations and inert test instructions](docs/advisory.md#tensorlake-response-update--2026-10-08).
@@ -31,7 +36,7 @@ tarball URLs.
 
 ## Run From Source
 
-Requires Node.js 22 or 24 (maintained LTS releases).
+Requires Node.js 22.23.5+, 24.22.3+, or 26.13.1+ on the respective supported lines.
 
 ```sh
 git clone https://github.com/Dragon-Lady/HereWeGoAgain-incident-scanner

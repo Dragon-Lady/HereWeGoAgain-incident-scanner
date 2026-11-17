@@ -1,5 +1,33 @@
 # Advisory Summary
 
+## WPPConnect response update — 2026-11-17
+
+Independent SafeDep and StepSecurity analyses published November 16 identify
+`@wppconnect-team/wppconnect` **2.4.1** and `@wppconnect/server` **2.10.82** as
+malicious. The releases appeared November 15–16 UTC. They collect environment
+data, configuration files and WhatsApp session material when imported or started;
+`--ignore-scripts` does not prevent this execution path. Trusted publishing and
+a clean current source tag do not prove an earlier registry artifact was safe.
+
+The dated snapshot detects exact manifest pins, installed package metadata,
+npm aliases, package-lock/npm-shrinkwrap entries, and supported Yarn/pnpm lock
+entries. Unresolved version ranges, Docker tags/digests, historical executions,
+and versions reported by only one source are not cleared by this check. In
+particular, StepSecurity also names library 2.4.3 and server 2.10.83; those need
+independent artifact corroboration before inclusion in this snapshot.
+
+Do not run suspected packages to investigate them. Preserve evidence and refer
+to incident response. If the package ran, contain the environment and revoke
+reachable credentials and WhatsApp sessions from a trusted device; rebuild from
+verified artifacts. A metadata match alone does not prove execution or theft
+and does not establish a token-revocation wiper. Separately detected
+sequence-sensitive persistence still takes precedence.
+
+Sources and the exact inclusion rule are stored in
+`data/campaigns/2026-11-16-wppconnect.json` and [the source catalog](sources.md).
+
+## Earlier incident coverage
+
 On May 12, 2026, JFrog Security Research reported `Shai-Hulud: Here We Go
 Again`, an active worm-like npm/PyPI supply-chain compromise affecting more
 than 170 npm packages and 2 PyPI packages. The npm variant uses malicious

@@ -19,6 +19,35 @@
   ],
   "rules": [
     {
+      "id": "wppconnect-import-response",
+      "title": "WPPConnect import/start credential theft",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "types": ["known-bad-version", "known-bad-requested-version", "known-bad-lockfile-version"],
+        "matchAny": ["@wppconnect-team/wppconnect", "@wppconnect/server"]
+      },
+      "warning": [
+        "The payload runs on package import or server startup. Blocking install scripts does not prevent this execution path.",
+        "An exact dependency match does not prove installation, execution or theft. These package matches do not establish a wiper or an armed dead-man switch."
+      ],
+      "steps": [
+        "Do not import the package, run the server or execute suspected artifacts to test them. Preserve evidence and obtain incident-response help.",
+        "Determine whether the affected release was loaded, including inside application or container processes. A clean current Git tag does not establish that the earlier registry artifact was clean.",
+        "If execution occurred, contain the affected environment; from a trusted device revoke reachable credentials and WhatsApp sessions, then rebuild from verified artifacts. Follow any separately established sequence-sensitive persistence guidance first."
+      ],
+      "doNotDo": [
+        "Do not rely on --ignore-scripts, uninstalling the package, or changing a tag to undo stolen credentials or sessions."
+      ],
+      "evidence": {
+        "sources": [
+          "https://safedep.io/blog/wppconnect-npm-whatsapp-session-stealer",
+          "https://www.stepsecurity.io/blog/wppconnect-compromised-malicious-releases-steal-secrets-and-whatsapp-sessions"
+        ],
+        "lastVerified": "2026-11-17",
+        "activation": "not-assessed"
+      }
+    },
+    {
       "id": "testmetest-ordered-response",
       "title": "Possible testmetest token-revocation wiper: assess before changing credentials",
       "riskClass": "stop-deadman",
@@ -493,7 +522,7 @@
         "Pin away from every flagged version in the manifest",
         "Delete the resolved dependency tree (node_modules / vendor / venv) rather than trusting partial cleanup",
         "Regenerate the lockfile from a clean environment with install scripts blocked (npm ci --ignore-scripts or equivalent)",
-        "If the compromised version was installed and its scripts ran, switch to the payload-on-disk steps above and treat this as possible host compromise"
+        "If the compromised version executed, including on import or application startup, switch to the payload-on-disk steps above and treat this as possible host compromise"
       ],
       "doNotDo": [
         "Do not run a plain install to 'fix' versions while known-bad packages are still referenced.",

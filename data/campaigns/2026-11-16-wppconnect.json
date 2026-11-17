@@ -1,0 +1,19 @@
+{
+  "campaign": "November 2026 WPPConnect credential and WhatsApp-session theft",
+  "status": "confirmed-malicious-releases",
+  "confidence": "high for the exact pairs corroborated by two independent original-research reports; local execution is not established",
+  "observed": "2026-11-15/2026-11-16",
+  "lastVerified": "2026-11-17",
+  "retired": false,
+  "currentActivity": "local execution and current attacker activity not assessed",
+  "executionTrigger": "import-or-start",
+  "inclusionRule": "Only exact package/version pairs independently corroborated by SafeDep and StepSecurity. Additional versions reported only by one source remain outside this snapshot.",
+  "sources": [
+    "https://safedep.io/blog/wppconnect-npm-whatsapp-session-stealer",
+    "https://www.stepsecurity.io/blog/wppconnect-compromised-malicious-releases-steal-secrets-and-whatsapp-sessions"
+  ],
+  "packages": {
+    "@wppconnect-team/wppconnect": ["2.4.1"],
+    "@wppconnect/server": ["2.10.82"]
+  }
+}

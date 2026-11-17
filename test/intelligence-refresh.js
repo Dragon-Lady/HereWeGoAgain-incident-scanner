@@ -27,7 +27,7 @@ assert.strictEqual(chainDrop.lastVerified, "2026-08-12");
 assert(chainDrop.confidence.includes("corroborated by at least two"));
 assert(chainDrop.deadManPolicy.includes("not evidence"));
 assert(chainDrop.sources.length >= 4);
-assert.strictEqual(advisory.lastUpdated, "2026-10-08");
+assert.strictEqual(advisory.lastUpdated, "2026-11-17");
 for (const source of [...chainDrop.sources, ...copycats.sources]) {
   assert(advisory.sources.includes(source), `canonical source catalog is missing ${source}`);
 }

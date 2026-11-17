@@ -173,3 +173,13 @@ See [coverage and response order](october23.md). Sources rechecked 2026-10-23:
 - https://docs.litellm.ai/blog/security-incident-oct-21-2026
 - https://safedep.io/hugo-paper-mevn-cli-forged-commit-preinstall-dropper/
 - https://nodejs.org/en/blog/vulnerability/october-2026-security-releases
+
+## WPPConnect, checked 2026-11-17
+
+- https://safedep.io/blog/wppconnect-npm-whatsapp-session-stealer
+- https://www.stepsecurity.io/blog/wppconnect-compromised-malicious-releases-steal-secrets-and-whatsapp-sessions
+
+Both original analyses corroborate library 2.4.1 and server 2.10.82. Additional
+versions reported only by StepSecurity are outside this exact-pair snapshot.
+Import/start execution, artifact provenance, and response limits are explained
+in [the advisory](advisory.md#wppconnect-response-update--2026-11-17).

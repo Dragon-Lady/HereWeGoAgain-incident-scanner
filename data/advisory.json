@@ -1,6 +1,6 @@
 {
   "incident": "Shai-Hulud: Here We Go Again npm/PyPI supply-chain compromise",
-  "lastUpdated": "2026-10-08",
+  "lastUpdated": "2026-11-17",
   "scope": {
     "scannerPackageSet": "Exact npm, PyPI, and Composer indicators from independent incident research, including a 2026-08-12 ChainDrop snapshot of 2,236 exact npm package/version pairs across 444 package names corroborated by at least two public original-research inventories, plus four separately reported all-version malicious npm package names",
     "officialTanStackScope": "42 packages, 84 malicious versions, published on 2026-05-11 between 19:20 and 19:26 UTC",
@@ -92,6 +92,8 @@
     "https://safedep.io/keyv-npm-supply-chain-compromise/",
     "https://x.com/MosheTov/status/2108048212724425206",
     "https://www.stepsecurity.io/blog/tensorlake-npm-compromised-hostage-token-worm",
-    "https://github.com/tensorlakeai/tensorlake/tree/6386121c561e74fec143a138d5cc3d3bbabdfe8c/typescript"
+    "https://github.com/tensorlakeai/tensorlake/tree/6386121c561e74fec143a138d5cc3d3bbabdfe8c/typescript",
+    "https://safedep.io/blog/wppconnect-npm-whatsapp-session-stealer",
+    "https://www.stepsecurity.io/blog/wppconnect-compromised-malicious-releases-steal-secrets-and-whatsapp-sessions"
   ]
 }
