@@ -1,4 +1,5 @@
 const fs = require("fs");
+const agentFramework = require("./agent-framework");
 const tensorlake = require("./tensorlake");
 const october23 = require("./october23");
 const path = require("path");
@@ -1357,16 +1358,17 @@ function safeRemovalGuidance(findings) {
     /(?:pgsql|kitty)-monitor|pgmonitor\.py/.test(`${item.indicator || ""}\n${path.basename(item.path || "")}`.toLowerCase())
   );
   const hasWpp = findings.some(isWppFinding);
+  const hasAgentFramework = findings.some(item => item.type.startsWith("agent-framework-"));
 
   return {
-    required: hasPersistence || incidentGuidance.required || hasWpp,
+    required: hasPersistence || incidentGuidance.required || hasWpp || hasAgentFramework,
     activation: "not-assessed",
     sequenceSensitive: hasSequenceSensitivePersistence,
     firstAction: hasSequenceSensitivePersistence
       ? "Pause and contact incident response. Do not revoke or rotate credentials from any device until the suspected monitor has been safely assessed and disarmed in the documented order."
       : hasPersistence
         ? "Pause and review the persistence finding with incident response before changing or removing files, services, or credentials."
-        : incidentGuidance.required ? incidentGuidance.firstAction : hasWpp ? WPP_GUIDANCE : "Review findings before making changes. This scanner does not remove, quarantine, disable, or modify anything.",
+        : incidentGuidance.required ? incidentGuidance.firstAction : hasWpp ? WPP_GUIDANCE : hasAgentFramework ? agentFramework.guidance : "Review findings before making changes. This scanner does not remove, quarantine, disable, or modify anything.",
     instructionDestination: RECOVERY_GUIDANCE_URL,
     localDocumentation: "docs/recovery-playbook.md",
     retention: "The scanner does not save findings; console and JSON output are stdout-only."

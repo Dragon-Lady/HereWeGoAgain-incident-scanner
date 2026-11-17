@@ -183,3 +183,7 @@ Both original analyses corroborate library 2.4.1 and server 2.10.82. Additional
 versions reported only by StepSecurity are outside this exact-pair snapshot.
 Import/start execution, artifact provenance, and response limits are explained
 in [the advisory](advisory.md#wppconnect-response-update--2026-11-17).
+
+## PyPI agent-framework, checked 2026-11-17
+
+The [researcher’s incident update](https://github.com/microsoft/agent-framework/issues/10411#issuecomment-6961285339) identifies both exact wheel releases, their SHA-256 digests, and the Python startup trigger. The initial [disclosure](https://x.com/MosheTov/status/2122794420160328014) covered 1.26.1.

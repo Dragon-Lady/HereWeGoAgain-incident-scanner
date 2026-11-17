@@ -128,3 +128,7 @@ remote revocation from being noticed by a running monitor. Rotate afterward
 from a clean device. Do not test token revocation or run downloaded samples.
 A candidate monitor pathname is not proof of an armed switch. The scanner
 only reports evidence and guidance; see [the dated advisory](advisory.md#tensorlake-response-update--2026-10-08).
+
+## PyPI agent-framework startup hook
+
+See [the incident-specific guidance](advisory.md#pypi-agent-framework--2026-11-17) before starting Python or pip in a suspected environment.

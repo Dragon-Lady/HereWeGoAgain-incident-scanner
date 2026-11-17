@@ -123,7 +123,7 @@ function printSafeRemovalGuidance(guidance) {
 function printPlainLanguageSummary(report) {
   if (report.risk === "likely-exposed") {
     console.log("STOP");
-    console.log("This project references known compromised Shai-Hulud: Here We Go Again indicators.");
+    console.log("This scan found a known high-risk indicator. Review the specific evidence below.");
     console.log("Do not run npm, pnpm, yarn, bun, pip, composer, build, test, or dev-server commands here until reviewed.");
     console.log("If execution is possible, follow the safe-removal guidance below before rotating credentials.");
     console.log("");

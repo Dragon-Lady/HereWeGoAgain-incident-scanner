@@ -1,6 +1,6 @@
 {
   "name": "herewegoagain-incident-scanner",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Read-only CLI scanner for Shai-Hulud: Here We Go Again npm, PyPI, and Composer indicators.",
   "license": "MIT",
   "type": "commonjs",
@@ -38,7 +38,7 @@
   "scripts": {
     "scan": "node bin/herewegoagain-incident-scanner.js",
     "smoke": "node bin/herewegoagain-incident-scanner.js --help",
-    "test": "node --check bin/herewegoagain-incident-scanner.js && node --check src/scanner.js && node --check src/remediation.js && node test/smoke.js && node test/remediation.js && node test/safety-contract.js && node test/maintenance.js && node test/intelligence-refresh.js && node --check src/tensorlake.js && node test/tensorlake.js && node --check src/october23.js && node --test test/october23.js test/wppconnect.js",
+    "test": "node --check bin/herewegoagain-incident-scanner.js && node --check src/scanner.js && node --check src/remediation.js && node test/smoke.js && node test/remediation.js && node test/safety-contract.js && node test/maintenance.js && node test/intelligence-refresh.js && node --check src/tensorlake.js && node test/tensorlake.js && node --check src/october23.js && node --test test/october23.js test/wppconnect.js test/agent-framework.js",
     "package:check": "npm pack --dry-run --ignore-scripts"
   },
   "engines": {

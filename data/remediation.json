@@ -19,6 +19,33 @@
   ],
   "rules": [
     {
+      "id": "agent-framework-startup-hook-response",
+      "title": "Review exposure to the agent-framework PyPI startup hook",
+      "riskClass": "ordered-manual",
+      "appliesTo": {
+        "types": [
+          "agent-framework-exact-version",
+          "agent-framework-wheel-hash"
+        ]
+      },
+      "warning": [
+        "Starting Python or pip in an affected installation can run the hook before application imports. A dependency or cached wheel match alone does not establish execution."
+      ],
+      "steps": [
+        "Preserve evidence and consult incident response. Determine from trusted records whether Python started after installation.",
+        "If execution was possible, contain the affected environment and review reachable credentials from a trusted device. Follow separately identified sequence-sensitive persistence guidance first."
+      ],
+      "doNotDo": [
+        "Do not start Python or pip in the suspected environment to check the version or uninstall it."
+      ],
+      "evidence": {
+        "sources": [
+          "https://github.com/microsoft/agent-framework/issues/10411#issuecomment-6961285339"
+        ],
+        "lastVerified": "2026-11-17"
+      }
+    },
+    {
       "id": "wppconnect-import-response",
       "title": "WPPConnect import/start credential theft",
       "riskClass": "ordered-manual",

@@ -3,6 +3,8 @@
 const fs = require("fs");
 const path = require("path");
 const {incidentalJson} = require("./metadata-scope");
+const {createHash} = require("node:crypto");
+const agentFramework = require("./agent-framework");
 const SOURCES = {
   worm: "https://safedep.io/testmetest-npm-worm-miasma-variant/",
   litellm: "https://docs.litellm.ai/blog/security-incident-oct-21-2026",
@@ -32,9 +34,14 @@ const DIGEST_PREFIXES = {"ghcr.io/berriai/litellm-database":"c00f9d92c427", "ghc
 const DIGEST = "1bbcb1443bc962e45f5aad53fe3d2c30600e0379715fb6c664cdd3ac126c339e";
 const within = (root, file) => { const relative = path.relative(path.resolve(root), path.resolve(file)); return relative === "" || (!relative.startsWith(".." + path.sep) && relative !== ".." && !path.isAbsolute(relative)); };
 const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const pythonName = name => String(name).toLowerCase().replace(/[-_.]+/g, "-");
+const trackedPythonNames = new Set(["litellm", "brotli", "brotlicffi", "pillow", agentFramework.name]);
+function isPythonMetadata(base) {
+  return PYTHON_FILES.has(base) || /^pylock(?:\.[\w-]+)?\.toml$/i.test(base) || /^requirements[^/]*\.txt$/i.test(base);
+}
 function candidate(file) {
   const base = path.basename(file);
-  return NPM_FILES.has(base) || PYTHON_FILES.has(base) || CONTAINER_FILES.has(base) || STARTUP_FILES.has(base) || SERVICE_FILES.has(base) || base === "binding.gyp" || base === "preinstall.js";
+  return NPM_FILES.has(base) || isPythonMetadata(base) || agentFramework.wheelVersion(base) !== null || CONTAINER_FILES.has(base) || STARTUP_FILES.has(base) || SERVICE_FILES.has(base) || base === "binding.gyp" || base === "preinstall.js";
 }
 function finding(file, severity, type, message, source) {
   return {severity, type, path:file, message, evidence:{source, lastVerified:"2026-10-23", activation:"not-assessed"}};
@@ -42,7 +49,7 @@ function finding(file, severity, type, message, source) {
 function incomplete(file) {
   return finding(file, "medium", "october23-coverage-incomplete", "October 23 candidate inspection was incomplete (unreadable, malformed, linked, changed, or over budget). Content and error details are withheld.", SOURCES.worm);
 }
-function read(file, root) {
+function readBytes(file, root) {
   if (fs.lstatSync(file).isSymbolicLink()) throw Error("linked candidate");
   if (root && (!within(root, file) || (path.resolve(root) !== path.resolve(file) && !within(fs.realpathSync(root), fs.realpathSync(path.dirname(file)))))) throw Error("outside scope");
   const fd = fs.openSync(file, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0) | (fs.constants.O_NONBLOCK || 0));
@@ -54,7 +61,7 @@ function read(file, root) {
     while (offset < buffer.length) { const n = fs.readSync(fd, buffer, offset, buffer.length-offset, offset); if (!n) throw Error("changed"); offset += n; }
     const after = fs.fstatSync(fd);
     if (before.size !== after.size || before.mtimeMs !== after.mtimeMs || before.ctimeMs !== after.ctimeMs) throw Error("changed");
-    return buffer.toString("utf8");
+    return buffer;
   } finally { fs.closeSync(fd); }
 }
 function npmMatches(text, base, packages=BAD_NPM) {
@@ -142,14 +149,14 @@ function tomlPair(statement) {
 function pythonPackages(text, base) {
   const packages=[];
   const add=(name,version,poetryArray=false)=>{
-    name=String(name).toLowerCase().replace(/[-_.]+/g,"-");
-    if(["litellm","brotli","brotlicffi","pillow"].includes(name))packages.push({name,version,poetryArray});
+    name=pythonName(name);
+    if(trackedPythonNames.has(name))packages.push({name,version,poetryArray});
   };
   const requirement=line=>{
     const m=line.trim().match(/^([A-Za-z0-9][A-Za-z0-9._-]*)(?:\[[^\]\r\n]+\])?(?=\s|[<>=!~@(;#]|$)(.*)$/);
     if(!m)return;
     const spec=m[2].split(/[;#]/,1)[0].replace(/\s+--hash=.*$/,"").trim();
-    const pin=spec.match(/^\(?\s*==\s*([^\s(),]+)\s*\)?$/);
+    const pin=spec.match(/^\(?\s*={2,3}\s*([^\s(),]+)\s*\)?$/);
     add(m[1],pin?pin[1]:null);
   };
   if(base==="METADATA" || base==="PKG-INFO") {
@@ -161,7 +168,7 @@ function pythonPackages(text, base) {
     if(names.length)add(names[0][1],versions[0]?.[1]||null);
     return packages;
   }
-  if(base==="requirements.txt") {
+  if(/^requirements[^/]*\.txt$/i.test(base)) {
     for(const line of text.replace(/\\\r?\n/g," ").split(/\r?\n/))requirement(line);
     return packages;
   }
@@ -184,11 +191,11 @@ function pythonPackages(text, base) {
     if(statement.startsWith("[")) {finish();section=statement;continue;}
     const pair=tomlPair(statement);if(!pair)continue;
     const [key,value]=pair;
-    if(base==="pyproject.toml" && section==="[project]" && key==="dependencies") {
+    if(base==="pyproject.toml" && ((section==="[project]" && key==="dependencies") || section==="[project.optional-dependencies]")) {
       if(!value.startsWith("[") || !value.endsWith("]"))throw Error("dependency array required");
       for(const item of tomlParts(value.slice(1,-1),","))requirement(tomlString(item));
-    } else if(base==="pyproject.toml" && section==="[tool.poetry.dependencies]") {
-      if(!["litellm","brotli","brotlicffi","pillow"].includes(key.toLowerCase()))continue;
+    } else if(base==="pyproject.toml" && /^\[tool\.poetry(?:\.group\.[\w-]+)?\.dependencies\]$/.test(section)) {
+      if(!trackedPythonNames.has(pythonName(key)))continue;
       // Multiple Poetry constraints are unresolved here; keep scanning siblings.
       if(value.startsWith("[") && value.endsWith("]")) {add(key,null,true);continue;}
       let version=value;
@@ -202,7 +209,7 @@ function pythonPackages(text, base) {
       }
       const pin=tomlString(version).match(/^(?:==)?([^\s<>=!~^*,]+)$/);
       add(key,pin?pin[1]:null);
-    } else if(base!=="pyproject.toml" && section==="[[package]]") {
+    } else if(base!=="pyproject.toml" && (section==="[[package]]" || (base.startsWith("pylock") && section==="[[packages]]"))) {
       if(key==="name") {if(packageName)throw Error("duplicate name");packageName=tomlString(value);}
       if(key==="version") {if(packageVersion!==null)throw Error("duplicate version");packageVersion=tomlString(value);}
     }
@@ -248,7 +255,10 @@ function inspectFile(file, options={}) {
   const base=path.basename(file), out=[];
   const emit=(severity,type,message,source=SOURCES.worm)=>out.push(finding(file,severity,type,message,source));
   try {
-    const text=read(file,options.root);
+    const bytes=readBytes(file,options.root);
+    const wheelVersion = agentFramework.wheelVersion(base);
+    if (wheelVersion !== null) return [agentFramework.wheelFinding(file, wheelVersion, createHash("sha256").update(bytes).digest("hex"))];
+    const text=bytes.toString("utf8");
     if (NPM_FILES.has(base)) {
       try {
         for (const match of npmMatches(text,base)) emit("critical","testmetest-exact-version",`Exact dependency metadata matches the reported malicious release ${match}. ${ORDER}`);
@@ -258,11 +268,15 @@ function inspectFile(file, options={}) {
         else throw error;
       }
     }
-    if (PYTHON_FILES.has(base)) {
+    if (isPythonMetadata(base)) {
       const packages=pythonPackages(text,base);
       if(packages.some(p=>p.name==="litellm" && p.version==="1.107.0")) emit("critical","litellm-october-compromised-version",`LiteLLM 1.107.0 metadata matches the October 21 compromised release. ${LITELLM_ORDER}`,SOURCES.litellm);
       const seen=new Set();
       for(const item of packages) {
+        if (item.name === agentFramework.name && agentFramework.hasVersion(item.version)) {
+          out.push(agentFramework.metadataFinding(file, item.version));
+          continue;
+        }
         const hit=pythonVulnerability(item);
         if(!hit || seen.has(hit.message))continue;
         seen.add(hit.message);emit(hit.severity,hit.type,hit.message,hit.source);

@@ -1,5 +1,7 @@
 # Here We Go Again Incident Scanner
 
+November 17: read-only checks for PyPI `agent-framework` 1.26.1 and 1.26.2 cover dependency metadata and the two published wheel hashes. See the [incident guidance](docs/advisory.md#pypi-agent-framework--2026-11-17).
+
 November 17 update: exact WPPConnect package/version checks now identify the
 corroborated malicious releases and explain their **import/start** trigger.
 Blocking install scripts does not stop that payload. See

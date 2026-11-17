@@ -1,5 +1,25 @@
 # Advisory Summary
 
+## PyPI agent-framework — 2026-11-17
+
+Upwind Security identified two credential-stealing PyPI wheels for `agent-framework`,
+1.26.1 and 1.26.2. Starting Python in an affected installation can run a startup
+hook before any application imports. Preserve evidence and refer suspected
+exposure to incident response. Avoid starting Python or pip there. If Python
+ran after installation, contain the environment and review reachable credentials
+from a trusted device. Follow separate persistence-response instructions first
+if the scanner also reports them.
+
+The scanner checks literal pins in requirements files, supported project
+dependency tables and lock records (uv, Poetry, Pipenv and pylock), distribution headers
+(METADATA and PKG-INFO), and the two original wheel filenames in the scan
+scope. It compares wheel bytes to the published SHA-256 without opening the
+archive. A filename with different bytes is a review finding. Metadata does
+not prove a wheel was installed or executed. Renamed wheels, opaque cache
+entries, and unresolved ranges are outside this check.
+
+[Original report and follow-up for both wheels](https://github.com/microsoft/agent-framework/issues/10411#issuecomment-6961285339).
+
 ## WPPConnect response update — 2026-11-17
 
 Independent SafeDep and StepSecurity analyses published November 16 identify
