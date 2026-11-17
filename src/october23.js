@@ -81,14 +81,24 @@ function npmMatches(text, base, packages=BAD_NPM) {
       }
     }
     if (pending.length) throw Error("budget");
+  } else if (base === "yarn.lock") {
+    for (const block of text.split(/(?=^\S)/m)) {
+      const version = block.match(/^\s+version\s*:?[ \t]+["']?([^\s"']+)["']?\s*$/m)?.[1];
+      if (!version) continue;
+      const key = block.split(/\r?\n/, 1)[0].replace(/:\s*$/, "");
+      for (const selector of key.split(/,\s*/)) {
+        const descriptor = selector.trim().replace(/^["']|["']$/g, "").match(/^((?:@[^/@,\s]+\/)?[^@/,\s]+)@(.+)$/);
+        if (!descriptor) continue;
+        // An npm alias names its target after npm:; Berry's npm:range keeps
+        // the descriptor's identity. Never compare an alias label as a target.
+        const target = descriptor[2].match(/^npm:((?:@[^/@,\s]+\/)?[^@/,\s]+)@/);
+        add(target ? target[1] : descriptor[1], version);
+      }
+    }
   } else {
     for (const [name, versions] of Object.entries(packages)) for (const version of versions) {
       const n=escape(name), v=escape(version);
       if (base === "pnpm-lock.yaml" && new RegExp(`^\\s*['"]?\\/?${n}(?:@|/)${v}(?:\\([^\\r\\n]*\\))?['"]?:\\s*(?:\\{\\})?\\s*$`, "m").test(text)) add(name,version);
-      if (base === "yarn.lock") for (const block of text.split(/(?=^\S)/m)) {
-        const key = block.split(/\r?\n/,1)[0];
-        if (new RegExp(`(?:^|,\\s*)["']?(?:${n}@|(?:@[^/,\\s"']+/)?[^@/,\\s"']+@npm:${n}@)`).test(key) && new RegExp(`^\\s+version\\s*:?[ \\t]+["']?${v}["']?\\s*$`,"m").test(block)) add(name,version);
-      }
     }
   }
   return [...matches];

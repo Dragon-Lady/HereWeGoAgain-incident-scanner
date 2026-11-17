@@ -18,6 +18,10 @@ test("exact npm metadata including aliases and nested locks; decoys/ranges/descr
  for(const data of [{name:n,version:v},{dependencies:{[n]:v}},{devDependencies:{alias:`npm:${n}@${v}`}},{packages:{[`node_modules/${n}`]:{version:v}}},{dependencies:{outer:{dependencies:{[n]:{version:v}}}}}]) assert.equal(detector.npmMatches(JSON.stringify(data),"package.json").length,1);
  for(const data of [{name:n,version:"1.0.0"},{dependencies:{[n]:"^0.0.1"}},{description:`${n}@${v}`},{dependencies:{[n]:"0.0.10"}},{packages:{"node_modules/other":{version:v}}}]) assert.deepEqual(detector.npmMatches(JSON.stringify(data),"package.json"),[]);
  assert.equal(detector.npmMatches(`${n}@^0.0.0:\n  version "${v}"\n`,"yarn.lock").length,1);
+ for(const selector of [`${n}@npm:^${v}`,`alias@npm:${n}@^${v}`,`@local/alias@npm:${n}@^${v}`]) {
+  for(const resolved of [`version "${v}"`,`version: ${v}`]) assert.deepEqual(detector.npmMatches(`"${selector}":\n  ${resolved}\n`,"yarn.lock"),[`${n}@${v}`]);
+ }
+ for(const target of ["unrelated","@unrelated/package"]) assert.deepEqual(detector.npmMatches(`"${n}@npm:${target}@${v}":\n  version "${v}"\n`,"yarn.lock"),[]);
  assert.equal(detector.npmMatches(`packages:\n  '${n}@${v}': {}\n`,"pnpm-lock.yaml").length,1);
 });
 test("LiteLLM exact evidence stays within supported Python metadata fields",()=>{

@@ -67,14 +67,29 @@ test("Yarn classic and Berry and pnpm old/new keys identify resolved versions", 
       `"${name}@^${version}":\n  version "${version}"\n`,
       `"${name}@npm:^${version}":\n  version: ${version}\n`,
       `"alias@npm:${name}@^${version}":\n  version "${version}"\n`,
+      `"alias@npm:${name}@^${version}":\n  version: ${version}\n`,
       `"@local/alias@npm:${name}@^${version}":\n  version "${version}"\n`,
-      `"@local/alias@npm:${name}@^${version}":\n  version: ${version}\n`
+      `"@local/alias@npm:${name}@^${version}":\n  version: ${version}\n`,
+      `"alias@npm:${name}@^${version}", "${name}@~${version}":\n  version "${version}"\n`,
+      `"${name}@npm:^${version}, alias@npm:${name}@~${version}":\n  version: ${version}\n`
     ]) assert.equal(hits(inspect("yarn.lock", text)).length, 1);
     for (const text of [
       `packages:\n  '${name}@${version}': {}\n`,
       `packages:\n  /${name}/${version}:\n    resolution: {}\n`,
       `snapshots:\n  '${name}@${version}(peer@1.0.0)': {}\n`
     ]) assert.equal(hits(inspect("pnpm-lock.yaml", text)).length, 1);
+  }
+});
+
+test("Yarn npm alias labels do not impersonate their unrelated targets", () => {
+  for (const [name, version] of [[library, "2.4.1"], [server, "2.10.82"]]) {
+    for (const target of ["unrelated-server", "@unrelated/server"]) {
+      for (const resolved of [`version "${version}"`, `version: ${version}`]) {
+        const report = inspect("yarn.lock", `"${name}@npm:${target}@${version}":\n  ${resolved}\n`);
+        assert.equal(hits(report).length, 0, `${name} aliases ${target}`);
+        assert.notEqual(report.risk, "likely-exposed");
+      }
+    }
   }
 });
 
