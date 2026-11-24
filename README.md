@@ -1,5 +1,9 @@
 # Here We Go Again Incident Scanner
 
+November 24: the default scan checks npm manifests and lockfiles for the exact
+`raiden-baileys` package. OpenSSF reports silent WhatsApp newsletter subscriptions
+on connection. See the [package advisory](https://osv.dev/vulnerability/MAL-2026-19108).
+
 November 17: read-only checks for PyPI `agent-framework` 1.26.1 and 1.26.2 cover dependency metadata and the two published wheel hashes. See the [incident guidance](docs/advisory.md#pypi-agent-framework--2026-11-17).
 
 November 17 update: exact WPPConnect package/version checks now identify the

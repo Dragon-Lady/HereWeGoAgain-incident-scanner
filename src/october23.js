@@ -66,7 +66,13 @@ function readBytes(file, root) {
 }
 function npmMatches(text, base, packages=BAD_NPM) {
   const matches = new Set();
-  const add = (name, version) => { if (Object.hasOwn(packages, name) && packages[name].includes(version)) matches.add(`${name}@${version}`); };
+  const add = (name, version) => {
+    if (typeof name !== "string" || typeof version !== "string" || !Object.hasOwn(packages, name)) return;
+    const versions = packages[name];
+    if (versions.includes("*") ? /^\d+\.\d+\.\d+(?:[-+][\w.+-]+)?$/.test(version) : versions.includes(version)) {
+      matches.add(`${name}@${version}`);
+    }
+  };
   const alias = value => { if (typeof value !== "string") return; const m = value.match(/^npm:((?:@[^/\s]+\/)?[^@\s]+)@([^\s]+)$/); if (m) add(m[1], m[2]); };
   if (base.endsWith(".json")) {
     const data = JSON.parse(text);
@@ -77,6 +83,7 @@ function npmMatches(text, base, packages=BAD_NPM) {
     }
     for (const [key, value] of Object.entries(data.packages || {})) {
       const name = value?.name || key.match(/(?:^|\/)node_modules\/((?:@[^/]+\/)?[^/]+)$/)?.[1];
+      if (value?.link && Object.hasOwn(packages, name) && packages[name].includes("*")) continue;
       add(name, value?.version); alias(value?.version);
     }
     const pending = [data.dependencies]; let count = 0;
@@ -99,11 +106,27 @@ function npmMatches(text, base, packages=BAD_NPM) {
         // An npm alias names its target after npm:; Berry's npm:range keeps
         // the descriptor's identity. Never compare an alias label as a target.
         const target = descriptor[2].match(/^npm:((?:@[^/@,\s]+\/)?[^@/,\s]+)@/);
+        if (!target && Object.hasOwn(packages, descriptor[1]) && packages[descriptor[1]].includes("*")) {
+          const range = descriptor[2].replace(/^npm:/, "");
+          if (/[:/#]/.test(range)) continue;
+        }
         add(target ? target[1] : descriptor[1], version);
       }
     }
   } else {
     for (const [name, versions] of Object.entries(packages)) for (const version of versions) {
+      if (version === "*" && base === "pnpm-lock.yaml") {
+        let inPackages = false;
+        const key = new RegExp(`^  ['"]?/?${escape(name)}(?:@|/)([0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][\\w.+-]+)?)(?:\\([^\\r\\n]*\\)|_[^\\s:'"]+)?['"]?:\\s*(?:\\{[^}]*\\})?\\s*(?:#.*)?$`);
+        for (const line of text.split(/\r?\n/)) {
+          if (/^[^\s#]/.test(line)) inPackages = /^(?:packages|snapshots):\s*(?:#.*)?$/.test(line);
+          if (inPackages) {
+            const match = line.match(key);
+            if (match) add(name, match[1]);
+          }
+        }
+        continue;
+      }
       const n=escape(name), v=escape(version);
       if (base === "pnpm-lock.yaml" && new RegExp(`^\\s*['"]?\\/?${n}(?:@|/)${v}(?:\\([^\\r\\n]*\\))?['"]?:\\s*(?:\\{\\})?\\s*$`, "m").test(text)) add(name,version);
     }

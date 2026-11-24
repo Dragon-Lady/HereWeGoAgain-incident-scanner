@@ -1,4 +1,5 @@
 const fs = require("fs");
+const raiden = require("./raiden");
 const agentFramework = require("./agent-framework");
 const tensorlake = require("./tensorlake");
 const october23 = require("./october23");
@@ -310,6 +311,7 @@ function scanPackageJson(filePath, advisory, findings) {
     return;
   }
 
+  if (raiden.manifestReferences(manifest)) findings.push(raiden.finding(filePath));
   scanManifestText(filePath, rawText, advisory, findings);
 
   if (manifest.name && manifest.version && versionIsListed(advisory.packages[manifest.name], manifest.version)) {
@@ -551,6 +553,14 @@ function scanTextFile(filePath, advisory, findings) {
   } catch (error) {
     findings.push(finding("medium", "read-error", filePath, "Could not read lockfile; dependency coverage is incomplete."));
     return;
+  }
+
+  try {
+    if (october23.npmMatches(text, path.basename(filePath), raiden.packages).length) {
+      findings.push(raiden.finding(filePath));
+    }
+  } catch {
+    // The default bounded metadata reader reports malformed lockfiles as incomplete.
   }
 
   const indicators = advisory.indicators;

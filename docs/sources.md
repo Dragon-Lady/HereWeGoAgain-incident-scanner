@@ -187,3 +187,13 @@ in [the advisory](advisory.md#wppconnect-response-update--2026-11-17).
 ## PyPI agent-framework, checked 2026-11-17
 
 The [researcher’s incident update](https://github.com/microsoft/agent-framework/issues/10411#issuecomment-6961285339) identifies both exact wheel releases, their SHA-256 digests, and the Python startup trigger. The initial [disclosure](https://x.com/MosheTov/status/2122794420160328014) covered 1.26.1.
+
+## raiden-baileys, checked 2026-11-24
+
+OX Radar highlighted this npm fork. The OpenSSF record describes silent WhatsApp
+newsletter subscriptions on connection and identifies all published versions.
+A manifest or resolved lockfile entry establishes a metadata reference. Account
+activity requires separate verification.
+
+- https://osv.dev/vulnerability/MAL-2026-19108
+- https://www.ox.security/ox-radar/npm/raiden-baileys/

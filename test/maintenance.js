@@ -10,9 +10,9 @@ const tempHelper = path.join(__dirname, "helpers", "temp.js");
 const manifestGitRule = "workflow.npm_v12_git_dependency";
 // Re-review all package hits before refreshing this baseline; remove the exception
 // if any hit is an executable Git fetch or a dependency rather than project metadata.
-// November 17: re-reviewed the version bump and local agent-framework test. Supported
+// November 24: re-reviewed the version bump and local raiden test. Supported
 // Node patch floors remain unchanged; URLs are project metadata.
-const reviewedManifestDigest = "d93cafb7035f50c1b7a07d17f05a0a289f7e0191a87e123fce5e488d0d520189";
+const reviewedManifestDigest = "78e4dd040510efa1775bc986eafc86c5d73bebd475bea9e0010268d76cfa4c1f";
 
 function assertMetadataExceptionSafe(manifest, policy) {
   const allowed = policy.split(/\r?\n/).some((line) => {
